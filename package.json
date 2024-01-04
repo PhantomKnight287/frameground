@@ -3,16 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
+    "dev": "dotenv -e .env turbo run dev",
+    "build": "dotenv -e .env turbo run build",
     "lint": "turbo run lint",
-    "start": "turbo run start"
+    "start": "dotenv -e .env turbo run start"
   },
   "keywords": [],
   "author": "Gurpal Singh",
   "license": "ISC",
   "dependencies": {
+    "dotenv-cli": "^7.3.0",
     "turbo": "^1.11.2"
   }
 }
