@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
+import NextAuthProvider from "@/providers/next-auth";
 
 export const metadata: Metadata = {
   title: "WebHero",
@@ -33,8 +34,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          {children}
+          <NextAuthProvider>
+            <Header />
+            {children}
+          </NextAuthProvider>
         </ThemeProvider>
       </body>
     </html>

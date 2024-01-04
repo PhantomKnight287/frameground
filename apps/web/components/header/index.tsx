@@ -1,9 +1,10 @@
-import { User } from "lucide-react";
 import Link from "next/link";
 import { IoEarth } from "react-icons/io5";
+
+import InteractiveHeaderComponents from "./index.client";
 export default function Header() {
   return (
-    <header className="flex mt-5">
+    <header className="flex mt-5 mb-14">
       <div className="container flex flex-row">
         <div className="flex flex-row items-center">
           <IoEarth size={30} />
@@ -14,16 +15,16 @@ export default function Header() {
             Hero
           </div>
         </div>
-        <nav className="ml-6">
+        <nav className="ml-6 items-center justify-center flex flex-row">
           <Link
-            href="/explore"
-            className="font-semibold hover:text-gray-400 transition-all duration-[110ms]"
+            href="/tracks"
+            className="font-semibold hover:text-gray-400 transition-all duration-100"
           >
             Explore
           </Link>
         </nav>
         <div className="flex flex-row ml-auto">
-          <User />
+          <InteractiveHeaderComponents />
         </div>
       </div>
     </header>
