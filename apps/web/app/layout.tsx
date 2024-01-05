@@ -7,10 +7,11 @@ import { ReactNode } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import NextAuthProvider from "@/providers/next-auth";
+import { siteConfig } from "@repo/config";
 
 export const metadata: Metadata = {
-  title: "WebHero",
-  description: "Learn Javascript Frameworks Interactively",
+  title: siteConfig.name,
+  description: siteConfig.description,
 };
 
 export const fontSans = FontSans({

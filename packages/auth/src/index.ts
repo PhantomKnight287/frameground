@@ -1,7 +1,8 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@repo/db";
 import type { Role } from "@repo/db/types";
-import type { AuthOptions, DefaultSession, Session, User } from "next-auth";
+import type { DefaultSession, Session, User } from "next-auth";
+import { NextAuthConfig } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
 declare module "next-auth" {
@@ -22,7 +23,15 @@ if (!process.env.GITHUB_CLIENT_ID)
 if (!process.env.GITHUB_CLIENT_SECRET)
   throw new Error(`GITHUB_CLIENT_SECRET is required`);
 
-export const authOptions: AuthOptions = {
+function getEnvVar(key: string) {
+  return process.env[key] || "";
+}
+
+const useSecureCookies = getEnvVar("NEXTAUTH_URL").startsWith("https://");
+const cookiePrefix = useSecureCookies ? "__Secure-" : "";
+const hostName = new URL(getEnvVar("NEXTAUTH_URL")).hostname;
+
+export const authOptions: NextAuthConfig = {
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
@@ -52,6 +61,18 @@ export const authOptions: AuthOptions = {
         createdAt: user.createdAt,
       };
       return session;
+    },
+  },
+  cookies: {
+    sessionToken: {
+      name: `${cookiePrefix}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: "." + hostName,
+        secure: useSecureCookies,
+      },
     },
   },
 };

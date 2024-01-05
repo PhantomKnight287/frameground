@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { IoEarth } from "react-icons/io5";
+import { siteConfig } from "@repo/config";
 
 import InteractiveHeaderComponents from "./index.client";
 export default function Header() {
@@ -8,11 +9,11 @@ export default function Header() {
       <div className="container flex flex-row">
         <div className="flex flex-row items-center">
           <IoEarth size={30} />
-          <div className="font-bold leading-3 ml-1">
-            Web
+          <div className="font-semibold leading-3 ml-1">
+            {siteConfig.name.split(" ")[0]}
             <br />
             <div className="h-1 w-1"></div>
-            Hero
+            {siteConfig.name.split(" ")[1]}
           </div>
         </div>
         <nav className="ml-6 items-center justify-center flex flex-row">

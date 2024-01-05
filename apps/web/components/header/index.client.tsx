@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function InteractiveHeaderComponents() {
-  const { data, update } = useSession();
+  const { data } = useSession();
   if (!data || !data?.user)
     return (
       <>

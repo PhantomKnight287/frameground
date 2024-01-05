@@ -2,11 +2,14 @@
   "name": "@repo/config",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "Gurpal Singh",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5"
+  }
 }
