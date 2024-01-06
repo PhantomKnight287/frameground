@@ -1,0 +1,20 @@
+{
+  "name": "@repo/challenges",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Gurpal Singh",
+  "license": "ISC",
+  "dependencies": {
+    "@repo/config": "workspace:^",
+    "@webcontainer/api": "^1.1.8",
+    "jest": "^29.7.0",
+    "typescript": "^5"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11"
+  }
+}

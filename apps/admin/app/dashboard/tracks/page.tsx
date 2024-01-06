@@ -36,7 +36,6 @@ async function Tracks() {
               <TableHead>Slug</TableHead>
               <TableHead>Logo</TableHead>
               <TableHead>Actions</TableHead>
-              <TableHead>Challenges</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -58,13 +57,6 @@ async function Tracks() {
                     </Button>
                   </Link>
                   <DeleteButton id={track.id} />
-                </TableCell>
-                <TableCell>
-                  <Link href={`/dashboard/tracks/${track.slug}/challenges`}>
-                    <Button variant={"ghost"}>
-                      <ExternalLink />
-                    </Button>
-                  </Link>
                 </TableCell>
               </TableRow>
             ))}

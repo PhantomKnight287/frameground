@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "A unique identifier for this challenge, snake-case-formatted",
+      "type": "string"
+    },
+    "label": {
+      "description": "A human-readable label for this challenge",
+      "type": "string"
+    },
+    "description": {
+      "description": "A description for this challenge",
+      "type": "string"
+    },
+    "difficulty": {
+      "description": "The difficulty of this challenge",
+      "type": "string",
+      "enum": ["beginner", "easy", "medium", "hard", "extreme", "event"]
+    },
+    "prerequisites": {
+      "description": "A list of challenge IDs that must be completed before this challenge",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "author": {
+      "description": "The github username(s) of author(s) of this challenge",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "track_slug": {
+      "description": "The slug of the track this challenge belongs to",
+      "type": "string"
+    },
+    "playground_needed": {
+      "description": "Whether a playground is needed for this challenge",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "label",
+    "description",
+    "difficulty",
+    "prerequisites",
+    "author",
+    "track_slug",
+    "playground_needed"
+  ]
+}

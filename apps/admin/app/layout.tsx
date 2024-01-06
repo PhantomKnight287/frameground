@@ -8,6 +8,7 @@ import NextAuthProvider from "@/providers/next-auth";
 import { siteConfig } from "@repo/config";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
+import VerifyUser from "@/components/auth";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           disableTransitionOnChange
         >
           <NextAuthProvider>
+            <VerifyUser />
             <Header />
             {children}
           </NextAuthProvider>

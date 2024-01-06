@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../schema.json",
+  "author": ["phantomknight287"],
+  "description": "Setting up a new React Project",
+  "difficulty": "easy",
+  "id": "setting-up-project",
+  "label": "New React App",
+  "playground_needed": true,
+  "prerequisites": [],
+  "track_slug": "react"
+}

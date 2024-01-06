@@ -1,0 +1,10 @@
+{
+  "extends": "@repo/config/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "ESNext",
+    "moduleResolution": "Node"
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*"]
+}
