@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import NextAuthProvider from "@/providers/next-auth";
 import { siteConfig } from "@repo/config";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: siteConfig.name,
@@ -36,8 +37,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           disableTransitionOnChange
         >
           <NextAuthProvider>
-            <Header />
-            {children}
+            <TooltipProvider>
+              <Header />
+              {children}
+            </TooltipProvider>
           </NextAuthProvider>
         </ThemeProvider>
       </body>

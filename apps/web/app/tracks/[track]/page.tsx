@@ -1,14 +1,47 @@
-import { prisma } from "@/lib/db";
 import { PageProps } from "./$types";
-import { getModuleDir } from "@/utils/path";
-import { getChallenges } from "@repo/challenges/src/challenge";
+import ChallengeCard from "@/components/challenge-card";
+import Link from "next/link";
+import { prisma } from "@repo/db";
 
 export const dynamic = "force-dynamic";
 
 async function Challenges({ params }: PageProps) {
-  const data = await getChallenges(params.track);
-  console.log(data);
-  return <div>Challenges</div>;
+  const data = await prisma.challenge.findMany({
+    where: {
+      track: {
+        slug: params.track,
+      },
+    },
+    include: {
+      authors: {
+        select: {
+          username: true,
+          id: true,
+        },
+      },
+    },
+  });
+
+  return (
+    <main className="flex mt-12">
+      <div className="container">
+        <h3 className="font-semibold tracking-tight max-w-[75%] truncate text-2xl duration-300">
+          Challenges
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+          {data?.map((challenge) => (
+            <Link
+              key={challenge.id}
+              href={`/tracks/${params.track}/challenge/${challenge.slug}`}
+              className="group snap-center focus:outline-none sm:w-[330px] xl:w-[333px]"
+            >
+              <ChallengeCard challenge={challenge} />
+            </Link>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
 }
 
 export default Challenges;

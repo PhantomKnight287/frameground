@@ -5,7 +5,7 @@ import { siteConfig } from "@repo/config";
 import InteractiveHeaderComponents from "./index.client";
 export default function Header() {
   return (
-    <header className="flex mt-5 mb-14">
+    <header className="flex mt-5 mb-6">
       <div className="container flex flex-row">
         <div className="flex flex-row items-center">
           <IoEarth size={30} />

@@ -8,6 +8,7 @@
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
+    --card-hovered: 0 0% 98%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 240 5.9% 10%;
@@ -24,12 +25,24 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
+    --difficulty-beginner: 201 96% 32%;
+    --difficulty-easy: 150 100% 25%;
+    --difficulty-medium: 35 92% 33%;
+    --difficulty-hard: 0 72% 51%;
+    --difficulty-extreme: 262 83% 58%;
+
+    --difficulty-beginner-dark: 199 69% 72%;
+    --difficulty-easy-dark: 142 77% 73%;
+    --difficulty-medium-dark: 31 86% 60%;
+    --difficulty-hard-dark: 0 91% 71%;
+    --difficulty-extreme-dark: 269 97% 85%;
   }
 
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
+    --card-hovered: 240 10% 6.9%;
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
@@ -56,4 +69,18 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.custom-scrollable-element::-webkit-scrollbar {
+  width: 0.6rem;
+}
+.custom-scrollable-element::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.custom-scrollable-element::-webkit-scrollbar-thumb {
+  @apply rounded-l-xl bg-neutral-300/50 dark:bg-zinc-700/50;
+}
+
+.custom-scrollable-element::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-300 dark:bg-zinc-600;
 }

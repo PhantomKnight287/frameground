@@ -1,12 +1,12 @@
-const { fontFamily } = require("tailwindcss/defaultTheme")
+const { fontFamily } = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -51,7 +51,24 @@ module.exports = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
+          hovered: "hsl(var(--card-hovered))",
         },
+        "difficulty-beginner":
+          "hsl(var(--difficulty-beginner) / <alpha-value>)",
+        "difficulty-easy": "hsl(var(--difficulty-easy) / <alpha-value>)",
+        "difficulty-medium": "hsl(var(--difficulty-medium) / <alpha-value>)",
+        "difficulty-hard": "hsl(var(--difficulty-hard) / <alpha-value>)",
+        "difficulty-extreme": "hsl(var(--difficulty-extreme) / <alpha-value>)",
+        "difficulty-beginner-dark":
+          "hsl(var(--difficulty-beginner-dark) / <alpha-value>)",
+        "difficulty-easy-dark":
+          "hsl(var(--difficulty-easy-dark) / <alpha-value>)",
+        "difficulty-medium-dark":
+          "hsl(var(--difficulty-medium-dark) / <alpha-value>)",
+        "difficulty-hard-dark":
+          "hsl(var(--difficulty-hard-dark) / <alpha-value>)",
+        "difficulty-extreme-dark":
+          "hsl(var(--difficulty-extreme-dark) / <alpha-value>)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -75,7 +92,20 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
+      boxShadow: {
+        beginner: "0 0 1rem -0.15rem hsl(var(--difficulty-beginner))",
+        easy: "0 0 1rem -0.15rem hsl(var(--difficulty-easy))",
+        medium: "0 0 1rem -0.15rem hsl(var(--difficulty-medium))",
+        hard: "0 0 1rem -0.15rem hsl(var(--difficulty-hard))",
+        extreme: "0 0 1rem -0.15rem hsl(var(--difficulty-extreme))",
+        "beginner-dark":
+          "0 0 1rem -0.15rem hsl(var(--difficulty-beginner-dark))",
+        "easy-dark": "0 0 1rem -0.15rem hsl(var(--difficulty-easy-dark))",
+        "medium-dark": "0 0 1rem -0.15rem hsl(var(--difficulty-medium-dark))",
+        "hard-dark": "0 0 1rem -0.15rem hsl(var(--difficulty-hard-dark))",
+        "extreme-dark": "0 0 1rem -0.15rem hsl(var(--difficulty-extreme-dark))",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
