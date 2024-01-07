@@ -1,0 +1,7 @@
+{
+  "extends": "@repo/config/base.json",
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "outDir": "dist"
+  }
+}
