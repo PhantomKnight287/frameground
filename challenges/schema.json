@@ -17,7 +17,7 @@
     "difficulty": {
       "description": "The difficulty of this challenge",
       "type": "string",
-      "enum": ["beginner", "easy", "medium", "hard", "extreme", "event"]
+      "enum": ["beginner", "easy", "medium", "hard", "extreme"]
     },
     "prerequisites": {
       "description": "A list of challenge IDs that must be completed before this challenge",
@@ -40,6 +40,11 @@
     "playground_needed": {
       "description": "Whether a playground is needed for this challenge",
       "type": "boolean"
+    },
+    "created_at": {
+      "description": "The date this challenge was created",
+      "type": "string",
+      "format": "date-time"
     }
   },
   "required": [
@@ -50,6 +55,7 @@
     "prerequisites",
     "author",
     "track_slug",
-    "playground_needed"
+    "playground_needed",
+    "created_at"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../schema.json",
+  "$schema": "../../schema.json",
   "author": ["phantomknight287"],
   "description": "Setting up a new React Project",
   "difficulty": "easy",
@@ -7,5 +7,6 @@
   "label": "New React App",
   "playground_needed": true,
   "prerequisites": [],
-  "track_slug": "react"
+  "track_slug": "react",
+  "created_at": "2024-01-07T10:42:37.346Z"
 }

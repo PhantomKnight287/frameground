@@ -1,4 +1,4 @@
-import { FrameGroundChallengeExport } from "../../../src";
+import { FrameGroundChallengeExport } from "../../src";
 
 export default {
   files: {},
