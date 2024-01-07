@@ -11,11 +11,14 @@ declare module "next-auth" {
       id: string;
       roles: Role[];
       createdAt: Date;
+      username: string;
     };
   }
   interface User {
     createdAt: Date;
     roles: Role[];
+    id: string;
+    username: string;
   }
 }
 if (!process.env.GITHUB_CLIENT_ID)
@@ -41,6 +44,7 @@ export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma) as any,
   callbacks: {
     session: async ({ session, user }: { session: Session; user: User }) => {
+      const userId = user.image.split("/")[4].replaceAll("?v=4", "");
       let roles: Role[] = user.roles || [];
       if (roles.includes("user") == false) {
         const updatedUser = await prisma.user.update({
@@ -54,11 +58,32 @@ export const authOptions: NextAuthConfig = {
           },
         });
       }
+      const _user = await prisma.user.findUnique({
+        where: {
+          id: user.id,
+        },
+      });
+      let username = user.username;
+      if (!_user.username) {
+        const req = await fetch(`https://api.github.com/user/${userId}`, {})
+          .then((res) => res.json())
+          .catch((err) => console.error(err));
+        const updatedUser = await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            username: req.login.toLowerCase(),
+          },
+        });
+        username = req.login;
+      }
       session.user = {
         ...session.user,
         id: user.id,
         roles,
         createdAt: user.createdAt,
+        username,
       };
       return session;
     },

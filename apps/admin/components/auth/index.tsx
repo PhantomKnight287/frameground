@@ -1,12 +1,16 @@
+"use client";
+
 import { auth } from "@/app/api/auth/[...nextauth]/route";
 import { assertAdmin } from "@/utils/auth";
-import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
 
-async function VerifyUser() {
-  const session = await auth();
-  if (assertAdmin(session)) return null;
+function VerifyUser() {
+  const { data } = useSession();
+  const { replace } = useRouter();
+  if (assertAdmin(data)) return null;
   else {
-    redirect("/no-access");
+    replace("/no-access");
   }
 }
 
