@@ -23,6 +23,9 @@ model Account {
   id_token                 String? @db.Text
   session_state            String?
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -37,15 +40,22 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   roles         Role[]
+  username      String?     @unique
   accounts      Account[]
   sessions      Session[]
   tracks        Track[]
+  challenges    Challenge[]
+  comments      Comment[]
+  upvotes       Upvote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model VerificationToken {
@@ -65,20 +75,80 @@ model Track {
   slug        String      @unique
   users       User[]
   challenges  Challenge[]
+
+  comments Comment[]
+  upvotes  Upvote[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Challenge {
-  id               String @id @unique @default(cuid())
-  title            String
-  smallDescription String
+  id String @id @unique @default(cuid())
+
+  label            String
   description      String
+  difficulty       Difficulty
   slug             String
-  test             String
+  prerequisites    String[]
+  playgroundNeeded Boolean    @default(true)
+
+  /// The tests that a user must pass to complete the challenge
+  tests        String
+  /// The content of index.md
+  info         String
+  ///initial files, will be saved as [{filename: content}]
+  initialFiles Json[]
+
+  track    Track?    @relation(fields: [trackId], references: [id])
+  trackId  String?
+  authors  User[]
+  comments Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  upvotes   Upvote[]
+
+  @@unique([trackId, slug])
+}
+
+model Comment {
+  id       String @id @unique @default(cuid())
+  content  String
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  challenge   Challenge? @relation(fields: [challengeId], references: [id])
+  challengeId String?
 
   track   Track?  @relation(fields: [trackId], references: [id])
   trackId String?
+}
 
-  @@unique([trackId, slug])
+model Upvote {
+  id       String @id @unique @default(cuid())
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  challenge   Challenge? @relation(fields: [challengeId], references: [id])
+  challengeId String?
+
+  track   Track?  @relation(fields: [trackId], references: [id])
+  trackId String?
+}
+
+enum Difficulty {
+  beginner
+  easy
+  medium
+  hard
+  extreme
 }
 
 enum TrackStatus {

@@ -19,8 +19,8 @@
   "scripts": {
     "build": "prisma generate && tsc",
     "prebuild": "prisma generate",
-    "migrate": "dotenv -e ../../.env prisma db push",
-    "studio":"dotenv -e ../../.env prisma studio"
+    "migrate": "dotenv -e ../../.env prisma migrate dev",
+    "studio": "dotenv -e ../../.env prisma studio"
   },
   "keywords": [],
   "author": "Gurpal Singh",
@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.7.1",
+    "@webcontainer/api": "^1.1.8",
     "dotenv-cli": "^7.3.0"
   }
 }
