@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "fs";
+import { readFileSync, readdirSync, statSync } from "fs";
 import { prisma } from "..";
 import { type FileSystemTree } from "@webcontainer/api";
 type ChallengeFilesStructure = FileSystemTree;
@@ -38,7 +38,6 @@ export async function saveChallengesToDb() {
       const challengeExists = await prisma.challenge.findFirst({
         where: { slug: challenge },
       });
-      if (challengeExists) continue;
       const challengeData: ChallengeJson = JSON.parse(
         readFileSync(
           `${process.cwd()}/../../challenges/${
@@ -70,30 +69,92 @@ export async function saveChallengesToDb() {
       const challengeConfigObject: FrameGroundChallengeExport = eval(
         result.outputText
       );
-      const _challenge = await prisma.challenge.create({
-        data: {
-          description: challengeData.description,
-          difficulty: challengeData.difficulty,
-          label: challengeData.label,
-          playgroundNeeded: challengeData.playground_needed,
-          prerequisites: challengeData.prerequisites,
-          slug: challenge,
-          track: { connect: { slug: track.slug } },
-          info: description,
-          tests,
-          authors: {
-            connect: challengeData.author.map((author) => ({
-              username: author,
-            })),
+      const challengeJsonStats = statSync(
+        `${process.cwd()}/../../challenges/${
+          track.slug
+        }/${challenge}/challenge.json`
+      ).mtimeMs;
+
+      const challengeTsStats = statSync(
+        `${process.cwd()}/../../challenges/${track.slug}/${challenge}/index.ts`
+      ).mtimeMs;
+
+      const challengeMdStats = statSync(
+        `${process.cwd()}/../../challenges/${track.slug}/${challenge}/index.md`
+      ).mtimeMs;
+
+      const challengeSpecStats = statSync(
+        `${process.cwd()}/../../challenges/${
+          track.slug
+        }/${challenge}/index.spec.ts`
+      ).mtimeMs;
+
+      const largest = Math.max(
+        challengeJsonStats,
+        challengeTsStats,
+        challengeMdStats,
+        challengeSpecStats
+      );
+      const needsUpdate =
+        !challengeExists || largest > challengeExists.updatedAt.getTime();
+      if (needsUpdate) {
+        console.log(`Updating ${challenge}`);
+        const _challenge = await prisma.challenge.update({
+          where: {
+            id: challengeExists.id,
           },
-          initialFiles: Object.keys(challengeConfigObject.files).map(
-            (file) => ({
-              name: file,
-              info: JSON.stringify(challengeConfigObject.files[file]),
-            })
-          ),
-        },
-      });
+          data: {
+            description: challengeData.description,
+            difficulty: challengeData.difficulty,
+            label: challengeData.label,
+            playgroundNeeded: challengeData.playground_needed,
+            prerequisites: challengeData.prerequisites,
+            slug: challenge,
+            track: { connect: { slug: track.slug } },
+            info: description,
+            tests,
+            authors: {
+              connect: challengeData.author.map((author) => ({
+                username: author,
+              })),
+            },
+            initialFiles: Object.keys(challengeConfigObject.files).map(
+              (file) => ({
+                name: file,
+                info: JSON.stringify(challengeConfigObject.files[file]),
+              })
+            ),
+          },
+        });
+      } else if (!challengeExists) {
+        console.log(`Creating ${challenge}`);
+        const _challenge = await prisma.challenge.create({
+          data: {
+            description: challengeData.description,
+            difficulty: challengeData.difficulty,
+            label: challengeData.label,
+            playgroundNeeded: challengeData.playground_needed,
+            prerequisites: challengeData.prerequisites,
+            slug: challenge,
+            track: { connect: { slug: track.slug } },
+            info: description,
+            tests,
+            authors: {
+              connect: challengeData.author.map((author) => ({
+                username: author,
+              })),
+            },
+            initialFiles: Object.keys(challengeConfigObject.files).map(
+              (file) => ({
+                name: file,
+                info: JSON.stringify(challengeConfigObject.files[file]),
+              })
+            ),
+          },
+        });
+      } else {
+        console.log(`Skipping ${challenge}`);
+      }
     }
   }
 }
