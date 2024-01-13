@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "dotenv -e .env turbo run dev",
+    "dev": "dotenv -e .env turbo run dev --concurrency=11",
     "build": "dotenv -e .env turbo run build",
     "lint": "turbo run lint",
     "start": "dotenv -e .env turbo run start"

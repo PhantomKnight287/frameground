@@ -2,3 +2,5 @@ node_modules
 .turbo
 *.env*
 !.env.example
+# this is for testing out the monaco editor
+packages/editor 
