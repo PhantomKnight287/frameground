@@ -1,0 +1,55 @@
+{
+  "name": "@repo/monaco",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    ".": "./src/editor.tsx",
+    "./state": "./src/state/index.ts",
+    "./sidebar": "./src/sidebar/index.tsx",
+    "./file": "./src/side/file.tsx",
+    "./folder": "./src/side/folder.tsx",
+    "./utils": "./src/utils/editor.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/editor.tsx"
+      ],
+      "state": [
+        "./src/state/index.ts"
+      ],
+      "sidebar": [
+        "./src/sidebar/index.tsx"
+      ],
+      "file": [
+        "./src/side/file.tsx"
+      ],
+      "folder": [
+        "./src/side/folder.tsx"
+      ],
+      "utils": [
+        "./src/utils/editor.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Gurpal Singh",
+  "license": "ISC",
+  "dependencies": {
+    "@monaco-editor/react": "^4.6.0",
+    "@repo/challenges": "workspace:^",
+    "@repo/config": "workspace:^",
+    "@repo/utils": "workspace:^",
+    "clsx": "^2.0.0",
+    "react": "^18.2.0",
+    "tailwind-merge": "^2.2.0",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.47",
+    "typescript": "^5.3.3"
+  }
+}
