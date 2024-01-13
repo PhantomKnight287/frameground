@@ -1,0 +1,20 @@
+{
+  "name": "@repo/utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc"
+  },
+  "keywords": [],
+  "author": "Gurpal Singh",
+  "license": "ISC",
+  "dependencies": {
+    "@repo/config": "workspace:^",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.2.0",
+    "typescript": "^5.3.3"
+  }
+}
