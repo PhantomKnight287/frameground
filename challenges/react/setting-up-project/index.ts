@@ -1,5 +1,5 @@
 import { FrameGroundChallengeExport } from "../../src";
 
 export default {
-  files: {},
+  files: [],
 } satisfies FrameGroundChallengeExport;

@@ -5,6 +5,7 @@ import {
 } from "@repo/challenges/src";
 import { cn } from "../utils";
 import File from "./file";
+import { useEditorFileState } from "../state";
 
 export default function Folder({
   folder,
@@ -30,7 +31,7 @@ export default function Folder({
   filesContainerClassName?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { activeFile } = useEditorFileState();
   const toggleFolder = () => {
     setIsOpen(!isOpen);
   };
@@ -39,40 +40,41 @@ export default function Folder({
       <button
         className={cn("cursor-pointer", className)}
         onClick={toggleFolder}
-        data-active={isOpen}
       >
         {isOpen ? folderOpenIcon : folderCloseIcon}
         {name}
       </button>
-      <div className={filesContainerClassName}>
-        {isOpen && (
-          <div data-active="true">
-            {(folder.content as ChallengeFilesStructure[]).map(
-              (item, index) => (
-                <Fragment key={index}>
-                  {item.type === "file" ? (
-                    <File
-                      name={item.name}
-                      path={`${path}.${index}`} // Generate the file's path
-                      onClickFile={onClickFile}
-                      className={fileClassName}
-                    />
-                  ) : (
-                    <Folder
-                      folder={item}
-                      path={`${path}.${index}`} // Generate the folder's path
-                      onClickFile={onClickFile}
-                      name={item.name}
-                      className={className}
-                      onClickFolder={onClickFolder}
-                    />
-                  )}
-                </Fragment>
-              )
-            )}
-          </div>
-        )}
-      </div>
+      {isOpen && (
+        <div>
+          {(folder.content as ChallengeFilesStructure[]).map((item, index) => (
+            <Fragment key={index}>
+              {item.type === "file" ? (
+                <div
+                  data-active={activeFile?.path === `${path}.${index}`}
+                  className={filesContainerClassName}
+                >
+                  <File
+                    name={item.name}
+                    path={`${path}.${index}`} // Generate the file's path
+                    onClickFile={onClickFile}
+                    className={fileClassName}
+                    editable={item.editable}
+                  />
+                </div>
+              ) : (
+                <Folder
+                  folder={item}
+                  path={`${path}.${index}`} // Generate the folder's path
+                  onClickFile={onClickFile}
+                  name={item.name}
+                  className={className}
+                  onClickFolder={onClickFolder}
+                />
+              )}
+            </Fragment>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

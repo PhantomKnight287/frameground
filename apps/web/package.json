@@ -18,10 +18,13 @@
     "@repo/auth": "workspace:*",
     "@repo/challenges": "workspace:^",
     "@repo/config": "workspace:^",
+    "@repo/containers": "workspace:^",
     "@repo/db": "workspace:*",
     "@repo/monaco": "workspace:^",
+    "@repo/terminal": "workspace:^",
     "@repo/utils": "workspace:^",
     "@t3-oss/env-nextjs": "^0.7.1",
+    "@xterm/addon-ligatures": "0.8.0-beta.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
@@ -41,6 +44,8 @@
     "tailwindcss-animate": "^1.0.7",
     "unified": "^11.0.4",
     "unist-util-visit": "^5.0.0",
+    "xterm-addon-fit": "^0.8.0",
+    "xterm-webfont": "^2.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

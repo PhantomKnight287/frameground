@@ -60,6 +60,18 @@ export async function saveChallengesToDb() {
         `${process.cwd()}/../../challenges/${track.slug}/${challenge}/index.ts`,
         "utf-8"
       );
+      const terminalConfig = readFileSync(
+        `${process.cwd()}/../../challenges/${
+          track.slug
+        }/${challenge}/terminal.ts`,
+        "utf-8"
+      );
+      const terminalConfigResult = transpileModule(terminalConfig, {
+        compilerOptions: {
+          module: 1,
+          target: 1,
+        },
+      });
       const result = transpileModule(challengeConfig, {
         compilerOptions: {
           module: 1,
@@ -89,11 +101,18 @@ export async function saveChallengesToDb() {
         }/${challenge}/index.spec.ts`
       ).mtimeMs;
 
+      const challengeTerminalStats = statSync(
+        `${process.cwd()}/../../challenges/${
+          track.slug
+        }/${challenge}/terminal.ts`
+      ).mtimeMs;
+
       const largest = Math.max(
         challengeJsonStats,
         challengeTsStats,
         challengeMdStats,
-        challengeSpecStats
+        challengeSpecStats,
+        challengeTerminalStats
       );
       const needsUpdate =
         !challengeExists || largest > challengeExists.updatedAt.getTime();
@@ -112,6 +131,7 @@ export async function saveChallengesToDb() {
             slug: challenge,
             track: { connect: { slug: track.slug } },
             info: description,
+            terminalConfig: eval(terminalConfigResult.outputText),
             tests,
             authors: {
               connect: challengeData.author.map((author) => ({

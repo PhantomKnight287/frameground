@@ -1,10 +1,5 @@
 import { TrackCard } from "@/components/track-card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
-import { Track } from "@repo/db/types";
-import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 

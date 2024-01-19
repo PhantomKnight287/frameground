@@ -99,6 +99,8 @@ model Challenge {
   info         String
   ///initial files, will be saved as [{filename: content}]
   initialFiles Json[]
+  /// the terminal config
+  terminalConfig Json?
 
   track    Track?    @relation(fields: [trackId], references: [id])
   trackId  String?

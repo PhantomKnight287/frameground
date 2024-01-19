@@ -36,6 +36,7 @@ export default function Sidebar({
               onClickFile={onClickFile}
               className={fileClassName}
               key={`${index}`}
+              editable={item.editable}
             />
           ) : (
             <Folder

@@ -1,0 +1,5 @@
+{
+  "extends": "@repo/config/react-library.json",
+  "exclude": ["dist", "node_modules"],
+  "include": ["src/**/*"]
+}

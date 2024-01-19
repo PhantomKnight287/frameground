@@ -48,7 +48,7 @@ function ChallengeCard({
             <div className="flex flex-row flex-wrap">
               {challenge.authors.map((author) => (
                 <a
-                  href={`https://github.com/${author}`}
+                  href={`/@${author.username}`}
                   className="mr-2 flex flex-row items-center"
                   key={author.id}
                 >

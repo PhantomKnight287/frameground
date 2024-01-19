@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
@@ -9,16 +8,12 @@ import Header from "@/components/header";
 import NextAuthProvider from "@/providers/next-auth";
 import { siteConfig } from "@repo/config";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { fontSans } from "@/fonts";
 
 export const metadata: Metadata = {
   title: siteConfig.name,
   description: siteConfig.description,
 };
-
-export const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

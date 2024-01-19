@@ -138,18 +138,27 @@ importers:
       '@repo/config':
         specifier: workspace:^
         version: link:../../packages/config
+      '@repo/containers':
+        specifier: workspace:^
+        version: link:../../packages/containers
       '@repo/db':
         specifier: workspace:*
         version: link:../../packages/db
       '@repo/monaco':
         specifier: workspace:^
         version: link:../../packages/monaco
+      '@repo/terminal':
+        specifier: workspace:^
+        version: link:../../packages/terminal
       '@repo/utils':
         specifier: workspace:^
         version: link:../../packages/utils
       '@t3-oss/env-nextjs':
         specifier: ^0.7.1
         version: 0.7.1(typescript@5.3.3)(zod@3.22.4)
+      '@xterm/addon-ligatures':
+        specifier: 0.8.0-beta.1
+        version: 0.8.0-beta.1(xterm@5.3.0)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -207,6 +216,12 @@ importers:
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.0.0
+      xterm-addon-fit:
+        specifier: ^0.8.0
+        version: 0.8.0(xterm@5.3.0)
+      xterm-webfont:
+        specifier: ^2.0.0
+        version: 2.0.0
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -262,6 +277,9 @@ importers:
       typescript:
         specifier: ^5
         version: 5.3.3
+      xterm:
+        specifier: ^5.3.0
+        version: 5.3.0
     devDependencies:
       '@types/jest':
         specifier: ^29.5.11
@@ -333,6 +351,9 @@ importers:
       '@monaco-editor/react':
         specifier: ^4.6.0
         version: 4.6.0(monaco-editor@0.45.0)(react-dom@18.2.0)(react@18.2.0)
+      '@repo/terminal':
+        specifier: workspace:^
+        version: link:../terminal
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -423,6 +444,28 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/terminal:
+    dependencies:
+      '@repo/config':
+        specifier: workspace:^
+        version: link:../config
+      '@repo/utils':
+        specifier: workspace:^
+        version: link:../utils
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      xterm:
+        specifier: ^5.3.0
+        version: 5.3.0
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.47
+        version: 18.2.47
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   packages/utils:
     dependencies:
       '@repo/config':
@@ -437,6 +480,10 @@ importers:
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
+    devDependencies:
+      '@types/node':
+        specifier: ^20
+        version: 20.10.5
 
 packages:
 
@@ -2582,12 +2629,12 @@ packages:
   /@types/react-dom@18.2.18:
     resolution: {integrity: sha512-TJxDm6OfAX2KJWJdMEVTwWke5Sc/E/RlnPGvGfS0W7+6ocy2xhDVQVh/KvC2Uf7kACs+gDytdusDSdWfWkaNzw==}
     dependencies:
-      '@types/react': 18.2.46
+      '@types/react': 18.2.47
 
   /@types/react-syntax-highlighter@15.5.11:
     resolution: {integrity: sha512-ZqIJl+Pg8kD+47kxUjvrlElrraSUrYa4h0dauY/U/FTUuprSCqvUj+9PNQNQzVc6AJgIWUUxn87/gqsMHNbRjw==}
     dependencies:
-      '@types/react': 18.2.46
+      '@types/react': 18.2.47
     dev: true
 
   /@types/react@18.2.46:
@@ -2886,6 +2933,17 @@ packages:
 
   /@webcontainer/api@1.1.8:
     resolution: {integrity: sha512-m9WRj38oCoFPrqZOTeJcncPjnZ00FZUMq9YHEXxdhAoYhhQ69Rz4qK5p444cIPaMy2j8H7HcNLcAIwMGWnpMpw==}
+    dev: false
+
+  /@xterm/addon-ligatures@0.8.0-beta.1(xterm@5.3.0):
+    resolution: {integrity: sha512-R6FZw8fMgM6kiwDiRv0fPI14NN1nNstFVcGgMTXoa5Ao5UkXAjkl/d5l79mUlww3DPLAetQtOzh1FIewPuURBw==}
+    engines: {node: '>8.0.0'}
+    peerDependencies:
+      xterm: ^5.0.0
+    dependencies:
+      font-finder: 1.1.0
+      font-ligatures: 1.4.1
+      xterm: 5.3.0
     dev: false
 
   /acorn-jsx@5.3.2(acorn@8.11.2):
@@ -4195,6 +4253,27 @@ packages:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
     dev: true
 
+  /font-finder@1.1.0:
+    resolution: {integrity: sha512-wpCL2uIbi6GurJbU7ZlQ3nGd61Ho+dSU6U83/xJT5UPFfN35EeCW/rOtS+5k+IuEZu2SYmHzDIPL9eA5tSYRAw==}
+    engines: {node: '>8.0.0'}
+    dependencies:
+      get-system-fonts: 2.0.2
+      promise-stream-reader: 1.0.1
+    dev: false
+
+  /font-ligatures@1.4.1:
+    resolution: {integrity: sha512-7W6zlfyhvCqShZ5ReUWqmSd9vBaUudW0Hxis+tqUjtHhsPU+L3Grf8mcZAtCiXHTzorhwdRTId2WeH/88gdFkw==}
+    engines: {node: '>8.0.0'}
+    dependencies:
+      font-finder: 1.1.0
+      lru-cache: 6.0.0
+      opentype.js: 0.8.0
+    dev: false
+
+  /fontfaceobserver@2.3.0:
+    resolution: {integrity: sha512-6FPvD/IVyT4ZlNe7Wcn5Fb/4ChigpucKYSvD6a+0iMoLn2inpo711eyIcKjmDtE5XNcgAkSH9uN/nfAeZzHEfg==}
+    dev: false
+
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
     dependencies:
@@ -4293,6 +4372,11 @@ packages:
       call-bind: 1.0.5
       get-intrinsic: 1.2.2
     dev: true
+
+  /get-system-fonts@2.0.2:
+    resolution: {integrity: sha512-zzlgaYnHMIEgHRrfC7x0Qp0Ylhw/sHpM6MHXeVBTYIsvGf5GpbnClB+Q6rAPdn+0gd2oZZIo6Tj3EaWrt4VhDQ==}
+    engines: {node: '>8.0.0'}
+    dev: false
 
   /get-tsconfig@4.7.2:
     resolution: {integrity: sha512-wuMsz4leaj5hbGgg4IvDU0bqJagpftG5l5cXIAvo8uZrqn0NJqwtfupTN00VnkQJPcIRrxYrm1Ue24btpCha2A==}
@@ -6166,6 +6250,13 @@ packages:
       mimic-fn: 2.1.0
     dev: false
 
+  /opentype.js@0.8.0:
+    resolution: {integrity: sha512-FQHR4oGP+a0m/f6yHoRpBOIbn/5ZWxKd4D/djHVJu8+KpBTYrJda0b7mLcgDEMWXE9xBCJm+qb0yv6FcvPjukg==}
+    hasBin: true
+    dependencies:
+      tiny-inflate: 1.0.3
+    dev: false
+
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
@@ -6422,6 +6513,11 @@ packages:
   /prismjs@1.29.0:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
+    dev: false
+
+  /promise-stream-reader@1.0.1:
+    resolution: {integrity: sha512-Tnxit5trUjBAqqZCGWwjyxhmgMN4hGrtpW3Oc/tRI4bpm/O2+ej72BB08l6JBnGQgVDGCLvHFGjGgQS6vzhwXg==}
+    engines: {node: '>8.0.0'}
     dev: false
 
   /prompts@2.4.2:
@@ -7147,6 +7243,10 @@ packages:
     dependencies:
       any-promise: 1.3.0
 
+  /tiny-inflate@1.0.3:
+    resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
+    dev: false
+
   /tmpl@1.0.5:
     resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
     dev: false
@@ -7680,6 +7780,24 @@ packages:
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
+    dev: false
+
+  /xterm-addon-fit@0.8.0(xterm@5.3.0):
+    resolution: {integrity: sha512-yj3Np7XlvxxhYF/EJ7p3KHaMt6OdwQ+HDu573Vx1lRXsVxOcnVJs51RgjZOouIZOczTsskaS+CpXspK81/DLqw==}
+    peerDependencies:
+      xterm: ^5.0.0
+    dependencies:
+      xterm: 5.3.0
+    dev: false
+
+  /xterm-webfont@2.0.0:
+    resolution: {integrity: sha512-i0MMpWvpvl56VJDF34WPieTAgAM0dPVpTQ4odGFy3nlo8aQVnu5jdAfMf02eSqG03tBg0gdlY00PjGXDA/I2Yw==}
+    dependencies:
+      fontfaceobserver: 2.3.0
+    dev: false
+
+  /xterm@5.3.0:
+    resolution: {integrity: sha512-8QqjlekLUFTrU6x7xck1MsPzPA571K5zNqWm0M0oroYEWVOptZ0+ubQSkQ3uxIEhcIHRujJy6emDWX4A7qyFzg==}
     dev: false
 
   /y18n@5.0.8:

@@ -13,7 +13,7 @@ import React from "react";
 import UpVote from "./_components/vote";
 import { Markdown } from "@/components/markdown";
 import { Challenge, Upvote, User } from "@repo/db/types";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function ChallengeTabs({
   challenge,
@@ -29,17 +29,20 @@ function ChallengeTabs({
   params: Record<"track" | "challenge", string>;
 }) {
   const { replace } = useRouter();
+  const pathName = usePathname();
   return (
-    <Tabs defaultValue="description" onChange={console.log}>
+    <Tabs
+      defaultValue={queryParams?.tab || "description"}
+      onChange={(value) =>
+        replace(`${pathName}?tab=${value}`, { scroll: false })
+      }
+    >
       <TabsList className="w-full">
         <TabsTrigger
           value="description"
           className="flex-grow"
           onClick={() =>
-            replace(
-              `/tracks/${params.track}/challenge/${params.challenge}?tab=description`,
-              { scroll: false }
-            )
+            replace(`${pathName}?tab=description`, { scroll: false })
           }
         >
           Description
@@ -47,27 +50,31 @@ function ChallengeTabs({
         <TabsTrigger
           value="comments"
           className="flex-grow"
-          onClick={() =>
-            replace(
-              `/tracks/${params.track}/challenge/${params.challenge}?tab=comments`,
-              { scroll: false }
-            )
-          }
+          onClick={() => replace(`${pathName}?tab=comments`, { scroll: false })}
         >
           Comments
         </TabsTrigger>
+        <TabsTrigger
+          value="solutions"
+          className="flex-grow"
+          onClick={() =>
+            replace(`${pathName}?tab=solutions`, { scroll: false })
+          }
+        >
+          Solutions
+        </TabsTrigger>
       </TabsList>
-      <TabsContent value={queryParams?.tab || "description"}>
+      <TabsContent value={"description"}>
         <div className="overflow-scroll custom-scrollable-element p-4 max-h-screen bg-border rounded-xl rounded-t-none">
           <h1 className="text-2xl font-bold mb-2">{challenge.label}</h1>
-          <div className="flex flex-row items-center justify-start gap-4">
+          <div className="flex flex-row items-center justify-start gap-2">
             {challenge.authors.map((author) => (
               <Tooltip key={author.id}>
                 <TooltipTrigger asChild>
                   <a key={author.id} href={`/@${author.username}`}>
                     <Badge
                       key={author.id}
-                      className="hover:bg-background"
+                      className="hover:bg-background p-0"
                       variant={"secondary"}
                     >
                       @{author.username}
@@ -79,9 +86,8 @@ function ChallengeTabs({
                 </TooltipContent>
               </Tooltip>
             ))}
-            <span className="text-sm text-muted-foreground">
-              {fromNow(challenge.updatedAt)}
-            </span>
+            <span className="text-muted-foreground ">•</span>
+            <span className="text-sm">{fromNow(challenge.updatedAt)}</span>
           </div>
           <div className="flex flex-row my-2 gap-4">
             <Badge>{upperFirst(challenge.difficulty)}</Badge>
@@ -91,6 +97,7 @@ function ChallengeTabs({
         </div>
       </TabsContent>
       <TabsContent value="comments">comments</TabsContent>
+      <TabsContent value="solutions">solutions</TabsContent>
     </Tabs>
   );
 }
