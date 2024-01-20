@@ -35,3 +35,9 @@ pnpm dev
 
 ## Screenshot
 ![image](https://github.com/PhantomKnight287/frameground/assets/76196237/6df23363-6e08-4c5d-9a1b-03a61ed4fba0)
+
+
+## Special Thanks
+- [@typehero](https://github.com/typehero) for the inspiration and color schemes
+- [@fuma-nama](https://github.com/fuma-nama) for animation on landing page
+- [@siduck](https://github.com/siduck) for motivation 
