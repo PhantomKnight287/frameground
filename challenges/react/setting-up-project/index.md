@@ -50,6 +50,6 @@ Congratulations! You've successfully created a new React app and can now start b
 
 ## Challenge
 
-Run the above commands in the terminal on the bottom right to create a new React app. Then, run the development server.
+We have already created a new React app for you. Your task is to start the development server and explore the project structure. You can also modify the existing code to see how it affects the application. 
 
 Click the "Run tests" button when you are done with new React app creation and development server setup.
