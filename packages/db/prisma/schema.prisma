@@ -94,13 +94,15 @@ model Challenge {
   playgroundNeeded Boolean    @default(true)
 
   /// The tests that a user must pass to complete the challenge
-  tests        String
+  tests          String
   /// The content of index.md
-  info         String
+  info           String
   ///initial files, will be saved as [{filename: content}]
-  initialFiles Json[]
+  initialFiles   Json[]
   /// the terminal config
   terminalConfig Json?
+  /// commands to run when container is created
+  commands       String[]
 
   track    Track?    @relation(fields: [trackId], references: [id])
   trackId  String?
