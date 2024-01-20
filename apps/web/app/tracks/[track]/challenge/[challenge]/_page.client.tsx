@@ -27,17 +27,99 @@ import {
 } from "@repo/containers";
 import { FitAddon } from "xterm-addon-fit";
 import { Button } from "@/components/ui/button";
-import { RotateCcw } from "lucide-react";
+import {
+  ArrowUpRightFromCircle,
+  Columns2,
+  Columns3,
+  ExternalLink,
+  RotateCcw,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 let timeout: NodeJS.Timeout;
 
 const fitAddon = new FitAddon();
+function generateFilePath(
+  files: FrameGroundChallengeExport["files"],
+  activeFileIndex: string
+) {
+  let path = "";
+  const splitIndex = activeFileIndex.split(".");
+  for (let i = 0; i < splitIndex.length; i++) {
+    const index = splitIndex[i];
+    const file = files[Number(index)];
+
+    if (!file) {
+      return "";
+    }
+
+    path += `/${file.name}`;
+
+    if (file.type === "file" || i === splitIndex.length - 1) {
+      break; // Stop if it's a file or the last segment
+    }
+
+    // Continue with the next level of the hierarchy
+    files = file.content;
+  }
+
+  return path;
+}
+
+function isFileEditable(
+  files: FrameGroundChallengeExport["files"],
+  activeFileIndex: string
+) {
+  let path = "";
+  let isFileEditable = false;
+  const splitIndex = activeFileIndex.split(".");
+  for (let i = 0; i < splitIndex.length; i++) {
+    const index = splitIndex[i];
+    const file = files[Number(index)];
+
+    if (!file) {
+      return false;
+    }
+
+    path += `/${file.name}`;
+
+    if (file.type === "file" || i === splitIndex.length - 1) {
+      isFileEditable = (file as any).editable;
+      break; // Stop if it's a file or the last segment
+    }
+
+    // Continue with the next level of the hierarchy
+    files = file.content;
+  }
+
+  return isFileEditable;
+}
+
+const languages = {
+  js: "javascript",
+  ts: "typescript",
+  jsx: "javascript",
+  tsx: "typescript",
+  html: "html",
+  css: "css",
+  md: "markdown",
+  json: "json",
+  svg: "svg",
+  gitignore: "ignore",
+  cjs: "javascript",
+  mjs: "javascript",
+};
 
 export default function Editor({
   challenge,
   params,
   queryParams,
   fileSystem,
+  files,
 }: {
   challenge: Challenge & {
     authors: User[];
@@ -47,37 +129,12 @@ export default function Editor({
   queryParams?: Record<string, string>;
   params: Record<"track" | "challenge", string>;
   fileSystem?: FileSystemTree;
+  files: FrameGroundChallengeExport["files"];
 }) {
   const [_, startTransition] = useTransition();
   const { replace } = useRouter();
   const { activeFile, setActiveFile } = useEditorFileState();
 
-  const [files, setFiles] = useState([
-    {
-      name: "Challenge.md",
-      content: ``,
-      type: "file",
-      editable: false,
-    },
-    ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
-    {
-      name: "test",
-      content: [
-        {
-          name: "test.md",
-          content: "test",
-          type: "file",
-        },
-        {
-          name: "index.spec.ts",
-          content: challenge.tests,
-          type: "file",
-          editable: false,
-        },
-      ],
-      type: "folder",
-    },
-  ]);
   const [Terminal, terminalRef] = useTerminal({
     options: {
       cursorBlink: false,
@@ -91,16 +148,46 @@ export default function Editor({
   const pathname = usePathname();
   const [saved, setSaved] = useState(false);
   const rendered = useRef(false);
+  const [content, setContent] = useState("");
   const containerRef = useRef<WebContainerInstance | undefined>(undefined);
+  async function readFile(path: string) {
+    const fileExtension = path.split(".").pop();
+    //@ts-expect-error
+    const language = languages[fileExtension || ""] || "javascript";
+    setLanguage(language);
+    const file = await containerRef?.current?.fs?.readFile(path, "utf-8");
+    if (file) setContent(file);
+    return file;
+  }
   async function run() {
-    console.log(rendered.current);
     if (rendered.current) return;
     rendered.current = true;
+    fitAddon.fit();
     const _container = await createWebContainerInstance();
     containerRef.current = _container;
     _container.on("error", console.error);
+    _container.on("server-ready", (_, url) => {
+      setIFrameUrl(url);
+    });
     if (fileSystem) _container.mount(fileSystem);
-    fitAddon.fit();
+    if (challenge.commands?.length) {
+      for (const command of challenge.commands) {
+        const binary = command.split(" ")[0];
+        const commandArguments = command.split(" ").slice(1);
+        const log = await _container.spawn(binary, commandArguments);
+        log.output.pipeTo(
+          new WritableStream({
+            write(data) {
+              terminalRef?.write(data);
+            },
+          })
+        );
+      }
+    }
+    readFile(
+      generateFilePath(files, queryParams?.activeFile || "0") ||
+        "./package.json"
+    ).then();
     const shellProcess = await _container.spawn("jsh", {
       //@ts-expect-error
       terminal: {
@@ -117,11 +204,16 @@ export default function Editor({
       })
     );
     const input = shellProcess.input.getWriter();
+    window.addEventListener("resize", () => {
+      fitAddon.fit();
+      //@ts-expect-error
+      shellProcess.resize({ cols: terminalRef?.cols, rows: terminalRef?.rows });
+    });
     terminalRef?.onData((data) => {
-      console.log(data);
       input.write(data);
     });
   }
+  const [language, setLanguage] = useState("javascript");
   useEffect(() => {
     if (terminalRef) run();
     return () => {
@@ -135,14 +227,16 @@ export default function Editor({
         path: queryParams?.activeFile,
         name: queryParams?.activeFile,
         type: "file",
+        editable: isFileEditable(files, queryParams?.activeFile),
       });
     } else {
       setActiveFile({ path: "0", name: "Challenge.md", type: "file" });
     }
   }, []);
+  const [hiddenIframe, setHiddenIframe] = useState(false);
   function handleInput(value: string) {
-    localStorage.setItem(`${challenge.id}_${activeFile?.path}`, value);
-    console.log(getNestedPath(files, activeFile?.path as string));
+    const path = generateFilePath(files, activeFile?.path || "0");
+    if (path) containerRef?.current?.fs?.writeFile(path, value);
   }
   const debouncedHandleInput = (val: string) => {
     if (saved === true) setSaved(false);
@@ -166,18 +260,6 @@ export default function Editor({
           <span className="line-clamp-1 overflow-hidden">
             {challenge.label}
           </span>
-
-          <div className="flex flex-row gap-2">
-            <Button
-              variant={"ghost"}
-              className="p-1 hover:bg-background"
-              onClick={() => {
-                // containerRef?.current?.fs?.
-              }}
-            >
-              <RotateCcw size={15} />
-            </Button>
-          </div>
         </div>
         <MonacoSidebar
           data={files as any}
@@ -208,8 +290,9 @@ export default function Editor({
               <path d="M6.56 2.48H2.24c-.8 0-1.44.64-1.44 1.44v8.64c0 .79.65 1.44 1.44 1.44h11.52c.79 0 1.44-.65 1.44-1.44v-7.2c0-.8-.65-1.44-1.44-1.44H8L6.56 2.48z"></path>
             </svg>
           }
-          onClickFile={(file) => {
+          onClickFile={async (file) => {
             const search = new URLSearchParams(window.location.search);
+            await readFile(generateFilePath(files, file) || "0");
             if (!search.get("activeFile") && file === "0") return;
             else if (file === "0") {
               search.delete("activeFile");
@@ -238,16 +321,12 @@ export default function Editor({
                 <ResizablePanel className="relative">
                   <MonacoEditor
                     activeFile={"Challenge.md"}
-                    value={
-                      activeFile?.path
-                        ? getActiveFileContent(files as any, activeFile?.path)
-                        : ""
-                    }
+                    value={content || ""}
                     onChange={(value) => {
                       debouncedHandleInput(value || "");
                     }}
                     theme={"vs-dark"}
-                    language="javascript"
+                    language={language}
                     options={{
                       fontSize: 16,
                       readOnly:
@@ -257,21 +336,64 @@ export default function Editor({
                       wordWrap: "on",
                     }}
                   />
-                  <div className="absolute bottom-0 bg-border px-4 py-2 w-full flex flex-row">
+                  <div className="absolute bottom-0 bg-border px-4 py-2 w-full flex flex-row items-center">
                     <span className={cn("text-sm text-muted-foreground ")}>
                       {saved === true ? "Saved Locally" : "Unsaved Changes"}
                     </span>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant={"secondary"}
+                          className="bg-[#3a3a3d] hover:bg-background py-1 max-h-fit ml-auto"
+                          onClick={() => {
+                            setHiddenIframe(!hiddenIframe);
+                          }}
+                        >
+                          {hiddenIframe ? <Columns3 /> : <Columns2 />}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {hiddenIframe ? "Show Preview" : "Hide Preview"}
+                      </TooltipContent>
+                    </Tooltip>
+                    <div className="flex-row ml-auto gap-4 items-center flex">
+                      <Button
+                        variant={"secondary"}
+                        className="bg-[#3a3a3d] hover:bg-background py-1 max-h-fit"
+                      >
+                        Test
+                      </Button>
+                      <Button className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-5">
+                        Submit
+                      </Button>
+                    </div>
                   </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel className="h-full">
+                <ResizablePanel>
                   <Terminal />
                 </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>
             <ResizableHandle withHandle />
-            <ResizablePanel className="relative">
-              <iframe src={iframeUrl} className="w-full h-full" />
+            <ResizablePanel className={hiddenIframe ? "hidden" : ""}>
+              <div className="bg-border w-full flex flex-row items-center border-muted border-[1px]">
+                <p className="w-full text-muted-foreground text-sm p-2 bg-background line-clamp-1">
+                  {iframeUrl}
+                </p>
+                <a
+                  href={iframeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-background p-2 py-[6px] hover:bg-gray-600"
+                >
+                  <ExternalLink />
+                </a>
+              </div>
+              <iframe
+                src={iframeUrl}
+                className="w-full h-full rounded-md rounded-t-none"
+              />
             </ResizablePanel>
           </ResizablePanelGroup>
         )}

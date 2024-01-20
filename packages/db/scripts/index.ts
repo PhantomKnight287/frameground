@@ -19,6 +19,7 @@ export type ChallengeJson = {
   prerequisites: Array<string>;
   track_slug: string;
   created_at: string;
+  setup_commands: Array<string>;
 };
 
 export async function saveChallengesToDb() {
@@ -118,6 +119,7 @@ export async function saveChallengesToDb() {
         !challengeExists || largest > challengeExists.updatedAt.getTime();
       if (needsUpdate) {
         console.log(`Updating ${challenge}`);
+
         const _challenge = await prisma.challenge.update({
           where: {
             id: challengeExists.id,
@@ -133,17 +135,13 @@ export async function saveChallengesToDb() {
             info: description,
             terminalConfig: eval(terminalConfigResult.outputText),
             tests,
+            commands: challengeData.setup_commands,
             authors: {
               connect: challengeData.author.map((author) => ({
                 username: author,
               })),
             },
-            initialFiles: Object.keys(challengeConfigObject.files).map(
-              (file) => ({
-                name: file,
-                info: JSON.stringify(challengeConfigObject.files[file]),
-              })
-            ),
+            initialFiles: challengeConfigObject.files as any,
           },
         });
       } else if (!challengeExists) {
@@ -164,12 +162,7 @@ export async function saveChallengesToDb() {
                 username: author,
               })),
             },
-            initialFiles: Object.keys(challengeConfigObject.files).map(
-              (file) => ({
-                name: file,
-                info: JSON.stringify(challengeConfigObject.files[file]),
-              })
-            ),
+            initialFiles: challengeConfigObject.files as any,
           },
         });
       } else {

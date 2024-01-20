@@ -12,6 +12,38 @@ import { inspect } from "util";
 // do not remove this line
 const REPO_MONACO_CLASSNAMES = ["pl-4", "pl-2"];
 
+function getFileNameWithContent(s: ChallengeFilesStructure): any {
+  if (s.type === "file") return { file: { [s.name]: { contents: s.content } } };
+  return {
+    [s.name]: {
+      directory: {
+        [s.name]: {
+          contents: s.content.reduce((acc, file) => {
+            const fileResult = getFileNameWithContent(file);
+            if (fileResult !== null) {
+              Object.assign(acc, fileResult);
+            }
+            return acc;
+          }, {}),
+        },
+      },
+    },
+  };
+  // return {
+  //   directory: {
+  //     [s.name]: {
+  //       contents: s.content.reduce((acc, file) => {
+  //         const fileResult = getFileNameWithContent(file);
+  //         if (fileResult !== null) {
+  //           Object.assign(acc, fileResult);
+  //         }
+  //         return acc;
+  //       }, {}),
+  //     },
+  //   },
+  // };
+}
+
 async function Challenge({
   params,
   searchParams,
@@ -50,33 +82,17 @@ async function Challenge({
     },
   });
   if (!challenge) redirect(`/404`);
+  console.log(challenge.initialFiles);
   const files = [
-    ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
     {
-      name: "test",
-      type: "folder",
-      content: [
-        {
-          name: "index.spec.ts",
-          content: challenge.tests || "",
-          type: "file",
-          editable: false,
-        },
-        {
-          name: "dd",
-          content: [
-            {
-              name: "dd.txt",
-              content: "hello",
-              type: "file",
-              editable: false,
-            },
-          ],
-          type: "folder",
-        },
-      ],
+      name: "Challenge.md",
+      content: ``,
+      type: "file",
+      editable: false,
     },
+    ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
   ];
+  console.log(challenge.initialFiles)
   const fileSystem: FileSystemTree = {};
 
   function parseDirectory(
@@ -90,67 +106,38 @@ async function Challenge({
         if (isFirst) {
           result[file.name] = { file: { contents: file.content } };
         } else {
-          result["directory"] = {};
-          result["directory"][file.name] = { file: { contents: file.content } };
+          result["file"] = {};
+          result["file"][file.name] = { file: { contents: file.content } };
         }
       } else {
         if (isFirst) {
           result[file.name] = {
-            directory: { contents: parseDirectory(file.content, true) },
+            directory: parseDirectory(file.content, true),
           };
-        } else {
-          result["directory"] = {};
-          result["directory"][file.name] = {
-            directory: parseDirectory(file.content, false),
-          };
+          continue;
         }
+        result["directory"] = {};
+        result["directory"][file.name] = {
+          directory: { contents: parseDirectory(file.content, true) },
+        };
       }
     }
     return result;
   }
 
-  const fileSystemPathCache = new Map<string, any>();
-
-  function createFileSystemTreeCache(
-    node: typeof files,
-    path = "",
-    olderIndex?: string,
-    oldPath?: string
-  ) {
-    let newPath = path;
-    for (let i = 0; i < node.length; i++) {
-      const file = node[i];
-      if (file.type === "file") {
-        fileSystemPathCache.set(
-          `${olderIndex}.${i}`,
-          `.${newPath}/${file.name}`
-        );
-      } else if (file.type === "folder") {
-        newPath += `/${file.name}`;
-        createFileSystemTreeCache(
-          file.content as any[],
-          newPath,
-          i.toString(),
-          newPath
-        );
-      }
-    }
-  }
-  createFileSystemTreeCache(files);
-
   files.forEach((file) => {
-    //@ts-expect-error
-    fileSystem[file.name as any] = {
-      [file.type === "folder" ? "directory" : "file"]: {
-        ...(file.type === "file"
-          ? { contents: file.content }
-          : parseDirectory(file.content as any, true)),
-      },
-    };
+    if (file.type === "file") {
+      fileSystem[file.name as any] = {
+        file: {
+          contents: file.content as string,
+        },
+      };
+    } else {
+      fileSystem[file.name] = {
+        directory: parseDirectory(file.content as any, true),
+      };
+    }
   });
-
-  console.log(fileSystemPathCache.entries());
-  console.log(inspect(fileSystem, false, null, true));
   return (
     <div className="px-4 sticky h-screen top-[40px]">
       <div className="flex flex-row h-screen">
@@ -160,6 +147,7 @@ async function Challenge({
           params={params}
           fileSystem={fileSystem}
           queryParams={searchParams}
+          files={files as any}
         />
       </div>
     </div>
