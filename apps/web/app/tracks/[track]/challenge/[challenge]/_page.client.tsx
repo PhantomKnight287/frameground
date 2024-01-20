@@ -17,7 +17,7 @@ import { useEditorFileState } from "@repo/monaco/state";
 import { getActiveFileContent, getNestedPath } from "@repo/monaco/utils";
 import ChallengeTabs from "./page.client";
 import { User } from "next-auth/types";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { Fragment, useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useTerminal } from "@repo/terminal";
 import {
@@ -188,6 +188,7 @@ export default function Editor({
       generateFilePath(files, queryParams?.activeFile || "0") ||
         "./package.json"
     ).then();
+    console.log(terminalRef?.cols, terminalRef?.rows)
     const shellProcess = await _container.spawn("jsh", {
       //@ts-expect-error
       terminal: {
@@ -370,31 +371,37 @@ export default function Editor({
                   </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel>
+                <ResizablePanel
+                  className=""
+                >
                   <Terminal />
                 </ResizablePanel>
               </ResizablePanelGroup>
             </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel className={hiddenIframe ? "hidden" : ""}>
-              <div className="bg-border w-full flex flex-row items-center border-muted border-[1px]">
-                <p className="w-full text-muted-foreground text-sm p-2 bg-background line-clamp-1">
-                  {iframeUrl}
-                </p>
-                <a
-                  href={iframeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-background p-2 py-[6px] hover:bg-gray-600"
-                >
-                  <ExternalLink />
-                </a>
-              </div>
-              <iframe
-                src={iframeUrl}
-                className="w-full h-full rounded-md rounded-t-none"
-              />
-            </ResizablePanel>
+            {hiddenIframe ? null : (
+              <Fragment>
+                <ResizableHandle withHandle />
+                <ResizablePanel className={hiddenIframe ? "hidden" : ""}>
+                  <div className="bg-border w-full flex flex-row items-center border-muted border-[1px]">
+                    <p className="w-full text-muted-foreground text-sm p-2 bg-background line-clamp-1">
+                      {iframeUrl}
+                    </p>
+                    <a
+                      href={iframeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-background p-2 py-[6px] hover:bg-gray-600"
+                    >
+                      <ExternalLink />
+                    </a>
+                  </div>
+                  <iframe
+                    src={iframeUrl}
+                    className="w-full h-full rounded-md rounded-t-none"
+                  />
+                </ResizablePanel>
+              </Fragment>
+            )}
           </ResizablePanelGroup>
         )}
       </ResizablePanel>

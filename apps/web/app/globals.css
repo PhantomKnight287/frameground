@@ -84,3 +84,7 @@
 .custom-scrollable-element::-webkit-scrollbar-thumb:hover {
   @apply bg-neutral-300 dark:bg-zinc-600;
 }
+
+.terminal{
+  height: 100%;
+}
