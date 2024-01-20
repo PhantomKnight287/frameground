@@ -62,14 +62,20 @@ export default function Folder({
                   />
                 </div>
               ) : (
-                <Folder
-                  folder={item}
-                  path={`${path}.${index}`} // Generate the folder's path
-                  onClickFile={onClickFile}
-                  name={item.name}
-                  className={className}
-                  onClickFolder={onClickFolder}
-                />
+                <div className={filesContainerClassName}>
+                  <Folder
+                    folder={item}
+                    path={`${path}.${index}`} // Generate the folder's path
+                    onClickFile={onClickFile}
+                    name={item.name}
+                    className={className}
+                    onClickFolder={onClickFolder}
+                    fileClassName={fileClassName}
+                    folderOpenIcon={folderOpenIcon}
+                    folderCloseIcon={folderCloseIcon}
+                    filesContainerClassName={filesContainerClassName}
+                  />
+                </div>
               )}
             </Fragment>
           ))}
