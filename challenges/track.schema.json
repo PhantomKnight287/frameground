@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the track"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the track"
+    },
+    "logo": {
+      "type": "string",
+      "description": "URL of the logo of the track"
+    },
+    "status": {
+      "type": "string",
+      "description": "Status of the track",
+      "enum": ["active", "coming_soon"]
+    }
+  },
+  "required": ["name", "description", "logo", "status"]
+}
