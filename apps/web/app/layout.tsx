@@ -9,6 +9,7 @@ import NextAuthProvider from "@/providers/next-auth";
 import { siteConfig } from "@repo/config";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { fontSans } from "@/fonts";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: siteConfig.name,
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <TooltipProvider>
               <Header />
               {children}
+              <Toaster />
             </TooltipProvider>
           </NextAuthProvider>
         </ThemeProvider>
