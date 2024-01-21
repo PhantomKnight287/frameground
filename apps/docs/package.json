@@ -1,0 +1,26 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.0.4",
+    "next-docs-ui": "7.1.2",
+    "next-docs-zeta": "7.1.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "next-docs-mdx": "7.1.2"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.1",
+    "typescript": "5.3.3",
+    "autoprefixer": "10.4.16",
+    "postcss": "8.4.32",
+    "tailwindcss": "3.3.7"
+  }
+}

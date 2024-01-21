@@ -1,0 +1,171 @@
+---
+title: Creating Challenges
+description: How to create Challenges for FrameGround
+---
+
+Thank you for your interest in creating a Challenge for FrameGround! We are excited to see what you come up with. This guide will walk you through the process of creating a Challenge.
+
+## Creating a folder
+
+Challenges are placed inside `challenges` folder in root of the project. Inside `challenges` folder, there are folders for each track and each track has folders for each challenge. For example, if you are creating a challenge for `react` track, you will place it inside `challenges/react` folder. If you are creating a challenge named `use-user-hook`, you will place it inside `challenges/react/use-user-hook` folder. This steps ensures that slug of challenges are unique because they are based on their path.
+
+## Creating Challenge Config
+
+This is basic configuration of the challenge like its name, description, author, etc. It will be a json file called `challenge.json`. There is a `schema.json` file in root of the `challenges` for autocomplete of the fields. Below is an example of `challenge.json` file.
+
+```json title="challenges/react/setting-up-project/challenge.json"
+{
+  "$schema": "../../schema.json",
+  "author": ["phantomknight287"],
+  "description": "Setting up a new React Project",
+  "difficulty": "easy",
+  "id": "setting-up-project",
+  "label": "New React App",
+  "playground_needed": true,
+  "prerequisites": [],
+  "track_slug": "react",
+  "created_at": "2024-01-07T10:42:37.346Z",
+  "setup_commands": ["pnpm i", "clear"]
+}
+```
+
+### Fields
+
+<TypeTable
+  type={{
+    id: {
+      description:
+        "A unique identifier for the challenge. It is used to generate the slug of the challenge.This must be the same as the folder name of the challenge.",
+      type: "string",
+    },
+    label: {
+      description: "The name of the challenge.",
+      type: "string",
+    },
+    description: {
+      description: "A short description of the challenge.",
+      type: "string",
+    },
+    difficulty: {
+      description:
+        "The difficulty of the challenge. It can be easy, medium or hard.",
+      type: "enum",
+      typeDescription: "Beginner, Easy, Medium, Hard, Extreme",
+    },
+    prerequisites: {
+      description:
+        "The list of challenges that must be completed before this challenge.",
+      type: "array",
+      typeDescription:
+        "Array of challenge paths eg: ['react/setting-up-project']",
+    },
+    author: {
+      description: "The FrameGround usernames of the authors of the challenge.",
+      type: "array",
+      typeDescription:
+        "Array of FrameGround usernames eg: ['phantomknight287']",
+    },
+    track_slug: {
+      description: "The slug of the track that this challenge belongs to.",
+      type: "string",
+    },
+    playground_needed: {
+      description:
+        "Whether a playground is needed for this challenge. If this is true, a playground will be created for this challenge.",
+      type: "boolean",
+    },
+    setup_commands: {
+      description:
+        "The commands that will be run before the challenge is started. This is useful for installing dependencies.",
+      type: "array",
+      typeDescription: "Array of commands eg: ['pnpm i', 'clear']",
+    },
+    created_at: {
+      description: "The date when the challenge was created.",
+      type: "string",
+      typeDescription: "ISO 8601 date eg: 2024-01-07T10:42:37.346Z",
+    },
+  }}
+/>
+
+## Creating Challenge Description
+
+This is the description of the challenge. It is a markdown file called `index.md`.
+
+## Creating Terminal Config
+
+If in some challenges you want to override default terminal config like turn off input, you can create a `terminal.ts` file.
+
+```ts title="challenges/react/setting-up-project/terminal.ts"
+import type { ITerminalOptions } from "xterm";
+export default { disableStdin: true } satisfies ITerminalOptions;
+```
+
+## Create Playground Files
+
+You can create files for the playground in `index.ts` file. Below is an example of `index.ts` file. You can use json files in `challenges` folder to copy default files of frameworks like vite, nextjs etc. There is no extend option as of now. You will have to copy the contents of the json file and paste it in `index.ts` file.
+
+```ts title="challenges/react/setting-up-project/index.ts"
+import { FrameGroundChallengeExport } from "../../src";
+
+export default {
+  files: [
+    {
+      type: "file",
+      name: "vite.config.js",
+      content:
+        "import { defineConfig } from 'vite'\nimport react from '@vitejs/plugin-react'\n\n// https://vitejs.dev/config/\nexport default defineConfig({\n  plugins: [react()],\n})\n",
+    },
+  ],
+} satisfies FrameGroundChallengeExport;
+```
+
+### Default Files
+
+Incase you want to extend default template of frameworks like vite, nextjs etc you can use files in `challenges` folder, they're called `<framework>.json` eg: `vite.json`. 
+
+Creating a new challenge whose json doesn't exist? No problem, use the rust code in `parser` folder to generate the json file.
+
+```bash title="Generate files.json"
+cargo run ../nextjs
+```
+
+here `../nextjs` is the path to the template folder. Just make sure there are no images, videos or audio files in the template folder as parser cannot handle them.
+
+The above code will emit a `files.json` in `parser` folder which you can copy to `challenges` folder and rename it to `<framework>.json` eg: `vite.json`.
+
+
+## Creating Tests
+
+Now, the final part is creating tests for the challenge. Tests are written in `index.spec.ts` file. Below is an example of `index.spec.ts` file. These tests will be run in root of the playground so authors are adviced to make sure imports are correct.
+
+```ts title="challenges/react/setting-up-project/index.spec.ts"
+describe("It Should Work", () => {
+  it("should be true", () => {
+    expect(1).toBe(1);
+  });
+});
+
+```
+
+## Creating Editable Files
+
+All files by default will not be editable as it can cause weird behaviours if users edit it. But if you want to make some files editable, you can use `editable` field in file. Below is an example of `index.ts` file.
+
+```ts title="challenges/react/setting-up-project/index.ts"
+import { FrameGroundChallengeExport } from "../../src";
+
+export default {
+  files: [
+    {
+      type: "file",
+      name: "vite.config.js",
+      editable:true,
+      content:
+        "import { defineConfig } from 'vite'\nimport react from '@vitejs/plugin-react'\n\n// https://vitejs.dev/config/\nexport default defineConfig({\n  plugins: [react()],\n})\n",
+    },
+  ],
+
+} satisfies FrameGroundChallengeExport;
+```
+

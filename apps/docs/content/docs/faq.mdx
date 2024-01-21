@@ -1,0 +1,74 @@
+---
+title: FAQ
+description: Frequently asked questions about FrameGround
+---
+
+## What is FrameGround?
+
+FrameGround is a web based learning platform that allows you to learn javascript libraries and frameworks by solving challenges.
+
+## Why FrameGround?
+
+I made it for my friends as they want to learn web development but are always stuck in tutorial hell. I wanted to make something that will help them learn by doing.
+
+## Do I need to pay to use FrameGround?
+
+No, The platform is completely free to use as everything is running inside your browser. The biggest contribution you can make is by sharing it with your friends or creating a pull request to improve the platform.
+
+## How is nodejs running inside my browser?
+
+I am using [WebContainers](https://webcontainers.io) by [StackBlitz](https://stackblitz.com) to run nodejs inside your browser.
+
+## Playground isn't working in my browser?
+
+Some browsers like brave and firefox have strict security policies that prevent the playground from working. You need to do extra steps to make it work.
+
+- [Chrome](https://webcontainers.io/guides/browser-config#chrome-service-workers)
+- [Brave](https://webcontainers.io/guides/browser-config#brave-service-workers)
+- [Firefox](https://webcontainers.io/guides/browser-support#firefox)
+- [Safari](https://webcontainers.io/guides/browser-support#safari)
+
+## I can't load remote files in the playground?
+
+Since the playground is running inside your browser, it can't access remote files due to CORS policy. You need to configure cors in your server to allow the playground to access remote files. If you are still not able to see remote content in preview, you can open preview in other tab and try.
+
+## I want to check responsiveness of site
+
+You can resize the preview window to check responsiveness of site. You can also open the preview in new tab by clicking on button in top right corner of preview window.
+
+<img src="/open-in-new-tab.png" />
+
+## I want to report a bug or suggest a feature
+
+You can create an issue on [github](https://github.com/phantomknight287/frameground/issues/new).
+
+<Callout title="Warning" type="warn">
+  
+  If you are reporting a security vulnerability, please email me at
+  [bugs@frameground.tech](mailto:bugs@frameground.tech) instead of creating an
+  issue.
+
+</Callout>
+
+
+## I want to setup FrameGround on my own server
+
+Please Follow the <Link href="/docs/deploy-locally">Deploy Locally</Link> guide to setup FrameGround on your own server.
+
+
+## I want to create a new Track
+
+### Using Admin Dashboard
+
+You can open admin dashboard and create a new track by clicking on `Create New Track` button and filling the form.
+
+You can click on Json icon under `Actions` column to view the json of track. You can save this json in `challenges/<track slug>/track.json` to create a new track.(This is only needed if you want this track to show up in production as well as for other contributors)
+
+
+### Using Cli
+
+You can use cli in `parser` to create a new track. You need to have rust installed in your system to use cli.
+
+```bash
+cargo run -- create-track -n next -d "hello world" -s next-js --logo "https://google.com" -t coming-soon
+```

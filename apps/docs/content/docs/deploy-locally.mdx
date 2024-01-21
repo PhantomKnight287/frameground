@@ -1,0 +1,97 @@
+---
+title: Deploy Locally
+description: Deploy locally 
+---
+
+
+This section describes how to deploy the application locally on your machine. You can use it to run your own instance of the application for development and testing purposes.
+
+## Setting up the environment
+
+- Install [Node.js](https://nodejs.org/en/download/) 
+- Install [pnpm, a package manager for Node.js](https://pnpm.io/installation#using-corepack)
+
+
+## Installing Packages
+
+Install the dependencies for the root project
+
+```bash
+pnpm install
+```
+
+## Setting up the database
+
+This application uses Postgres as the database. You can install it locally or use a cloud service like [Neon](https://neon.tech/) or [Supabase](https://supabase.io/).
+
+Once you get your connection url add it in the `.env` file in the root directory of the project.
+
+### Running migrations and seeding the database
+
+- Move to `packages/db` directory
+```bash
+cd packages/db
+```
+
+- Run migrations 
+```bash
+pnpm migrate
+```
+
+- Populating tracks & challenges in the database
+```bash
+pnpx tsc && node dist/scripts/index.js
+```
+
+
+## Setting Up Github OAuth Keys
+
+[Follow this link](https://github.com/settings/applications/new) to create a new app filling the following required details on creation:
+
+```
+Homepage URL: http://localhost:3000
+Authorization callback URL: http://localhost:3000/api/auth/callback/github
+```
+
+Once completed, you will be redirected to the application page settings, from there create the client secret by clicking on `Generate a new client secret` button.
+
+
+Next, copy the client secret generated and the client ID into the .env file, replacing `<client_id>` and `<client_secret>`, respectively:
+
+```
+GITHUB_CLIENT_ID=<client_id>
+GITHUB_CLIENT_SECRET=<client_secret>
+```
+
+## Setting up Next Auth
+
+```
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET="long random string which no one should know"
+```
+
+## Running the application
+
+Run the following command in the root directory of the project
+
+```bash
+pnpm dev
+```
+
+Below is list of ports used by the different services:
+
+- **Frontend**: http://localhost:3000
+- **Admin Panel**: http://localhost:3001
+- **Docs** : http://localhost:3002
+
+## Setting up admin user
+
+Open [localhost:3000](http://localhost:3000) in your browser and login using Github. Once logged in, move to `packages/db` directory and run the following command:
+
+```bash
+pnpm studio
+```
+
+This will open the Prisma Studio in your browser. From there you can go to `User` table and in `roles` column add `Admin` to the user you want to make admin.
+
+Now you can access the admin panel at [localhost:3001](http://localhost:3001)
