@@ -32,6 +32,8 @@ import {
   Columns2,
   Columns3,
   ExternalLink,
+  PanelLeftClose,
+  PanelLeftOpen,
   RotateCcw,
 } from "lucide-react";
 import {
@@ -108,7 +110,7 @@ const languages = {
   css: "css",
   md: "markdown",
   json: "json",
-  svg: "svg",
+  svg: "html",
   gitignore: "ignore",
   cjs: "javascript",
   mjs: "javascript",
@@ -188,7 +190,6 @@ export default function Editor({
       generateFilePath(files, queryParams?.activeFile || "0") ||
         "./package.json"
     ).then();
-    console.log(terminalRef?.cols, terminalRef?.rows)
     const shellProcess = await _container.spawn("jsh", {
       //@ts-expect-error
       terminal: {
@@ -318,8 +319,35 @@ export default function Editor({
         ) : (
           <ResizablePanelGroup direction="horizontal">
             <ResizablePanel>
-              <ResizablePanelGroup direction="vertical">
-                <ResizablePanel className="relative">
+              <ResizablePanelGroup
+                direction="vertical"
+                onLayout={() => fitAddon.fit()}
+              >
+                <ResizablePanel className="relative" defaultSize={60}>
+                  <div className="bg-border px-4 py-2 w-full flex flex-row items-center rounded-t-md">
+                    <span className={cn("text-sm text-muted-foreground ")}>
+                      {saved === true ? "Saved Locally" : "Unsaved Changes"}
+                    </span>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          className="hover:bg-background max-h-fit ml-auto"
+                          onClick={() => {
+                            setHiddenIframe(!hiddenIframe);
+                          }}
+                        >
+                          {!hiddenIframe ? (
+                            <PanelLeftOpen className="text-gray-400" />
+                          ) : (
+                            <PanelLeftClose className="text-gray-400" />
+                          )}
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {hiddenIframe ? "Show Preview" : "Hide Preview"}
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                   <MonacoEditor
                     activeFile={"Challenge.md"}
                     value={content || ""}
@@ -332,48 +360,24 @@ export default function Editor({
                       fontSize: 16,
                       readOnly:
                         activeFile?.editable === undefined
-                          ? false
+                          ? true
                           : !activeFile?.editable,
                       wordWrap: "on",
                     }}
                   />
-                  <div className="absolute bottom-0 bg-border px-4 py-2 w-full flex flex-row items-center">
-                    <span className={cn("text-sm text-muted-foreground ")}>
-                      {saved === true ? "Saved Locally" : "Unsaved Changes"}
-                    </span>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant={"secondary"}
-                          className="bg-[#3a3a3d] hover:bg-background py-1 max-h-fit ml-auto"
-                          onClick={() => {
-                            setHiddenIframe(!hiddenIframe);
-                          }}
-                        >
-                          {hiddenIframe ? <Columns3 /> : <Columns2 />}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        {hiddenIframe ? "Show Preview" : "Hide Preview"}
-                      </TooltipContent>
-                    </Tooltip>
+                  <div className="absolute bottom-0 bg-border px-4 py-3 w-full flex flex-row items-center bg-[#1e1e1e] rounded-b-md">
                     <div className="flex-row ml-auto gap-4 items-center flex">
-                      <Button
-                        variant={"secondary"}
-                        className="bg-[#3a3a3d] hover:bg-background py-1 max-h-fit"
-                      >
+                      <button className="bg-[#3a3a3d] hover:bg-background py-1 px-4 rounded-md max-h-fit">
                         Test
-                      </Button>
-                      <Button className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-5">
+                      </button>
+                      <button className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-4 py-1 rounded-md">
                         Submit
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel
-                  className=""
-                >
+                <ResizablePanel defaultSize={25} minSize={25}>
                   <Terminal />
                 </ResizablePanel>
               </ResizablePanelGroup>
@@ -382,7 +386,7 @@ export default function Editor({
               <Fragment>
                 <ResizableHandle withHandle />
                 <ResizablePanel className={hiddenIframe ? "hidden" : ""}>
-                  <div className="bg-border w-full flex flex-row items-center border-muted border-[1px]">
+                  <div className="bg-border w-full flex flex-row items-center border-muted border-[1px] rounded-t-md">
                     <p className="w-full text-muted-foreground text-sm p-2 bg-background line-clamp-1">
                       {iframeUrl}
                     </p>

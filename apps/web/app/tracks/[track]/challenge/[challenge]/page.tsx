@@ -82,7 +82,6 @@ async function Challenge({
     },
   });
   if (!challenge) redirect(`/404`);
-  console.log(challenge.initialFiles);
   const files = [
     {
       name: "Challenge.md",
@@ -92,7 +91,6 @@ async function Challenge({
     },
     ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
   ];
-  console.log(challenge.initialFiles)
   const fileSystem: FileSystemTree = {};
 
   function parseDirectory(

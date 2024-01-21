@@ -71,7 +71,12 @@ function ChallengeTabs({
             {challenge.authors.map((author) => (
               <Tooltip key={author.id}>
                 <TooltipTrigger asChild>
-                  <a key={author.id} href={`/@${author.username}`}>
+                  <a
+                    key={author.id}
+                    href={`/user/@${author.username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Badge
                       key={author.id}
                       className="hover:bg-background p-0"

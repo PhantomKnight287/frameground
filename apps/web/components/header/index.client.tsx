@@ -36,8 +36,6 @@ export default function InteractiveHeaderComponents() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
         <DropdownMenuItem
           className="text-red-500 focus:text-white focus:bg-red-500"
           onClick={() => signOut()}
