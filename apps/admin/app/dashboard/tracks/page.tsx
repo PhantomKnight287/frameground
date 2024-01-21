@@ -11,7 +11,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ExternalLink, Pencil } from "lucide-react";
+import { Braces, ExternalLink, Pencil } from "lucide-react";
 import CreateNewRecord, { DeleteButton } from "./page.client";
 
 export const dynamic = "force-dynamic";
@@ -42,7 +42,7 @@ async function Tracks() {
             {tracks.map((track) => (
               <TableRow key={track.id}>
                 <TableCell>{track.name}</TableCell>
-                <TableCell>{track.description}</TableCell>
+                <TableCell>{track.description?.substring(0, 30)}...</TableCell>
                 <TableCell>/{track.slug}</TableCell>
                 <TableCell>
                   <Avatar>
@@ -57,6 +57,15 @@ async function Tracks() {
                     </Button>
                   </Link>
                   <DeleteButton id={track.id} />
+                  <Link
+                    href={`/api/tracks/${track.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button variant={"ghost"}>
+                      <Braces />
+                    </Button>
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

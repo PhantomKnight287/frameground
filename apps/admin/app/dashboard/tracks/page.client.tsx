@@ -29,11 +29,10 @@ import Track from "./[slug]/page";
 function CreateNewRecord() {
   const [state, formAction] = useFormState(createTrack, null);
 
-  const [opened, setOpened] = useState(false);
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create New Record</Button>
+        <Button>Create New Track</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
