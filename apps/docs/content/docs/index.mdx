@@ -127,7 +127,7 @@ Incase you want to extend default template of frameworks like vite, nextjs etc y
 Creating a new challenge whose json doesn't exist? No problem, use the rust code in `parser` folder to generate the json file.
 
 ```bash title="Generate files.json"
-cargo run ../nextjs
+cargo run parse ../nextjs
 ```
 
 here `../nextjs` is the path to the template folder. Just make sure there are no images, videos or audio files in the template folder as parser cannot handle them.
