@@ -8,6 +8,7 @@ import { Markdown } from "./markdown";
 import Svg from "./svg";
 import TSX from "./tsx";
 import { Typescript } from "./typescript";
+import Yaml from "./yaml";
 
 export const Icons = {
   ".js": <Javascript />,
@@ -23,4 +24,6 @@ export const Icons = {
   ".tsx": <TSX />,
   ".gitignore": <Git />,
   ".gitkeep": <Git />,
+  ".yml": <Yaml />,
+  ".yaml": <Yaml />,
 };
