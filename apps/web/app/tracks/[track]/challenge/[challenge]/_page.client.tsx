@@ -41,6 +41,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { toast } from "sonner";
 
 let timeout: NodeJS.Timeout;
 
@@ -114,6 +115,8 @@ const languages = {
   gitignore: "ignore",
   cjs: "javascript",
   mjs: "javascript",
+  yml: "yaml",
+  yaml: "yaml",
 };
 
 export default function Editor({
@@ -216,6 +219,8 @@ export default function Editor({
     });
   }
   const [language, setLanguage] = useState("javascript");
+  const [testsPassed, setTestsPassed] = useState(false);
+
   useEffect(() => {
     if (terminalRef) run();
     return () => {
@@ -367,17 +372,46 @@ export default function Editor({
                   />
                   <div className="absolute bottom-0 bg-border px-4 py-3 w-full flex flex-row items-center bg-[#1e1e1e] rounded-b-md">
                     <div className="flex-row ml-auto gap-4 items-center flex">
-                      <button className="bg-[#3a3a3d] hover:bg-background py-1 px-4 rounded-md max-h-fit">
-                        Test
+                      <button
+                        className="bg-[#3a3a3d] hover:bg-background py-1 px-4 rounded-md max-h-fit disabled:bg-gray-600 disabled:cursor-not-allowed"
+                        onClick={async () => {
+                          fitAddon.fit();
+                          terminalRef?.write("pnpm jest\n");
+                          const process = await containerRef.current?.spawn(
+                            "pnpm",
+                            ["jest"],
+                            {}
+                          );
+                          process?.output.pipeTo(
+                            new WritableStream({
+                              write(data) {
+                                terminalRef?.write(data);
+                              },
+                            })
+                          );
+                          if ((await process?.exit) === 0) setTestsPassed(true);
+                          else setTestsPassed(false);
+                        }}
+                        disabled={testsPassed}
+                      >
+                        {testsPassed ? "Tests Passed" : "Test"}
                       </button>
-                      <button className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-4 py-1 rounded-md">
+                      <button
+                        className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-4 py-1 rounded-md"
+                        onClick={() => {
+                          if (!testsPassed)
+                            return toast.error(
+                              "Run the tests before submitting"
+                            );
+                        }}
+                      >
                         Submit
                       </button>
                     </div>
                   </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={25} minSize={25}>
+                <ResizablePanel defaultSize={40} minSize={25}>
                   <Terminal />
                 </ResizablePanel>
               </ResizablePanelGroup>

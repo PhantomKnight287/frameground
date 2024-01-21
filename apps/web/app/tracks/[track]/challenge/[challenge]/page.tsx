@@ -12,38 +12,6 @@ import { inspect } from "util";
 // do not remove this line
 const REPO_MONACO_CLASSNAMES = ["pl-4", "pl-2"];
 
-function getFileNameWithContent(s: ChallengeFilesStructure): any {
-  if (s.type === "file") return { file: { [s.name]: { contents: s.content } } };
-  return {
-    [s.name]: {
-      directory: {
-        [s.name]: {
-          contents: s.content.reduce((acc, file) => {
-            const fileResult = getFileNameWithContent(file);
-            if (fileResult !== null) {
-              Object.assign(acc, fileResult);
-            }
-            return acc;
-          }, {}),
-        },
-      },
-    },
-  };
-  // return {
-  //   directory: {
-  //     [s.name]: {
-  //       contents: s.content.reduce((acc, file) => {
-  //         const fileResult = getFileNameWithContent(file);
-  //         if (fileResult !== null) {
-  //           Object.assign(acc, fileResult);
-  //         }
-  //         return acc;
-  //       }, {}),
-  //     },
-  //   },
-  // };
-}
-
 async function Challenge({
   params,
   searchParams,
@@ -87,7 +55,16 @@ async function Challenge({
       name: "Challenge.md",
       content: ``,
       type: "file",
-      editable: false,
+    },
+    {
+      name: "test.spec.ts",
+      content: challenge.tests,
+      type: "file",
+    },
+    {
+      name: "jest.config.json",
+      content: JSON.stringify(challenge.jestConfig, null, 2),
+      type: "file",
     },
     ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
   ];

@@ -1,10 +1,29 @@
 import { TrackCard } from "@/components/track-card";
 import { prisma } from "@/lib/db";
+import { auth } from "../api/auth/[...nextauth]/route";
 
 export const dynamic = "force-dynamic";
 
 export default async function Tracks({}: { searchParams: { type?: string } }) {
-  const tracks = await prisma.track.findMany({});
+  const session = await auth();
+  const tracks = await prisma.track.findMany({
+    include: {
+      _count: {
+        select: {
+          users: true,
+        },
+      },
+      ...(session?.user?.id
+        ? {
+            users: {
+              where: {
+                id: session.user.id,
+              },
+            },
+          }
+        : undefined),
+    },
+  });
 
   return (
     <main className="flex mt-12">

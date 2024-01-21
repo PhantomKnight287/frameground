@@ -13,21 +13,27 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Track } from "@repo/db/types";
 import Link from "next/link";
+import { formatNumber } from "@/utils/intl";
+import EnrollOrLeaveButton from "./index.client";
 
-export function TrackCard(track: Track) {
+export function TrackCard(
+  track: Track & { _count: { users: number }; users: { id: string }[] }
+) {
   return (
     <Card className="overflow-hidden shadow rounded-lg">
       <div className="p-3">
         <CardHeader>
           <div className="flex flex-row items-start">
             <CardTitle className="h-fit">{track.name}</CardTitle>
-            <Badge className="ml-auto">69 Enrolled</Badge>
+            <Badge className="ml-auto">
+              {formatNumber(track._count.users)} Enrolled
+            </Badge>
           </div>
           <CardDescription>{track.description}</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Button>Enroll</Button>
+            <EnrollOrLeaveButton {...track} />
             <Link href={`/tracks/${track.slug}`} className="w-full">
               <Button variant="outline" className="w-full">
                 View Content
