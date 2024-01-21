@@ -67,6 +67,13 @@ export async function saveChallengesToDb() {
         }/${challenge}/terminal.ts`,
         "utf-8"
       );
+      const jestConfig = readFileSync(
+        `${process.cwd()}/../../challenges/${
+          track.slug
+        }/${challenge}/jest.config.ts`,
+        "utf-8"
+      );
+
       const terminalConfigResult = transpileModule(terminalConfig, {
         compilerOptions: {
           module: 1,
@@ -79,6 +86,13 @@ export async function saveChallengesToDb() {
           target: 1,
         },
       });
+      const jestResult = transpileModule(jestConfig, {
+        compilerOptions: {
+          module: 1,
+          target: 1,
+        },
+      });
+      console.log(eval(jestResult.outputText));
       const challengeConfigObject: FrameGroundChallengeExport = eval(
         result.outputText
       );
@@ -108,15 +122,23 @@ export async function saveChallengesToDb() {
         }/${challenge}/terminal.ts`
       ).mtimeMs;
 
+      const challengeJestStats = statSync(
+        `${process.cwd()}/../../challenges/${
+          track.slug
+        }/${challenge}/jest.config.ts`
+      ).mtimeMs;
+
       const largest = Math.max(
         challengeJsonStats,
         challengeTsStats,
         challengeMdStats,
         challengeSpecStats,
-        challengeTerminalStats
+        challengeTerminalStats,
+        challengeJestStats
       );
       const needsUpdate =
-        !challengeExists || largest > challengeExists.updatedAt.getTime();
+        true ??
+        (!challengeExists || largest > challengeExists.updatedAt.getTime());
       if (needsUpdate) {
         console.log(`Updating ${challenge}`);
 
@@ -135,6 +157,7 @@ export async function saveChallengesToDb() {
             info: description,
             terminalConfig: eval(terminalConfigResult.outputText),
             tests,
+            jestConfig: eval(jestResult.outputText),
             commands: challengeData.setup_commands,
             authors: {
               connect: challengeData.author.map((author) => ({
@@ -157,6 +180,8 @@ export async function saveChallengesToDb() {
             track: { connect: { slug: track.slug } },
             info: description,
             tests,
+            jestConfig: eval(jestResult.outputText),
+            terminalConfig: eval(terminalConfigResult.outputText),
             authors: {
               connect: challengeData.author.map((author) => ({
                 username: author,

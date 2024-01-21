@@ -95,6 +95,8 @@ model Challenge {
 
   /// The tests that a user must pass to complete the challenge
   tests          String
+  /// jest config
+  jestConfig     Json?
   /// The content of index.md
   info           String
   ///initial files, will be saved as [{filename: content}]
