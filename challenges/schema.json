@@ -27,7 +27,7 @@
       }
     },
     "author": {
-      "description": "The github username(s) of author(s) of this challenge",
+      "description": "The FrameGround username(s) of author(s) of this challenge",
       "type": "array",
       "items": {
         "type": "string"

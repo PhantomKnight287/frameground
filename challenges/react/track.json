@@ -1,0 +1,7 @@
+{
+  "$schema": "../track.schema.json",
+  "description": "Master React, the JavaScript library for building dynamic user interfaces! From basics to advanced concepts.",
+  "logo": "https://utfs.io/f/508828b4-02cb-48e7-93ed-78c29182aef2-qx0x2g.png",
+  "name": "React",
+  "status": "active"
+}
