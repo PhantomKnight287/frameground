@@ -172,4 +172,41 @@ export async function saveChallengesToDb() {
   }
 }
 
-saveChallengesToDb();
+export async function saveTracksToDb() {
+  const tracks = readdirSync(`${process.cwd()}/../../challenges`, {
+    withFileTypes: true,
+  })
+    .filter((dirent) => dirent.isDirectory())
+    .filter(
+      (dir) =>
+        ["dist", ".turbo", "node_modules", "src"].includes(
+          dir.name.toLowerCase()
+        ) === false
+    )
+    .map((dirent) => dirent.name);
+  for (const track of tracks) {
+    const trackConfig = JSON.parse(
+      readFileSync(
+        `${process.cwd()}/../../challenges/${track}/track.json`,
+        "utf-8"
+      )
+    );
+    const trackExists = await prisma.track.findFirst({
+      where: { slug: track },
+    });
+    delete trackConfig["$schema"];
+    if (trackExists) {
+      console.log(`Updating ${track}`);
+      await prisma.track.update({
+        where: { id: trackExists.id },
+        data: { ...trackConfig },
+      });
+    } else {
+      console.log(`Creating ${track}`);
+      await prisma.track.create({ data: { slug: track, ...trackConfig } });
+    }
+  }
+}
+saveTracksToDb().then(() => {
+  saveChallengesToDb().then(() => {});
+});
