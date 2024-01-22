@@ -40,19 +40,20 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
-  name          String?
-  email         String?     @unique
-  emailVerified DateTime?
-  image         String?
-  roles         Role[]
-  username      String?     @unique
-  accounts      Account[]
-  sessions      Session[]
-  tracks        Track[]
-  challenges    Challenge[]
-  comments      Comment[]
-  upvotes       Upvote[]
+  id               String      @id @default(cuid())
+  name             String?
+  email            String?     @unique
+  emailVerified    DateTime?
+  image            String?
+  roles            Role[]
+  username         String?     @unique
+  accounts         Account[]
+  sessions         Session[]
+  tracks           Track[]
+  challenges       Challenge[] @relation("ChallengeAuthors")
+  solvedChallenges Challenge[] @relation("ChallengeUsers")
+  comments         Comment[]
+  upvotes          Upvote[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -105,10 +106,12 @@ model Challenge {
   terminalConfig Json?
   /// commands to run when container is created
   commands       String[]
+  /// users who solved the challenge
+  solvers        User[]   @relation("ChallengeUsers")
 
   track    Track?    @relation(fields: [trackId], references: [id])
   trackId  String?
-  authors  User[]
+  authors  User[]    @relation("ChallengeAuthors")
   comments Comment[]
 
   createdAt DateTime @default(now())
