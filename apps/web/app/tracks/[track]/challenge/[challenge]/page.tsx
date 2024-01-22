@@ -45,6 +45,20 @@ async function Challenge({
                 authorId: data.user.id,
               },
             },
+            track: {
+              select: {
+                users: {
+                  select: { id: true },
+                  where: {
+                    username: {
+                      equals: data.user.username,
+                      mode: "insensitive",
+                    },
+                  },
+                },
+                name: true,
+              },
+            },
           }
         : undefined),
     },

@@ -2,10 +2,12 @@ import { PageProps } from "./$types";
 import ChallengeCard from "@/components/challenge-card";
 import Link from "next/link";
 import { prisma } from "@repo/db";
+import { auth } from "@/app/api/auth/[...nextauth]/route";
 
 export const dynamic = "force-dynamic";
 
 async function Challenges({ params }: PageProps) {
+  const session = await auth();
   const data = await prisma.challenge.findMany({
     where: {
       track: {
@@ -19,6 +21,28 @@ async function Challenges({ params }: PageProps) {
           id: true,
         },
       },
+      _count: {
+        select: {
+          comments: true,
+          solvers: true,
+          upvotes: true,
+        },
+      },
+      ...(session?.user?.username
+        ? {
+            solvers: {
+              select: {
+                id: true,
+              },
+              where: {
+                username: {
+                  equals: session.user.username,
+                  mode: "insensitive",
+                },
+              },
+            },
+          }
+        : undefined),
     },
   });
 

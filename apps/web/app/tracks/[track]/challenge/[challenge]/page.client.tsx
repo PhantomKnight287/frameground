@@ -92,7 +92,7 @@ function ChallengeTabs({
               </Tooltip>
             ))}
             <span className="text-muted-foreground ">•</span>
-            <span className="text-sm">{fromNow(challenge.updatedAt)}</span>
+            <span className="text-sm">{fromNow(challenge.createdAt)}</span>
           </div>
           <div className="flex flex-row my-2 gap-4">
             <Badge>{upperFirst(challenge.difficulty)}</Badge>
