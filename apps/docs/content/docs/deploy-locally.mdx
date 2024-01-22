@@ -38,12 +38,6 @@ cd packages/db
 pnpm migrate
 ```
 
-- Populating tracks & challenges in the database
-```bash
-pnpx tsc && node dist/scripts/index.js
-```
-
-
 ## Setting Up Github OAuth Keys
 
 [Follow this link](https://github.com/settings/applications/new) to create a new app filling the following required details on creation:
@@ -95,3 +89,13 @@ pnpm studio
 This will open the Prisma Studio in your browser. From there you can go to `User` table and in `roles` column add `Admin` to the user you want to make admin.
 
 Now you can access the admin panel at [localhost:3001](http://localhost:3001)
+
+
+
+## Populating tracks & challenges in the database
+
+In `packages/db` directory run the following command:
+
+```bash
+pnpx tsc && node dist/scripts/index.js
+```
