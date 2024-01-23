@@ -1,5 +1,6 @@
 import { Config } from "jest";
 
 export default {
-    verbose: true,
+  verbose: false,
+  bail: 1,
 } satisfies Config;

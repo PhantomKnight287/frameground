@@ -17,7 +17,7 @@
   {
     "type": "file",
     "name": "package.json",
-    "content": "{\n  \"name\": \"vite-project\",\n  \"private\": true,\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"lint\": \"eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"jest\": \"^29.7.0\",\n    \"react\": \"^18.2.0\",\n    \"react-dom\": \"^18.2.0\"\n  },\n  \"devDependencies\": {\n    \"@types/react\": \"^18.2.43\",\n    \"@types/react-dom\": \"^18.2.17\",\n    \"@vitejs/plugin-react\": \"^4.2.1\",\n    \"eslint\": \"^8.55.0\",\n    \"eslint-plugin-react\": \"^7.33.2\",\n    \"eslint-plugin-react-hooks\": \"^4.6.0\",\n    \"eslint-plugin-react-refresh\": \"^0.4.5\",\n    \"vite\": \"^5.0.8\"\n  }\n}\n"
+    "content": "{\n  \"name\": \"vite-project\",\n  \"private\": true,\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"lint\": \"eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0\",\n    \"preview\": \"vite preview\",\n    \"test\": \"jest\"\n  },\n  \"dependencies\": {\n    \"jest\": \"^29.7.0\",\n    \"react\": \"^18.2.0\",\n    \"react-dom\": \"^18.2.0\"\n  },\n  \"devDependencies\": {\n    \"@types/react\": \"^18.2.43\",\n    \"@types/react-dom\": \"^18.2.17\",\n    \"@vitejs/plugin-react\": \"^4.2.1\",\n    \"eslint\": \"^8.55.0\",\n    \"eslint-plugin-react\": \"^7.33.2\",\n    \"eslint-plugin-react-hooks\": \"^4.6.0\",\n    \"eslint-plugin-react-refresh\": \"^0.4.5\",\n    \"vite\": \"^5.0.8\"\n  }\n}\n"
   },
   {
     "type": "file",
