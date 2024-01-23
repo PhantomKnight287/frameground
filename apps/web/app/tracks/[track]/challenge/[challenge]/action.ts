@@ -3,7 +3,6 @@
 import { auth } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@repo/db";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function upvoteChallenge(
   challengeId: string,
@@ -38,6 +37,23 @@ export async function upvoteChallenge(
   revalidatePath(`/tracks/${trackSlug}/challenge/${challengeSlug}`);
 }
 
+export async function attemptChallenge(challengeId: string, output: string) {
+  const session = await auth();
+  if (!session) {
+    return { error: "not authenticated" };
+  }
+  const { user } = session;
+  const attempt = await prisma.solves.create({
+    data: {
+      type: "failed",
+      output,
+      challengeId,
+      userId: user!.id,
+    },
+  });
+  return { id: attempt.id };
+}
+
 export async function solveChallenge(
   challengeId: string,
   enrollInTrack: boolean
@@ -48,19 +64,19 @@ export async function solveChallenge(
   }
   const { user } = session;
   const existingSolved = await prisma.challenge.findFirst({
-    where: { id: challengeId, solvers: { some: { id: user!.id } } },
+    where: { id: challengeId, solves: { some: { userId: user!.id } } },
     select: { track: { select: { slug: true } }, slug: true, trackId: true },
   });
   if (existingSolved) {
-    redirect(
-      `/tracks/${existingSolved.track?.slug}/challenge/${existingSolved.slug}/solved`
-    );
+    return {
+      url: `/tracks/${existingSolved.track?.slug}/challenge/${existingSolved.slug}/solved`,
+    };
   }
   const _tx = await prisma.$transaction(async (tx) => {
     const solved = await tx.challenge.update({
       where: { id: challengeId },
       data: {
-        solvers: { connect: { username: user!.username } },
+        solves: { create: { userId: user!.id } },
       },
       select: { trackId: true, slug: true, track: { select: { slug: true } } },
     });
@@ -78,5 +94,7 @@ export async function solveChallenge(
     }
     return solved;
   });
-  redirect(`/tracks/${_tx.track?.slug}/challenge/${_tx.slug}/solved`);
+  return {
+    url: `/tracks/${_tx.track?.slug}/challenge/${_tx.slug}/solved`,
+  };
 }

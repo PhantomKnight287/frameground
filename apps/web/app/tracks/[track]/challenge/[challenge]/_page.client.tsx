@@ -7,14 +7,10 @@ import {
 } from "@/components/ui/resizable";
 import MonacoEditor from "@repo/monaco";
 import MonacoSidebar from "@repo/monaco/sidebar";
-import {
-  ChallengeFilesStructure,
-  FrameGroundChallengeExport,
-} from "@repo/challenges/src";
+import { FrameGroundChallengeExport } from "@repo/challenges/src";
 import { cn } from "@repo/utils";
 import { Challenge, Upvote } from "@repo/db/types";
 import { useEditorFileState } from "@repo/monaco/state";
-import { getActiveFileContent, getNestedPath } from "@repo/monaco/utils";
 import ChallengeTabs from "./page.client";
 import { User } from "next-auth/types";
 import { Fragment, useEffect, useRef, useState, useTransition } from "react";
@@ -24,18 +20,10 @@ import {
   createWebContainerInstance,
   FileSystemTree,
   WebContainerInstance,
+  WebContainerProcess,
 } from "@repo/containers";
 import { FitAddon } from "xterm-addon-fit";
-import { Button } from "@/components/ui/button";
-import {
-  ArrowUpRightFromCircle,
-  Columns2,
-  Columns3,
-  ExternalLink,
-  PanelLeftClose,
-  PanelLeftOpen,
-  RotateCcw,
-} from "lucide-react";
+import { ExternalLink, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -45,6 +33,7 @@ import { toast } from "sonner";
 import { generateFilePath, isFileEditable } from "./functions";
 import EnrollInTrack from "./_components/enroll";
 import { solveChallenge } from "./action";
+import { signIn, useSession } from "next-auth/react";
 
 let timeout: NodeJS.Timeout;
 
@@ -88,10 +77,11 @@ export default function Editor({
   fileSystem?: FileSystemTree;
   files: FrameGroundChallengeExport["files"];
 }) {
+  const session = useSession();
   const [_, startTransition] = useTransition();
   const { replace } = useRouter();
   const { activeFile, setActiveFile } = useEditorFileState();
-  const [] = useState(false);
+
   const [Terminal, terminalRef] = useTerminal({
     options: {
       cursorBlink: false,
@@ -107,6 +97,7 @@ export default function Editor({
   const rendered = useRef(false);
   const [content, setContent] = useState("");
   const containerRef = useRef<WebContainerInstance | undefined>(undefined);
+  const shellProcessRef = useRef<WebContainerProcess | undefined>(undefined);
   async function readFile(path: string) {
     const fileExtension = path.split(".").pop();
     //@ts-expect-error
@@ -139,6 +130,7 @@ export default function Editor({
             },
           })
         );
+        const code = await log.exit;
       }
     }
     readFile(
@@ -152,6 +144,7 @@ export default function Editor({
         rows: terminalRef?.rows,
       },
     });
+    shellProcessRef.current = shellProcess;
 
     shellProcess.output.pipeTo(
       new WritableStream({
@@ -175,9 +168,10 @@ export default function Editor({
   const [enrollModalOpened, setEnrollModalOpened] = useState(false);
 
   useEffect(() => {
-    if (terminalRef) run();
+    if (terminalRef && challenge.playgroundNeeded) run();
     return () => {
       containerRef?.current?.teardown();
+      terminalRef?.dispose();
     };
   }, [terminalRef]);
 
@@ -217,6 +211,8 @@ export default function Editor({
           const res = await solveChallenge(challenge.id, true);
           if (res?.error) {
             toast.error(res.error);
+          } else if (res?.url) {
+            replace(res.url);
           }
         }}
       />
@@ -342,21 +338,27 @@ export default function Editor({
                           onClick={async () => {
                             terminalRef?.clear();
                             fitAddon.fit();
-                            terminalRef?.write("pnpm jest\n");
+                            terminalRef?.write("pnpm test\n");
                             const process = await containerRef.current?.spawn(
                               "pnpm",
-                              ["jest"],
+                              ["test", "--bail"],
                               {}
                             );
+                            const output: string[] = [];
                             process?.output.pipeTo(
                               new WritableStream({
                                 write(data) {
                                   terminalRef?.write(data);
+                                  output.push(data);
                                 },
                               })
                             );
-                            if ((await process?.exit) === 0)
-                              setTestsPassed(true);
+                            // get the last output in output array
+                            process?.output.pipeThrough;
+
+                            const code = await process?.exit;
+                            console.log(code);
+                            if (code === 0) setTestsPassed(true);
                             else setTestsPassed(false);
                           }}
                           disabled={testsPassed}
@@ -365,7 +367,11 @@ export default function Editor({
                         </button>
                         <button
                           className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-4 py-1 rounded-md"
+                          disabled={!session?.data?.user?.id}
                           onClick={async () => {
+                            if (!session?.data?.user?.id) {
+                              return signIn("github");
+                            }
                             if (!testsPassed)
                               return toast.error(
                                 "Run the tests before submitting"
@@ -379,11 +385,15 @@ export default function Editor({
                               );
                               if (res?.error) {
                                 toast.error(res.error);
+                              } else if (res.url) {
+                                replace(res.url);
                               }
                             }
                           }}
                         >
-                          Submit
+                          {session?.data?.user?.id
+                            ? "Submit"
+                            : "Login to Submit"}
                         </button>
                       </div>
                     </div>

@@ -28,7 +28,7 @@ function UpVote({
             "gap-2 border border-transparent [&:not(:disabled)]:hover:border-emerald-600  [&:not(:disabled)]:hover:text-emerald-600 bg-gray-500",
             {
               "border-emerald-600 text-white bg-emerald-600":
-                challenge.upvotes.length > 0,
+                challenge.upvotes?.length > 0,
             }
           )}
           variant="secondary"

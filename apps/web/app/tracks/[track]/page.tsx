@@ -15,30 +15,21 @@ async function Challenges({ params }: PageProps) {
       },
     },
     include: {
-      authors: {
-        select: {
-          username: true,
-          id: true,
-        },
-      },
       _count: {
         select: {
           comments: true,
-          solvers: true,
+          solves: true,
           upvotes: true,
         },
       },
       ...(session?.user?.username
         ? {
-            solvers: {
+            solves: {
               select: {
                 id: true,
               },
               where: {
-                username: {
-                  equals: session.user.username,
-                  mode: "insensitive",
-                },
+                user: { username: session.user.username },
               },
             },
           }

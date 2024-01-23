@@ -14,15 +14,15 @@ function ChallengeCard({
   challenge,
 }: {
   challenge: Challenge & {
-    authors: Pick<User, "id" | "username">[];
-    _count: { comments: number; upvotes: number; solvers: number };
-    solvers?: { id: string }[];
+    authors: string[];
+    _count: { comments: number; upvotes: number; solves: number };
+    solves?: { id: string }[];
   };
 }) {
   return (
     <div className="relative">
-      <div className="absolute -top-2 -right-1 z-10">
-        {challenge.solvers?.length ? (
+      <div className="absolute -top-2 -right-1 z-10 bg-background">
+        {challenge.solves?.length ? (
           <BadgeCheck className="text-green-500" size={25} />
         ) : null}
       </div>
@@ -66,18 +66,18 @@ function ChallengeCard({
               </div>
               <div className="flex flex-row items-center gap-2">
                 <User2 size={18} />
-                {challenge._count.solvers}
+                {challenge._count.solves}
               </div>
             </div>
             <div className="flex flex-row items-center justify-start text-sm">
               <div className="flex flex-row flex-wrap">
                 {challenge.authors.map((author) => (
                   <a
-                    href={`/@${author.username}`}
+                    href={`/@${author}`}
                     className="mr-2 flex flex-row items-center"
-                    key={author.id}
+                    key={author}
                   >
-                    <Badge variant={"secondary"}>{author.username}</Badge>
+                    <Badge variant={"secondary"}>{author}</Badge>
                   </a>
                 ))}
               </div>

@@ -28,11 +28,26 @@ async function Challenge({
       },
     },
     include: {
-      authors: true,
       _count: {
         select: {
           comments: true,
           upvotes: true,
+        },
+      },
+      track: {
+        select: {
+          users: data?.user?.username
+            ? {
+                select: { id: true },
+                where: {
+                  username: {
+                    equals: data.user.username,
+                    mode: "insensitive",
+                  },
+                },
+              }
+            : undefined,
+          name: true,
         },
       },
       ...(data?.user?.id
@@ -43,20 +58,6 @@ async function Challenge({
               },
               where: {
                 authorId: data.user.id,
-              },
-            },
-            track: {
-              select: {
-                users: {
-                  select: { id: true },
-                  where: {
-                    username: {
-                      equals: data.user.username,
-                      mode: "insensitive",
-                    },
-                  },
-                },
-                name: true,
               },
             },
           }
