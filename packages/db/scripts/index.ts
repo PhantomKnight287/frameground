@@ -92,7 +92,6 @@ export async function saveChallengesToDb() {
           target: 1,
         },
       });
-      console.log(eval(jestResult.outputText));
       const challengeConfigObject: FrameGroundChallengeExport = eval(
         result.outputText
       );
@@ -160,9 +159,7 @@ export async function saveChallengesToDb() {
             jestConfig: eval(jestResult.outputText),
             commands: challengeData.setup_commands,
             authors: {
-              connect: challengeData.author.map((author) => ({
-                username: author,
-              })),
+              set: challengeData.author,
             },
             initialFiles: challengeConfigObject.files as any,
           },
@@ -183,9 +180,7 @@ export async function saveChallengesToDb() {
             jestConfig: eval(jestResult.outputText),
             terminalConfig: eval(terminalConfigResult.outputText),
             authors: {
-              connect: challengeData.author.map((author) => ({
-                username: author,
-              })),
+              set: challengeData.author,
             },
             initialFiles: challengeConfigObject.files as any,
           },
