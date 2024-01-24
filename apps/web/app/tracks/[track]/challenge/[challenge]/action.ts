@@ -56,22 +56,14 @@ export async function attemptChallenge(challengeId: string, output: string) {
 
 export async function solveChallenge(
   challengeId: string,
-  enrollInTrack: boolean
+  enrollInTrack: boolean,
+  output: string
 ) {
   const session = await auth();
   if (!session) {
     return { error: "not authenticated" };
   }
   const { user } = session;
-  const existingSolved = await prisma.challenge.findFirst({
-    where: { id: challengeId, solves: { some: { userId: user!.id } } },
-    select: { track: { select: { slug: true } }, slug: true, trackId: true },
-  });
-  if (existingSolved) {
-    return {
-      url: `/tracks/${existingSolved.track?.slug}/challenge/${existingSolved.slug}/solved`,
-    };
-  }
   const _tx = await prisma.$transaction(async (tx) => {
     const solved = await tx.challenge.update({
       where: { id: challengeId },
@@ -79,6 +71,14 @@ export async function solveChallenge(
         solves: { create: { userId: user!.id } },
       },
       select: { trackId: true, slug: true, track: { select: { slug: true } } },
+    });
+    await tx.solves.create({
+      data: {
+        type: "accepted",
+        output,
+        challengeId,
+        userId: user!.id,
+      },
     });
     if (enrollInTrack) {
       await prisma.track.update({

@@ -72,11 +72,6 @@ async function Challenge({
       type: "file",
     },
     {
-      name: "test.spec.ts",
-      content: challenge.tests,
-      type: "file",
-    },
-    {
       name: "jest.config.json",
       content: JSON.stringify(challenge.jestConfig, null, 2),
       type: "file",

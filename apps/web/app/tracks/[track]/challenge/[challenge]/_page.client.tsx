@@ -32,7 +32,7 @@ import {
 import { toast } from "sonner";
 import { generateFilePath, isFileEditable } from "./functions";
 import EnrollInTrack from "./_components/enroll";
-import { solveChallenge } from "./action";
+import { attemptChallenge, solveChallenge } from "./action";
 import { signIn, useSession } from "next-auth/react";
 
 let timeout: NodeJS.Timeout;
@@ -117,7 +117,29 @@ export default function Editor({
     _container.on("server-ready", (_, url) => {
       setIFrameUrl(url);
     });
-    if (fileSystem) _container.mount(fileSystem);
+    if (fileSystem)
+      _container.mount({
+        ...fileSystem,
+        "index.spec.ts": { file: { contents: challenge.tests } },
+        "run-tests.js": {
+          file: {
+            contents: `import { execSync } from "child_process";
+const command = "pnpm jest --colors --bail 2> jestOutput.txt";
+
+(async () => {
+  try {
+    execSync(command, { stdio: "pipe", encoding: "utf-8" });
+    execSync("cat jestOutput.txt", { stdio: "inherit" });
+    process.exit(0);
+  } catch (error) {
+    process.exit(1);
+  }
+})();
+
+`,
+          },
+        },
+      });
     if (challenge.commands?.length) {
       for (const command of challenge.commands) {
         const binary = command.split(" ")[0];
@@ -166,6 +188,7 @@ export default function Editor({
   const [language, setLanguage] = useState("javascript");
   const [testsPassed, setTestsPassed] = useState(false);
   const [enrollModalOpened, setEnrollModalOpened] = useState(false);
+  const [jestOutput, setJestOutput] = useState("");
 
   useEffect(() => {
     if (terminalRef && challenge.playgroundNeeded) run();
@@ -208,7 +231,7 @@ export default function Editor({
         setOpen={setEnrollModalOpened}
         trackName={challenge.track.name}
         onConfirm={async () => {
-          const res = await solveChallenge(challenge.id, true);
+          const res = await solveChallenge(challenge.id, true, jestOutput);
           if (res?.error) {
             toast.error(res.error);
           } else if (res?.url) {
@@ -338,28 +361,41 @@ export default function Editor({
                           onClick={async () => {
                             terminalRef?.clear();
                             fitAddon.fit();
-                            terminalRef?.write("pnpm test\n");
+                            terminalRef?.write("pnpm test\n"); // this is just to show the user that the tests are running
                             const process = await containerRef.current?.spawn(
-                              "pnpm",
-                              ["test", "--bail"],
-                              {}
+                              "node",
+                              ["./run-tests.js"],
+                              { env: { CI: true } }
                             );
-                            const output: string[] = [];
                             process?.output.pipeTo(
                               new WritableStream({
                                 write(data) {
                                   terminalRef?.write(data);
-                                  output.push(data);
                                 },
                               })
                             );
-                            // get the last output in output array
-                            process?.output.pipeThrough;
 
                             const code = await process?.exit;
-                            console.log(code);
                             if (code === 0) setTestsPassed(true);
                             else setTestsPassed(false);
+                            const jestLog =
+                              await containerRef.current?.fs?.readFile(
+                                "jestOutput.txt",
+                                "utf-8"
+                              );
+                            setJestOutput(jestLog || "");
+                            console.log("attempting challenge");
+                            console.log(code);
+                            terminalRef?.write(
+                              jestLog || "No Jest Output Found"
+                            );
+                            if (code !== 0) {
+                              await attemptChallenge(
+                                challenge.id,
+                                jestLog || ""
+                              );
+                            }
+                            await containerRef.current?.fs.rm("jestOutput.txt");
                           }}
                           disabled={testsPassed}
                         >
@@ -381,7 +417,8 @@ export default function Editor({
                             } else {
                               const res = await solveChallenge(
                                 challenge.id,
-                                false
+                                false,
+                                jestOutput
                               );
                               if (res?.error) {
                                 toast.error(res.error);
