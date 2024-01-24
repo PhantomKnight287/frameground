@@ -129,10 +129,10 @@ export default {
 
 Incase you want to extend default template of frameworks like vite, nextjs etc you can use files in `challenges` folder, they're called `<framework>.json` eg: `vite.json`.
 
-Creating a new challenge whose json doesn't exist? No problem, use the rust code in `parser` folder to generate the json file.
+Creating a new challenge whose json doesn't exist? No problem, use the cli in `parser` folder to generate the json file.
 
 ```bash title="Generate files.json"
-cargo run parse -f../nextjs
+cargo run parse -f ../nextjs
 ```
 
 here `../nextjs` is the path to the template folder. Just make sure there are no images, videos or audio files in the template folder as parser cannot handle them.
@@ -149,6 +149,18 @@ describe("It Should Work", () => {
     expect(1).toBe(1);
   });
 });
+```
+
+## Creating Jest Config
+
+You must create a `jest.config.ts` file in root of the challenge. Below is an example of `jest.config.js` file.
+
+```js title="challenges/react/setting-up-project/jest.config.ts"
+import { Config } from "jest";
+
+export default {
+  verbose: false,
+} satisfies Config;
 ```
 
 ## Creating Editable Files
