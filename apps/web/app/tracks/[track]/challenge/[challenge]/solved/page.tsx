@@ -2,25 +2,13 @@ import { PageProps } from "./$types";
 import { prisma } from "@repo/db";
 import { auth } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import SolvedPageTabs from "./page.client";
 import { parseToNumber } from "@/utils";
 import { z } from "zod";
 import { Solvetype } from "@repo/db/types";
-import { FitAddon } from "xterm-addon-fit";
-import nextDynamic from "next/dynamic";
-import Resizable from "./resizable";
 import Comments from "./_components/comments";
+import Resizable from "./resizable";
 
 export const dynamic = "force-dynamic";
-
-const JestOutputRenderer = nextDynamic(() => import("./_components/terminal"), {
-  ssr: false,
-});
 
 async function Solved({ params, searchParams }: PageProps) {
   const data = await auth();
@@ -44,6 +32,12 @@ async function Solved({ params, searchParams }: PageProps) {
       type: true,
       output: true,
       createdAt: true,
+      challenge: {
+        select: {
+          id: true,
+          trackId: true,
+        },
+      },
     },
     orderBy: [
       {
@@ -91,6 +85,9 @@ async function Solved({ params, searchParams }: PageProps) {
         <Comments
           trackSlug={params.track as string}
           challengeSlug={params.challenge as string}
+          sortBy={searchParams.sort_comments as "oldest" | "newest"}
+          challengeId={solves?.result[0]!.challenge.id}
+          trackId={solves?.result[0]!.challenge.trackId!}
         />
       }
     />

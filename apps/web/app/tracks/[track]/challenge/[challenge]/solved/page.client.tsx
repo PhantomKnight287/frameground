@@ -145,7 +145,7 @@ function SolvedPageTabs({
       </TabsContent>
       <TabsContent value="solutions">Change your password here.</TabsContent>
       <TabsContent value="comments">
-        <div className="flex flex-row items-center justify-start my-1 gap-4 p-2 px-4 border-t-2 border-b-2 border-zinc-300 dark:border-zinc-700">
+        <div className="flex flex-row items-center justify-start my-1 gap-4 p-2 px-0 border-t-2 border-zinc-300 dark:border-zinc-700">
           {CommentsSection}
         </div>
       </TabsContent>

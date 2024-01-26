@@ -4,12 +4,11 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import React, { ReactNode, useEffect, useMemo } from "react";
+import React, { ReactNode } from "react";
 import SolvedPageTabs from "./page.client";
 import { Solves } from "@repo/db/types";
-import JestOutputRenderer from "./_components/terminal";
+import JestOutputRenderer from "./_components/output";
 import { cn } from "@repo/utils";
-import Comments from "./_components/comments";
 
 function Resizable({
   solves,
