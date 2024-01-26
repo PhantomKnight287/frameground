@@ -33,6 +33,7 @@
   "dependencies": {
     "@prisma/client": "^5.7.1",
     "@webcontainer/api": "^1.1.8",
-    "dotenv-cli": "^7.3.0"
+    "dotenv-cli": "^7.3.0",
+    "prisma-paginate": "^5.2.1"
   }
 }
