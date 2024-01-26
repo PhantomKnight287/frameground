@@ -20,6 +20,14 @@ const nextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/github-avatar/:username",
+        destination: "https://github.com/:username.png",
+      },
+    ];
+  },
 };
 
 export default withNextJSRouteTypes(nextConfig);
