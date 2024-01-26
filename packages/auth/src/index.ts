@@ -41,7 +41,7 @@ export const authOptions: NextAuthConfig = {
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
   ],
-  adapter: PrismaAdapter(prisma) as any,
+  adapter: PrismaAdapter(prisma as any) as any,
   callbacks: {
     session: async ({ session, user }: { session: Session; user: User }) => {
       const userId = user.image.split("/")[4].replaceAll("?v=4", "");
