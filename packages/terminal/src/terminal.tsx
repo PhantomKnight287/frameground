@@ -3,6 +3,7 @@ import { Terminal as XtermTerminal } from "xterm";
 import { TerminalProps } from ".";
 import "xterm/css/xterm.css";
 import { useEffect, useRef, useState } from "react";
+import { cn } from "@repo/utils";
 
 export function useTerminal({
   className,
@@ -49,8 +50,9 @@ export function useTerminal({
     if (ref.current && terminal) terminal.open(ref.current);
   }, [ref.current, terminal]);
 
-  const _className = className || "terminal";
-  const TerminalElement = () => <div className={_className} ref={ref} />;
+  const TerminalElement = () => (
+    <div className={cn("terminal", className)} ref={ref} />
+  );
 
   return [TerminalElement, terminal] as const;
 }
