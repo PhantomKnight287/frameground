@@ -124,12 +124,10 @@ export default function Editor({
         "run-tests.js": {
           file: {
             contents: `import { execSync } from "child_process";
-const command = "pnpm jest --colors --bail 2> jestOutput.txt";
-
+const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
 (async () => {
   try {
     execSync(command, { stdio: "pipe", encoding: "utf-8" });
-    execSync("cat jestOutput.txt", { stdio: "inherit" });
     process.exit(0);
   } catch (error) {
     process.exit(1);
@@ -364,10 +362,13 @@ const command = "pnpm jest --colors --bail 2> jestOutput.txt";
                             terminalRef?.write("pnpm test\n"); // this is just to show the user that the tests are running
                             const process = await containerRef.current?.spawn(
                               "node",
-                              ["./run-tests.js"],
-                              { env: { CI: true } }
+                              ["./run-tests.js"]
                             );
-                            process?.output.pipeTo(
+                            const jestOutputProcess =
+                              await containerRef.current?.spawn("pnpm", [
+                                "test",
+                              ]);
+                            jestOutputProcess?.output.pipeTo(
                               new WritableStream({
                                 write(data) {
                                   terminalRef?.write(data);
@@ -384,11 +385,6 @@ const command = "pnpm jest --colors --bail 2> jestOutput.txt";
                                 "utf-8"
                               );
                             setJestOutput(jestLog || "");
-                            console.log("attempting challenge");
-                            console.log(code);
-                            terminalRef?.write(
-                              jestLog || "No Jest Output Found"
-                            );
                             if (code !== 0) {
                               await attemptChallenge(
                                 challenge.id,
