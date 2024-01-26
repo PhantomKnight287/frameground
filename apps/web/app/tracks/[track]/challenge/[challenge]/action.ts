@@ -59,6 +59,10 @@ export async function solveChallenge(
   enrollInTrack: boolean,
   output: string
 ) {
+  if (!output)
+    return {
+      error: "no output provided",
+    };
   const session = await auth();
   if (!session) {
     return { error: "not authenticated" };
@@ -68,20 +72,12 @@ export async function solveChallenge(
     const solved = await tx.challenge.update({
       where: { id: challengeId },
       data: {
-        solves: { create: { userId: user!.id } },
+        solves: { create: { userId: user!.id, type: "accepted", output } },
       },
       select: { trackId: true, slug: true, track: { select: { slug: true } } },
     });
-    await tx.solves.create({
-      data: {
-        type: "accepted",
-        output,
-        challengeId,
-        userId: user!.id,
-      },
-    });
     if (enrollInTrack) {
-      await prisma.track.update({
+      await tx.track.update({
         where: { id: solved.trackId as string },
         data: {
           users: {
