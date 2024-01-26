@@ -1,4 +1,3 @@
-import React from "react";
 import { PageProps } from "./$types";
 import { prisma } from "@repo/db";
 import { auth } from "@/app/api/auth/[...nextauth]/route";
@@ -9,75 +8,92 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import SolvedPageTabs from "./page.client";
+import { parseToNumber } from "@/utils";
+import { z } from "zod";
+import { Solvetype } from "@repo/db/types";
+import { FitAddon } from "xterm-addon-fit";
+import nextDynamic from "next/dynamic";
+import Resizable from "./resizable";
+import Comments from "./_components/comments";
+
+export const dynamic = "force-dynamic";
+
+const JestOutputRenderer = nextDynamic(() => import("./_components/terminal"), {
+  ssr: false,
+});
 
 async function Solved({ params, searchParams }: PageProps) {
   const data = await auth();
-  if (!data) redirect("/api/auth/signin");
-  const solve = await prisma.solves.findFirst({
+  if (!data || !data.user) redirect("/api/auth/signin");
+  const solves = await prisma.solves.paginate({
+    limit: parseToNumber(searchParams.limit as string, 10),
+    page: parseToNumber(searchParams.page as string, 1),
     where: {
-      challenge: { slug: params.challenge, track: { slug: params.track } },
-    },
-    include: {
       challenge: {
-        include: {
-          _count: {
-            select: {
-              comments: true,
-              upvotes: true,
-            },
-          },
-          track: {
-            select: {
-              users: data?.user?.username
-                ? {
-                    select: { id: true },
-                    where: {
-                      username: {
-                        equals: data.user.username,
-                        mode: "insensitive",
-                      },
-                    },
-                  }
-                : undefined,
-              name: true,
-            },
-          },
-          ...(data?.user?.id
-            ? {
-                upvotes: {
-                  select: {
-                    id: true,
-                  },
-                  where: {
-                    authorId: data.user.id,
-                  },
-                },
-              }
-            : undefined),
+        slug: params.challenge as string,
+        track: {
+          slug: params.track as string,
         },
       },
-      user: true,
+      type: z.nativeEnum(Solvetype).safeParse(searchParams.status).success
+        ? (searchParams.status as Solvetype)
+        : undefined,
     },
+    select: {
+      id: true,
+      type: true,
+      output: true,
+      createdAt: true,
+    },
+    orderBy: [
+      {
+        createdAt: "desc",
+      },
+    ],
   });
-  if (!solve) redirect(`/tracks/${params.track}/challenge/${params.challenge}`);
+  if (!solves?.count)
+    redirect(`/tracks/${params.track}/challenge/${params.challenge}`);
+  const solveToShow = z.string().cuid().safeParse(searchParams.attempt).success
+    ? await prisma.solves.findFirst({
+        where: {
+          id: searchParams.attempt as string,
+          challenge: {
+            slug: params.challenge as string,
+            track: {
+              slug: params.track as string,
+            },
+          },
+          userId: data.user.id,
+        },
+      })
+    : await prisma.solves.findFirst({
+        where: {
+          type: "accepted",
+          challenge: {
+            slug: params.challenge as string,
+            track: {
+              slug: params.track as string,
+            },
+          },
+          userId: data.user.id,
+        },
+        orderBy: [
+          {
+            createdAt: "desc",
+          },
+        ],
+      });
   return (
-    <div className="p-4 h-screen">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel>
-          <SolvedPageTabs
-            challenge={solve}
-            currentTab={searchParams.tab as string}
-            params={params}
-          />
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel className="bg-border rounded-md p-4">
-          <h1 className="text-2xl font-semibold text-green-500">
-            Congratulations! You solved the challenge!
-          </h1>
-        </ResizablePanel>
-      </ResizablePanelGroup>
-    </div>
+    <Resizable
+      solves={solves?.result}
+      solveToShow={solveToShow}
+      CommentsSection={
+        <Comments
+          trackSlug={params.track as string}
+          challengeSlug={params.challenge as string}
+        />
+      }
+    />
   );
 }
 
