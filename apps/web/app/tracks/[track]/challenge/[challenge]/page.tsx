@@ -7,10 +7,34 @@ import {
   FrameGroundChallengeExport,
 } from "@repo/challenges/src";
 import { FileSystemTree } from "@repo/containers";
-import { inspect } from "util";
+import { PageProps } from "../../$types";
+import { Metadata } from "next";
 
-// do not remove this line
-const REPO_MONACO_CLASSNAMES = ["pl-4", "pl-2"];
+export async function generateMetadata({
+  params,
+}: {
+  params: { track: string; challenge: string };
+}): Promise<Metadata> {
+  const challenge = await prisma.challenge.findFirst({
+    where: {
+      slug: params.challenge,
+      track: {
+        slug: params.track,
+      },
+    },
+    include: {
+      track: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+  return {
+    title: `${challenge?.label} | ${challenge?.track!.name}`,
+    description: challenge?.description,
+  };
+}
 
 async function Challenge({
   params,
