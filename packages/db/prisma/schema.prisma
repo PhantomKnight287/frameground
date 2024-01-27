@@ -40,20 +40,21 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   roles         Role[]
-  username      String?   @unique
+  username      String?    @unique
   accounts      Account[]
   sessions      Session[]
   tracks        Track[]
-
-  solves   Solves[]
-  comments Comment[]
-  upvotes  Upvote[]
+  solves        Solves[]
+  comments      Comment[]
+  upvotes       Upvote[]
+  reports       Report[]
+  solutions     Solution[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -153,6 +154,8 @@ model Comment {
 
   track   Track?  @relation(fields: [trackId], references: [id])
   trackId String?
+
+  reports Report[]
 }
 
 model Upvote {
@@ -168,6 +171,46 @@ model Upvote {
 
   track   Track?  @relation(fields: [trackId], references: [id])
   trackId String?
+}
+
+model Report {
+  id       String @id @unique @default(cuid())
+  content  String
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  status ReportStatus @default(pending)
+
+  comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Solution {
+  id          String @id @unique @default(cuid())
+  title       String
+  description String
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  files     File[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model File {
+  id      String @id @unique @default(cuid())
+  name    String
+  content String
+
+  solution   Solution @relation(fields: [solutionId], references: [id])
+  solutionId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Difficulty {
@@ -186,4 +229,10 @@ enum TrackStatus {
 enum Role {
   user
   admin
+}
+
+enum ReportStatus {
+  pending
+  accepted
+  rejected
 }
