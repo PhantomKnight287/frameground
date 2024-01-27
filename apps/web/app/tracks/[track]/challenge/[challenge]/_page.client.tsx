@@ -13,7 +13,14 @@ import { Challenge, Upvote } from "@repo/db/types";
 import { useEditorFileState } from "@repo/monaco/state";
 import ChallengeTabs from "./page.client";
 import { User } from "next-auth/types";
-import { Fragment, useEffect, useRef, useState, useTransition } from "react";
+import {
+  Fragment,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useTerminal } from "@repo/terminal";
 import {
@@ -62,6 +69,7 @@ export default function Editor({
   queryParams,
   fileSystem,
   files,
+  CommentsSection,
 }: {
   challenge: Challenge & {
     authors: User[];
@@ -76,6 +84,7 @@ export default function Editor({
   params: Record<"track" | "challenge", string>;
   fileSystem?: FileSystemTree;
   files: FrameGroundChallengeExport["files"];
+  CommentsSection: ReactNode;
 }) {
   const session = useSession();
   const [_, startTransition] = useTransition();
@@ -302,6 +311,7 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
               challenge={challenge}
               params={params}
               queryParams={queryParams}
+              CommentsSection={CommentsSection}
             />
           ) : (
             <ResizablePanelGroup direction="horizontal">

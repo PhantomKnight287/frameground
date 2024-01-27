@@ -4,6 +4,8 @@ import CreateComment from "./comment-modal";
 import FilterButton from "./filter-buttons";
 import { fromNow } from "@/utils/time";
 import Link from "next/link";
+import CommentsMenu from "./comment-menu";
+import { auth } from "@/app/api/auth/[...nextauth]/route";
 
 async function Comments({
   challengeSlug,
@@ -46,6 +48,7 @@ async function Comments({
       createdAt: true,
     },
   });
+  const session = await auth();
 
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -90,9 +93,10 @@ async function Comments({
                 </div>
               </div>
               <div className="flex flex-row gap-2">
-                <button className="text-sm text-muted-foreground hover:text-muted-foreground-hover">
-                  Report
-                </button>
+                <CommentsMenu
+                  canDelete={session?.user?.id === comment.author.id}
+                  commentId={comment.id}
+                />
               </div>
             </div>
           </div>

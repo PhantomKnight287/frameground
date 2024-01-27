@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@repo/utils";
 import { SubmitButton } from "@/components/submit";
+import { useEffect, useState } from "react";
 
 function CreateComment({
   challengeId,
@@ -23,8 +24,15 @@ function CreateComment({
   trackId: string;
 }) {
   const [state, action] = useFormState(createComment, null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (state?.id) {
+      setIsDialogOpen(false);
+    }
+  }, [state]);
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button size="pill">Create Comment</Button>
       </DialogTrigger>

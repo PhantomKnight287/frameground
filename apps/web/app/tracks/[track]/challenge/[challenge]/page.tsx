@@ -9,6 +9,7 @@ import {
 import { FileSystemTree } from "@repo/containers";
 import { PageProps } from "../../$types";
 import { Metadata } from "next";
+import Comments from "./solved/_components/comments";
 
 export async function generateMetadata({
   params,
@@ -72,6 +73,8 @@ async function Challenge({
               }
             : undefined,
           name: true,
+          slug: true,
+          id: true,
         },
       },
       ...(data?.user?.id
@@ -157,6 +160,15 @@ async function Challenge({
           fileSystem={fileSystem}
           queryParams={searchParams}
           files={files as any}
+          CommentsSection={
+            <Comments
+              sortBy={searchParams.sort_comments as "oldest" | "newest"}
+              challengeId={challenge.id}
+              trackId={challenge.trackId!}
+              trackSlug={challenge.track!.slug}
+              challengeSlug={challenge.slug}
+            />
+          }
         />
       </div>
     </div>

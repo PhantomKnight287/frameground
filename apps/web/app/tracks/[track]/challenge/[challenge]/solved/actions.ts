@@ -43,3 +43,34 @@ export async function createComment(prev: any, data: FormData) {
   );
   return { id: comment.id };
 }
+
+export async function deleteComment(commentId: string) {
+  // check if user is the author of the comment
+  const session = await auth();
+  if (!session) {
+    return { error: "not authenticated" };
+  }
+  const { user } = session;
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id: commentId,
+      authorId: user!.id,
+    },
+    include: {
+      track: true,
+      challenge: true,
+    },
+  });
+  if (!comment) {
+    return { error: "You are not the author of this comment" };
+  }
+  await prisma.comment.delete({
+    where: {
+      id: commentId,
+    },
+  });
+  revalidatePath(
+    `/tracks/${comment.track!.slug}/challenge/${comment.challenge!.slug}/solved`
+  );
+  return { success: true };
+}

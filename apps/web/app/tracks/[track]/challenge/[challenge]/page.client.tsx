@@ -1,15 +1,16 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React from "react";
+import React, { ReactNode } from "react";
 import { Challenge, Upvote, User } from "@repo/db/types";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ChallengeDescription from "@/components/challenge/description";
 
 function ChallengeTabs({
   challenge,
   params,
   queryParams,
+  CommentsSection,
 }: {
   queryParams?: { tab?: string };
   challenge: Challenge & {
@@ -18,39 +19,50 @@ function ChallengeTabs({
     _count: { upvotes: number };
   };
   params: Record<"track" | "challenge", string>;
+  CommentsSection: ReactNode;
 }) {
   const { replace } = useRouter();
   const pathName = usePathname();
+  const search = useSearchParams();
   return (
-    <Tabs
-      defaultValue={queryParams?.tab || "description"}
-      onChange={(value) =>
-        replace(`${pathName}?tab=${value}`, { scroll: false })
-      }
-    >
+    <Tabs defaultValue={queryParams?.tab || "description"}>
       <TabsList className="w-full">
         <TabsTrigger
           value="description"
           className="flex-grow"
-          onClick={() =>
-            replace(`${pathName}?tab=description`, { scroll: false })
-          }
+          onClick={() => {
+            const searchParams = new URLSearchParams(search);
+            searchParams.set("tab", "description");
+            replace(`${pathName}?${searchParams.toString()}`, {
+              scroll: false,
+            });
+          }}
         >
           Description
         </TabsTrigger>
         <TabsTrigger
           value="comments"
           className="flex-grow"
-          onClick={() => replace(`${pathName}?tab=comments`, { scroll: false })}
+          onClick={() => {
+            const searchParams = new URLSearchParams(search);
+            searchParams.set("tab", "comments");
+            replace(`${pathName}?${searchParams.toString()}`, {
+              scroll: false,
+            });
+          }}
         >
           Comments
         </TabsTrigger>
         <TabsTrigger
           value="solutions"
           className="flex-grow"
-          onClick={() =>
-            replace(`${pathName}?tab=solutions`, { scroll: false })
-          }
+          onClick={() => {
+            const searchParams = new URLSearchParams(search);
+            searchParams.set("tab", "solutions");
+            replace(`${pathName}?${searchParams.toString()}`, {
+              scroll: false,
+            });
+          }}
         >
           Solutions
         </TabsTrigger>
@@ -58,7 +70,11 @@ function ChallengeTabs({
       <TabsContent value={"description"}>
         <ChallengeDescription challenge={challenge} params={params} />
       </TabsContent>
-      <TabsContent value="comments">comments</TabsContent>
+      <TabsContent value="comments" className="mt-0 h-screen">
+        <div className="flex flex-row items-start justify-start gap-4 p-2 mt-2  px-0 bg-border h-screen">
+          {CommentsSection}
+        </div>
+      </TabsContent>
       <TabsContent value="solutions">solutions</TabsContent>
     </Tabs>
   );
