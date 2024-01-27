@@ -12,7 +12,11 @@ import {
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 
-function FilterButton() {
+function FilterButton({
+  searchParamName = "sort_comments",
+}: {
+  searchParamName?: string;
+}) {
   const search = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -31,7 +35,7 @@ function FilterButton() {
           <DropdownMenuItem
             onClick={() => {
               const params = new URLSearchParams(search);
-              params.set("sort_comments", "oldest");
+              params.set(searchParamName, "oldest");
               replace(`${pathname}?${params.toString()}`, { scroll: false });
             }}
           >
@@ -40,7 +44,7 @@ function FilterButton() {
           <DropdownMenuItem
             onClick={() => {
               const params = new URLSearchParams(search);
-              params.set("sort_comments", "newest");
+              params.set(searchParamName, "newest");
               replace(`${pathname}?${params.toString()}`, { scroll: false });
             }}
           >

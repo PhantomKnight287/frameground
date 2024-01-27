@@ -74,3 +74,45 @@ export async function deleteComment(commentId: string) {
   );
   return { success: true };
 }
+
+const zodReportSchema = z.object({
+  commentId: z.string().cuid(),
+  reason: z.string().min(1),
+});
+
+export async function reportComment(prev: any, data: FormData) {
+  const session = await auth();
+  if (!session) {
+    return { error: "not authenticated" };
+  }
+  const parsed = zodReportSchema.safeParse({
+    commentId: data.get("commentId"),
+    reason: data.get("reason"),
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.message };
+  }
+  const { commentId, reason } = parsed.data;
+  const { user } = session;
+  const report = await prisma.report.create({
+    data: {
+      content: reason,
+      commentId,
+      authorId: user!.id,
+    },
+    include: {
+      comment: {
+        include: {
+          track: true,
+          challenge: true,
+        },
+      },
+    },
+  });
+  revalidatePath(
+    `/tracks/${report.comment!.track!.slug}/challenge/${
+      report.comment!.challenge!.slug
+    }/solved`
+  );
+  return { id: report.id };
+}

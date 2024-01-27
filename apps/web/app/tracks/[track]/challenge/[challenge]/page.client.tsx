@@ -5,6 +5,9 @@ import React, { ReactNode } from "react";
 import { Challenge, Upvote, User } from "@repo/db/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ChallengeDescription from "@/components/challenge/description";
+import { Button, buttonVariants } from "@/components/ui/button";
+import FilterButton from "./solved/_components/filter-buttons";
+import Link from "next/link";
 
 function ChallengeTabs({
   challenge,
@@ -75,7 +78,22 @@ function ChallengeTabs({
           {CommentsSection}
         </div>
       </TabsContent>
-      <TabsContent value="solutions">solutions</TabsContent>
+      <TabsContent value="solutions" className=" mt-0 h-screen">
+        <div className="flex flex-row items-start justify-start gap-4 p-2 mt-2 px-0 bg-border h-screen">
+          <div className="flex flex-row w-full items-center justify-between border-b-2 border-zinc-300 dark:border-zinc-700 pb-2 px-2">
+            <FilterButton searchParamName="sort_solutions" />
+            <Link
+              href={`/tracks/${params.track}/challenge/${params.challenge}/solutions/create`}
+              className={buttonVariants({
+                variant: "default",
+                size: "pill",
+              })}
+            >
+              Create Solution
+            </Link>
+          </div>
+        </div>
+      </TabsContent>
     </Tabs>
   );
 }
