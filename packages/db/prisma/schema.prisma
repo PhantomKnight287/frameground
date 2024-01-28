@@ -45,8 +45,9 @@ model User {
   email         String?    @unique
   emailVerified DateTime?
   image         String?
-  roles         Role[]
   username      String?    @unique
+  bio           String?
+  roles         Role[]
   accounts      Account[]
   sessions      Session[]
   tracks        Track[]
@@ -91,7 +92,7 @@ model Challenge {
   label            String
   description      String
   difficulty       Difficulty
-  slug             String
+  slug             String     @unique
   prerequisites    String[]
   playgroundNeeded Boolean    @default(true)
 
@@ -109,10 +110,11 @@ model Challenge {
   commands       String[]
   solves         Solves[]
 
-  track    Track?    @relation(fields: [trackId], references: [id])
-  trackId  String?
-  authors  String[]
-  comments Comment[]
+  track     Track?     @relation(fields: [trackId], references: [id])
+  trackId   String?
+  authors   String[]
+  comments  Comment[]
+  solutions Solution[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -195,6 +197,9 @@ model Solution {
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
+
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String
 
   files     File[]
   createdAt DateTime @default(now())
