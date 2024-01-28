@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export default function InteractiveHeaderComponents() {
   const { data } = useSession();
@@ -35,7 +36,9 @@ export default function InteractiveHeaderComponents() {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/@${data.user.username}`}>Profile</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           className="text-red-500 focus:text-white focus:bg-red-500"
           onClick={() => signOut()}

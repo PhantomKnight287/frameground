@@ -1,0 +1,16 @@
+export const languages = {
+  js: "javascript",
+  ts: "typescript",
+  jsx: "javascript",
+  tsx: "typescript",
+  html: "html",
+  css: "css",
+  md: "markdown",
+  json: "json",
+  svg: "html",
+  gitignore: "ignore",
+  cjs: "javascript",
+  mjs: "javascript",
+  yml: "yaml",
+  yaml: "yaml",
+};
