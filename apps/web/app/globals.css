@@ -85,6 +85,15 @@
   @apply bg-neutral-300 dark:bg-zinc-600;
 }
 
-.xterm-viewport{
+.xterm-viewport {
   overflow: hidden !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
