@@ -7,9 +7,9 @@ import {
   FrameGroundChallengeExport,
 } from "@repo/challenges/src";
 import { FileSystemTree } from "@repo/containers";
-import { PageProps } from "../../$types";
 import { Metadata } from "next";
 import Comments from "./solved/_components/comments";
+import Solutions from "./solved/_components/solutions";
 
 export async function generateMetadata({
   params,
@@ -167,6 +167,12 @@ async function Challenge({
               trackId={challenge.trackId!}
               trackSlug={challenge.track!.slug}
               challengeSlug={challenge.slug}
+            />
+          }
+          SolutionsSection={
+            <Solutions
+              challenge={challenge.slug}
+              sort={searchParams.sort_solutions as "oldest" | "newest"}
             />
           }
         />

@@ -1,15 +1,47 @@
 import { auth } from "@/app/api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PageProps } from "../../$types";
+import CreateSolutionPage from "./page.client";
+import { prisma } from "@repo/db";
+import { ChallengeFilesStructure } from "@repo/challenges/src";
 
 async function CreateSolution({ params }: PageProps) {
   const session = await auth();
   if (!session?.user?.id)
     redirect(`/track/${params.track}/challenge/${params.challenge}`);
+  const challenge = await prisma.challenge.findFirst({
+    where: {
+      slug: params.challenge,
+      track: { slug: params.track },
+    },
+  });
+  if (!challenge) notFound();
+  const editableFiles: ChallengeFilesStructure[] = [];
+  const files = challenge.initialFiles;
+  function parseDirectory(directory: ChallengeFilesStructure[]) {
+    for (const file of directory) {
+      if (file.type === "file") {
+        if (file.editable) {
+          editableFiles.push(file);
+        }
+      } else {
+        parseDirectory(file.content);
+      }
+    }
+  }
+  (files as unknown as ChallengeFilesStructure[]).forEach((file) => {
+    if (file.type === "file") {
+      if (file.editable) {
+        editableFiles.push(file);
+      }
+    } else {
+      parseDirectory(file.content as any);
+    }
+  });
+
   return (
     <div className="container">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos, quaerat
-      eligendi ut voluptatem libero magni quae hic sunt distinctio a.
+      <CreateSolutionPage files={editableFiles} />
     </div>
   );
 }

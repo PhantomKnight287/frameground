@@ -14,6 +14,7 @@ function ChallengeTabs({
   params,
   queryParams,
   CommentsSection,
+  SolutionsSection,
 }: {
   queryParams?: { tab?: string };
   challenge: Challenge & {
@@ -23,6 +24,7 @@ function ChallengeTabs({
   };
   params: Record<"track" | "challenge", string>;
   CommentsSection: ReactNode;
+  SolutionsSection: ReactNode;
 }) {
   const { replace } = useRouter();
   const pathName = usePathname();
@@ -78,8 +80,8 @@ function ChallengeTabs({
           {CommentsSection}
         </div>
       </TabsContent>
-      <TabsContent value="solutions" className=" mt-0 h-screen">
-        <div className="flex flex-row items-start justify-start gap-4 p-2 mt-2 px-0 bg-border h-screen">
+      <TabsContent value="solutions" className="mt-0 h-screen bg-border">
+        <div className="flex flex-row items-start justify-start gap-4 p-2 mt-2 px-0">
           <div className="flex flex-row w-full items-center justify-between border-b-2 border-zinc-300 dark:border-zinc-700 pb-2 px-2">
             <FilterButton searchParamName="sort_solutions" />
             <Link
@@ -93,6 +95,7 @@ function ChallengeTabs({
             </Link>
           </div>
         </div>
+        {SolutionsSection}
       </TabsContent>
     </Tabs>
   );
