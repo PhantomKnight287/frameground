@@ -41,27 +41,11 @@ import { generateFilePath, isFileEditable } from "./functions";
 import EnrollInTrack from "./_components/enroll";
 import { attemptChallenge, solveChallenge } from "./action";
 import { signIn, useSession } from "next-auth/react";
+import { languages } from "@/constants/languages";
 
 let timeout: NodeJS.Timeout;
 
 const fitAddon = new FitAddon();
-
-const languages = {
-  js: "javascript",
-  ts: "typescript",
-  jsx: "javascript",
-  tsx: "typescript",
-  html: "html",
-  css: "css",
-  md: "markdown",
-  json: "json",
-  svg: "html",
-  gitignore: "ignore",
-  cjs: "javascript",
-  mjs: "javascript",
-  yml: "yaml",
-  yaml: "yaml",
-};
 
 export default function Editor({
   challenge,
@@ -69,7 +53,7 @@ export default function Editor({
   queryParams,
   fileSystem,
   files,
-  CommentsSection,
+  CommentsSection,SolutionsSection
 }: {
   challenge: Challenge & {
     authors: User[];
@@ -85,6 +69,7 @@ export default function Editor({
   fileSystem?: FileSystemTree;
   files: FrameGroundChallengeExport["files"];
   CommentsSection: ReactNode;
+  SolutionsSection: ReactNode;
 }) {
   const session = useSession();
   const [_, startTransition] = useTransition();
@@ -230,7 +215,6 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
       setSaved(true);
     }, 1000);
   };
-
   return (
     <>
       <EnrollInTrack
@@ -312,6 +296,7 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
               params={params}
               queryParams={queryParams}
               CommentsSection={CommentsSection}
+              SolutionsSection={SolutionsSection}
             />
           ) : (
             <ResizablePanelGroup direction="horizontal">
