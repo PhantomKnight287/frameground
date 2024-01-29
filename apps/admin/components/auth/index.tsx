@@ -1,6 +1,4 @@
 "use client";
-
-import { auth } from "@/app/api/auth/[...nextauth]/route";
 import { assertAdmin } from "@/utils/auth";
 import { useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";

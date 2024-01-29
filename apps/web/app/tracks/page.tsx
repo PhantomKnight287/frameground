@@ -1,6 +1,6 @@
+import { auth } from "@/auth";
 import { TrackCard } from "@/components/track-card";
 import { prisma } from "@/lib/db";
-import { auth } from "../api/auth/[...nextauth]/route";
 
 export const dynamic = "force-dynamic";
 

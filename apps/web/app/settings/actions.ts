@@ -1,8 +1,8 @@
 "use server";
 
 import { z } from "zod";
-import { auth } from "../api/auth/[...nextauth]/route";
 import { prisma } from "@repo/db";
+import { auth } from "@/auth";
 
 const updateBioSchema = z.object({
   bio: z.string().nullable(),

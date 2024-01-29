@@ -2,7 +2,7 @@ import { PageProps } from "./$types";
 import ChallengeCard from "@/components/challenge-card";
 import Link from "next/link";
 import { prisma } from "@repo/db";
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 

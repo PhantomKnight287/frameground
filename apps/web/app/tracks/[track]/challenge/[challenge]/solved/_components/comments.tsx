@@ -5,7 +5,7 @@ import FilterButton from "./filter-buttons";
 import { fromNow } from "@/utils/time";
 import Link from "next/link";
 import CommentsMenu from "./comment-menu";
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 
 async function Comments({
   challengeSlug,

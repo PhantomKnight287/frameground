@@ -1,9 +1,9 @@
-import { auth } from "@/app/api/auth/[...nextauth]/route";
 import { notFound, redirect } from "next/navigation";
 import { PageProps } from "../../$types";
 import CreateSolutionPage from "./page.client";
 import { prisma } from "@repo/db";
 import { ChallengeFilesStructure } from "@repo/challenges/src";
+import { auth } from "@/auth";
 
 async function CreateSolution({ params }: PageProps) {
   const session = await auth();

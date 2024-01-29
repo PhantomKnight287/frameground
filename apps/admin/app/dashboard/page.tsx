@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { auth } from "../api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 import { assertAdmin } from "@/utils/auth";
 import { redirect } from "next/navigation";
 

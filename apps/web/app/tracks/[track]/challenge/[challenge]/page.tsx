@@ -1,6 +1,6 @@
 import { prisma } from "@repo/db";
 import { redirect } from "next/navigation";
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+
 import Editor from "./_page.client";
 import {
   ChallengeFilesStructure,
@@ -10,6 +10,7 @@ import { FileSystemTree } from "@repo/containers";
 import { Metadata } from "next";
 import Comments from "./solved/_components/comments";
 import Solutions from "./solved/_components/solutions";
+import { auth } from "@/auth";
 
 export async function generateMetadata({
   params,

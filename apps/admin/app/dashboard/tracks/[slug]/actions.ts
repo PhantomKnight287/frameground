@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 import { assertAdmin } from "@/utils/auth";
 import { prisma } from "@repo/db";
 import { TrackStatus } from "@repo/db/types";

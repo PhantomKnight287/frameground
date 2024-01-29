@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 import { ChallengeFilesStructure } from "@repo/challenges/src";
 import { prisma } from "@repo/db";
 

@@ -1,12 +1,12 @@
 import { PageProps } from "./$types";
 import { prisma } from "@repo/db";
-import { auth } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { parseToNumber } from "@/utils";
 import { z } from "zod";
 import { Solvetype } from "@repo/db/types";
 import Comments from "./_components/comments";
 import Resizable from "./resizable";
+import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 

@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { auth } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { User } from "lucide-react";
 import BioEditor from "./page.client";
 import Link from "next/link";
+import { auth } from "@/auth";
 
 async function Settings() {
   const session = await auth();
