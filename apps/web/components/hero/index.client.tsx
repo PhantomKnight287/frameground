@@ -48,7 +48,7 @@ export function CreateAppAnimation(): JSX.Element {
   if (tick > timeCommandRun)
     lines.push(
       <Fragment key="command_response">
-        <span className="font-bold">{"> webhero@1.0.0 test"} </span>
+        <span className="font-bold">{"> frameground@1.0.0 test"} </span>
         <span>{"> jest"}</span>
         <br />
         {tick > timeCommandRun + 1 && (
@@ -146,7 +146,7 @@ function LaunchAppWindow(props: HTMLAttributes<HTMLDivElement>): JSX.Element {
       )}
     >
       <div className="relative flex h-6 flex-row items-center border-b bg-muted px-4 text-xs text-muted-foreground">
-        <p className="absolute inset-x-0 text-center">WebHero</p>
+        <p className="absolute inset-x-0 text-center">FrameGround</p>
       </div>
       <div className="p-4 text-sm">All tests passed!</div>
     </div>

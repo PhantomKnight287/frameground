@@ -31,6 +31,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
+    "framer-motion": "^11.0.3",
     "lucide-react": "^0.303.0",
     "next": "14.0.4",
     "next-auth": "5.0.0-beta.4",

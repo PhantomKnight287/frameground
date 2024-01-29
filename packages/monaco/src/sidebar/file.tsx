@@ -40,7 +40,7 @@ export default function File({
       onClick={handleClick}
       data-active={activeFile?.path === path}
     >
-      {Icons[fileExtension] || null}
+      {Icons[fileExtension as keyof typeof Icons] || null}
       {name}
     </button>
   );

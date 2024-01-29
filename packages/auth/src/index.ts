@@ -44,7 +44,7 @@ export const authOptions: NextAuthConfig = {
   adapter: PrismaAdapter(prisma as any) as any,
   callbacks: {
     session: async ({ session, user }: { session: Session; user: User }) => {
-      const userId = user.image.split("/")[4].replaceAll("?v=4", "");
+      const userId = user.image?.split("/")[4].replaceAll("?v=4", "");
       let roles: Role[] = user.roles || [];
       if (roles.includes("user") == false) {
         const updatedUser = await prisma.user.update({
@@ -64,7 +64,7 @@ export const authOptions: NextAuthConfig = {
         },
       });
       let username = user.username;
-      if (!_user.username) {
+      if (!_user?.username) {
         const req = await fetch(`https://api.github.com/user/${userId}`, {})
           .then((res) => res.json())
           .catch((err) => console.error(err));
