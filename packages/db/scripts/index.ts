@@ -136,8 +136,7 @@ export async function saveChallengesToDb() {
         challengeJestStats
       );
       const needsUpdate =
-        true ??
-        (!challengeExists || largest > challengeExists.updatedAt.getTime());
+        !challengeExists || largest > challengeExists.updatedAt.getTime();
       if (needsUpdate) {
         console.log(`Updating ${challenge}`);
 
