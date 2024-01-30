@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./base.json": "./base.json",
+    "./react-library.json": "./react-library.json"
   },
   "typesVersions": {
     "*": {
