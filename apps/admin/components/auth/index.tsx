@@ -13,6 +13,7 @@ function VerifyUser() {
       replace("/no-access");
     }
   }, [data]);
+  return null;
 }
 
 export default VerifyUser;
