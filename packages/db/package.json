@@ -20,7 +20,8 @@
     "build": "prisma generate && tsc",
     "prebuild": "prisma generate",
     "migrate": "dotenv -e ../../.env prisma migrate dev",
-    "studio": "dotenv -e ../../.env prisma studio"
+    "studio": "dotenv -e ../../.env prisma studio",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "Gurpal Singh",
