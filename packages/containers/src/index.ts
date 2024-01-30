@@ -13,4 +13,4 @@ export type WebContainerInstance = Awaited<
   ReturnType<typeof createWebContainerInstance>
 >;
 
-export { FileSystemTree, WebContainerProcess };
+export type { FileSystemTree, WebContainerProcess };
