@@ -1,16 +1,20 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { redirect } from "next/navigation";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { User } from "lucide-react";
 import BioEditor from "./page.client";
 import Link from "next/link";
 import { auth } from "@/auth";
+import { prisma } from "@repo/db";
 
 async function Settings() {
   const session = await auth();
   if (!session) redirect(`/api/auth/register`);
   const { user } = session;
-
+  const _user = await prisma.user.findFirst({
+    where: { id: user!.id },
+    select: { bio: true },
+  });
   return (
     <div className="container">
       <div className="flex flex-col gap-8 py-8 md:flex-row">
@@ -43,7 +47,7 @@ async function Settings() {
             </div>
           </div>
         </div>
-        <BioEditor />
+        <BioEditor defaultBio={_user?.bio || ""} />
       </div>
     </div>
   );

@@ -6,13 +6,13 @@ import { UpdateBio } from "./actions";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-function BioEditor() {
+function BioEditor({ defaultBio }: { defaultBio?: string }) {
   const [state, action] = useFormState(UpdateBio, null);
 
   useEffect(() => {
     if (state?.error) {
       toast.error(state.error);
-    } else {
+    } else if (state?.message) {
       toast.success(state?.message);
     }
   }, [state?.error, state?.message]);
@@ -35,6 +35,7 @@ function BioEditor() {
             className="flex h-10 w-full rounded-md border border-input bg-background px-4 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground ring-0 disabled:cursor-not-allowed disabled:opacity-50"
             name="bio"
             placeholder="Bio(supports markdown)"
+            defaultValue={defaultBio}
           />
           <SubmitButton label="Update Profile" className="w-fit" />
         </form>
