@@ -87,8 +87,8 @@ async function ProfilePage({ params }: { params: { username: string } }) {
                 className="rounded-xl text-left flex flex-row items-center justify-start gap-2"
               >
                 <BadgeCheck className="text-green-500" />
-                {solves[0]._count}{" "}
-                {solves[0]._count <= 1 ? "Challenge" : "Challenges"} Conquered
+                {solves[0]?._count || 0}{" "}
+                {solves[0]?._count <= 1 ? "Challenge" : "Challenges"} Conquered
               </Button>
               <Button
                 variant={"outline"}
@@ -130,10 +130,14 @@ async function ProfilePage({ params }: { params: { username: string } }) {
             </h3>
           </div>
           <div className="p-6">
-            <Markdown
-              // eslint-disable-next-line react/no-children-prop
-              children={user.bio || ""}
-            />
+            {user.bio ? (
+              <Markdown
+                // eslint-disable-next-line react/no-children-prop
+                children={user.bio}
+              />
+            ) : (
+              <p className="text-muted-foreground text-center">No bio yet!</p>
+            )}
           </div>
         </div>
       </div>

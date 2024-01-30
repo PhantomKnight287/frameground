@@ -137,9 +137,8 @@ export async function saveChallengesToDb() {
       );
       const needsUpdate =
         !challengeExists || largest > challengeExists.updatedAt.getTime();
-      if (needsUpdate) {
+      if (needsUpdate && challengeExists) {
         console.log(`Updating ${challenge}`);
-
         const _challenge = await prisma.challenge.update({
           where: {
             id: challengeExists.id,
