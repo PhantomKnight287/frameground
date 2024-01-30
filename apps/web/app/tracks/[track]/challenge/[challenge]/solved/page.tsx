@@ -1,4 +1,3 @@
-import { PageProps } from "./$types";
 import { prisma } from "@repo/db";
 import { redirect } from "next/navigation";
 import { parseToNumber } from "@/utils";
@@ -10,7 +9,22 @@ import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 
-async function Solved({ params, searchParams }: PageProps) {
+async function Solved({
+  params,
+  searchParams,
+}: {
+  params: {
+    track: string;
+    challenge: string;
+  };
+  searchParams: {
+    limit?: string;
+    page?: string;
+    status?: string;
+    attempt?: string;
+    sort_comments?: string;
+  };
+}) {
   const data = await auth();
   if (!data || !data.user) redirect("/api/auth/signin");
   const solves = await prisma.solves.paginate({

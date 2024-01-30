@@ -1,5 +1,4 @@
 import { prisma } from "@repo/db";
-import { PageProps } from "../../solutions/[id]/$types";
 import { notFound } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
@@ -7,7 +6,7 @@ import SolutionFiles from "./page.client";
 import { Markdown } from "@/components/markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-async function Solution({ params }: PageProps) {
+async function Solution({ params }: { params: { id: string } }) {
   const solution = await prisma.solution.findFirst({
     where: {
       id: params.id,

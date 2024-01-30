@@ -1,11 +1,17 @@
 import { notFound, redirect } from "next/navigation";
-import { PageProps } from "../../$types";
 import CreateSolutionPage from "./page.client";
 import { prisma } from "@repo/db";
 import { ChallengeFilesStructure } from "@repo/challenges/src";
 import { auth } from "@/auth";
 
-async function CreateSolution({ params }: PageProps) {
+async function CreateSolution({
+  params,
+}: {
+  params: {
+    track: string;
+    challenge: string;
+  };
+}) {
   const session = await auth();
   if (!session?.user?.id)
     redirect(`/track/${params.track}/challenge/${params.challenge}`);

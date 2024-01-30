@@ -1,4 +1,3 @@
-import { PageProps } from "./$types";
 import ChallengeCard from "@/components/challenge-card";
 import Link from "next/link";
 import { prisma } from "@repo/db";
@@ -6,7 +5,13 @@ import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 
-async function Challenges({ params }: PageProps) {
+async function Challenges({
+  params,
+}: {
+  params: {
+    track: string;
+  };
+}) {
   const session = await auth();
   const data = await prisma.challenge.findMany({
     where: {
