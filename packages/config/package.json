@@ -2,7 +2,16 @@
   "name": "@repo/config",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/index.ts"
+      ]
+    }
+  },
   "scripts": {
     "build": "tsc"
   },
