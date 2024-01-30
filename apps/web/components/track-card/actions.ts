@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function EnrollOrLeave(track: string, enrolled?: boolean) {
   const session = await auth();
-  if (!session) return;
+  if (!session) return { error: "You must be logged in to enroll in a track." };
   const { user } = session;
   if (enrolled) {
     await prisma.track.update({

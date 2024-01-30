@@ -53,7 +53,8 @@ export default function Editor({
   queryParams,
   fileSystem,
   files,
-  CommentsSection,SolutionsSection
+  CommentsSection,
+  SolutionsSection,
 }: {
   challenge: Challenge & {
     authors: User[];
@@ -181,14 +182,16 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
   const [testsPassed, setTestsPassed] = useState(false);
   const [enrollModalOpened, setEnrollModalOpened] = useState(false);
   const [jestOutput, setJestOutput] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (terminalRef && challenge.playgroundNeeded) run();
+    if (terminalRef && challenge.playgroundNeeded && session?.data?.user?.id)
+      run();
     return () => {
       containerRef?.current?.teardown();
       terminalRef?.dispose();
     };
-  }, [terminalRef]);
+  }, [terminalRef, challenge.playgroundNeeded, session?.data?.user?.id]);
 
   useEffect(() => {
     if (queryParams?.activeFile && queryParams?.activeFile !== "0") {
@@ -222,7 +225,9 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
         setOpen={setEnrollModalOpened}
         trackName={challenge.track.name}
         onConfirm={async () => {
+          setLoading(true);
           const res = await solveChallenge(challenge.id, true, jestOutput);
+          setLoading(false);
           if (res?.error) {
             toast.error(res.error);
           } else if (res?.url) {
@@ -350,8 +355,11 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
                     <div className="absolute bottom-0 bg-border px-4 py-3 w-full flex flex-row items-center bg-[#1e1e1e] rounded-b-md">
                       <div className="flex-row ml-auto gap-4 items-center flex">
                         <button
-                          className="bg-[#3a3a3d] hover:bg-background py-1 px-4 rounded-md max-h-fit disabled:bg-gray-600 disabled:cursor-not-allowed"
+                          className="bg-[#3a3a3d] py-1 px-4 rounded-md max-h-fit hover:bg-gray-700 text-white"
                           onClick={async () => {
+                            if (!session?.data?.user?.id) {
+                              return signIn("github");
+                            }
                             terminalRef?.clear();
                             fitAddon.fit();
                             terminalRef?.write("pnpm test\n"); // this is just to show the user that the tests are running
@@ -388,13 +396,21 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
                             }
                             await containerRef.current?.fs.rm("jestOutput.txt");
                           }}
-                          disabled={testsPassed}
+                          disabled={
+                            !challenge.playgroundNeeded ||
+                            !session?.data?.user?.id ||
+                            testsPassed
+                          }
                         >
-                          {testsPassed ? "Tests Passed" : "Test"}
+                          {testsPassed
+                            ? "Tests Passed"
+                            : !session?.data?.user?.id
+                            ? "Login to Test"
+                            : "Test"}
                         </button>
                         <button
-                          className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-4 py-1 rounded-md"
-                          disabled={!session?.data?.user?.id}
+                          className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-4 py-1 rounded-md "
+                          disabled={!session?.data?.user?.id || loading}
                           onClick={async () => {
                             if (!session?.data?.user?.id) {
                               return signIn("github");
@@ -406,11 +422,13 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
                             if (!challenge.track?.users?.length) {
                               setEnrollModalOpened(true);
                             } else {
+                              setLoading(true);
                               const res = await solveChallenge(
                                 challenge.id,
                                 false,
                                 jestOutput
                               );
+                              setLoading(false);
                               if (res?.error) {
                                 toast.error(res.error);
                               } else if (res.url) {

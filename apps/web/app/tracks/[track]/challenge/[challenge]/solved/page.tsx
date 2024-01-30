@@ -39,6 +39,7 @@ async function Solved({
           slug: params.track as string,
         },
       },
+      userId: data.user.id,
       type: z.nativeEnum(Solvetype).safeParse(searchParams.status).success
         ? (searchParams.status as Solvetype)
         : undefined,

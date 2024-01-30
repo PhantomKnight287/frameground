@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { fromNow } from "@/utils/time";
 import { prisma } from "@repo/db";
+import { Difficulty } from "@repo/db/types";
 import { AudioWaveform, BadgeCheck, CheckCheck } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -46,6 +47,7 @@ async function ProfilePage({ params }: { params: { username: string } }) {
       name: true,
       createdAt: true,
       bio: true,
+      id: true,
       _count: {
         select: {
           solutions: true,
@@ -59,7 +61,24 @@ async function ProfilePage({ params }: { params: { username: string } }) {
   const solves = await prisma.solves.groupBy({
     by: ["type", "id"],
     _count: true,
+    where: {
+      userId: user.id,
+    },
   });
+  // const d = Object.keys(Difficulty).map(
+  //   (d) => `COUNT(*) FILTER (WHERE "difficulty"='${d}') as "${d}Count"`
+  // );
+  // const solveQuery = Object.keys(Difficulty).map(
+    
+  // )
+  // const solutions = await prisma.$queryRawUnsafe(`
+  // SELECT
+  //   "difficulty",
+  //   ${d.join(",")}
+  // FROM "Challenge"
+  // GROUP BY "difficulty";
+  // `);
+  // console.log(solutions);
 
   return (
     <div className="container">

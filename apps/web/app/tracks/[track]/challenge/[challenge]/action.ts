@@ -11,7 +11,7 @@ export async function upvoteChallenge(
 ) {
   const session = await auth();
   if (!session) {
-    return { error: "not authenticated" };
+    return { error: "You must be logged in to upvote a challenge" };
   }
   const { user } = session;
   const existingUpvote = await prisma.upvote.findFirst({
@@ -40,7 +40,7 @@ export async function upvoteChallenge(
 export async function attemptChallenge(challengeId: string, output: string) {
   const session = await auth();
   if (!session) {
-    return { error: "not authenticated" };
+    return { error: "You must be logged in to attempt a challenge" };
   }
   const { user } = session;
   const attempt = await prisma.solves.create({
@@ -65,7 +65,7 @@ export async function solveChallenge(
     };
   const session = await auth();
   if (!session) {
-    return { error: "not authenticated" };
+    return { error: "You must be logged in to solve a challenge" };
   }
   const { user } = session;
   const _tx = await prisma.$transaction(async (tx) => {

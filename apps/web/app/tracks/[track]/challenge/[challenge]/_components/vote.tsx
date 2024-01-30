@@ -6,11 +6,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 import { upvoteChallenge } from "../action";
 import { ThumbsUp } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Challenge, Upvote } from "@repo/db/types";
+import { toast } from "sonner";
 
 function UpVote({
   challenge,
@@ -20,6 +21,7 @@ function UpVote({
   params: { track: string; challenge: string };
 }) {
   const { data } = useSession();
+  const [loading, setLoading] = useState(false);
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -33,9 +35,18 @@ function UpVote({
           )}
           variant="secondary"
           size="xs"
-          disabled={!data?.user?.id}
+          disabled={!data?.user?.id || loading}
           onClick={async () => {
-            await upvoteChallenge(challenge.id, params.track, params.challenge);
+            setLoading(true);
+            const res = await upvoteChallenge(
+              challenge.id,
+              params.track,
+              params.challenge
+            );
+            if (res?.error) {
+              toast.error(res.error);
+            }
+            setLoading(false);
           }}
         >
           <ThumbsUp className="h-4 w-4" />
