@@ -59,24 +59,24 @@ export function CreateAppAnimation(): JSX.Element {
               </span>
               <span className="ml-2">./index.test.js</span>
             </div>
-            <span className="ml-4 font-semibold text-white">useUser hook</span>
+            <span className="ml-4 font-semibold text-white">Renders Button</span>
             <div className="flex flex-col w-full">
               <div className="flex flex-row">
                 <span className="text-green-500 ml-6">✓</span>
                 <span className="ml-2 text-gray-400">
-                  Throws error when not wrapped in UserProvider (5ms)
+                  Renders Button(5ms)
                 </span>
               </div>
               <div className="flex flex-row">
                 <span className="text-green-500 ml-6">✓</span>
                 <span className="ml-2 text-gray-400">
-                  Returns user object when wrapped in UserProvider (5ms)
+                  Disabled when no user(5ms)
                 </span>
               </div>
               <div className="flex flex-row">
                 <span className="text-green-500 ml-6">✓</span>
                 <span className="ml-2 text-gray-400">
-                  Returns setter to update User (5ms)
+                  Updates counter (5ms)
                 </span>
               </div>
             </div>

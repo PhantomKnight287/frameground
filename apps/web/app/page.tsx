@@ -11,9 +11,9 @@ export default function Home() {
     <>
       <main className="my-20">
         <Hero />
-        <div className="container mt-10">
+        <div className="container mt-10 hidden md:block">
           <h1 className="text-3xl font-bold text-center mb-10">Features</h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 place-content-center md:place-content-[unset] md:grid-cols-2 gap-4">
             <div className="overflow-hidden rounded-md min-h-[330px] md:min-h-[500px] border">
               <div className="p-8 ">
                 <div className="relative space-y-2">
@@ -83,8 +83,8 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="flex flex-col items-center gap-2 px-8 pb-12 text-sm font-light sm:px-16 sm:pb-20 sm:pt-6 md:px-0 md:py-12 border-t">
-        <div className="container flex flex-col-reverse justify-between gap-2 md:flex-row md:items-end">
+      <footer className="flex flex-col items-center text-sm font-light border-t pb-4">
+        <div className="container flex flex-row justify-between gap-2 md:flex-row md:items-end mt-4">
           <span>Made by PhantomKnight287</span>
           <div className="flex items-center gap-2">
             <a
