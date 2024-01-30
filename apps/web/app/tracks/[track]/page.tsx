@@ -41,7 +41,25 @@ async function Challenges({
         : undefined),
     },
   });
-
+  const d = await prisma.$queryRaw<any[]>`
+    SELECT
+      c.*,
+      (
+        SELECT COUNT(*) FROM "Comment" co
+        WHERE co."challengeId" = c."id"
+      ) as "commentsCount",
+      (
+        SELECT COUNT(DISTINCT s."userId") FROM "Solves" s
+        WHERE s."challengeId" = c."id" AND s."type"='accepted' 
+      ) as "solvesCount",
+      (
+        SELECT COUNT(*) FROM "Upvote" u
+        WHERE u."challengeId" = c."id"
+      ) as "upvotesCount"
+    FROM "Challenge" c
+    JOIN "Track" t ON c."trackId" = t."id"
+    WHERE t."slug" = ${params.track};
+  `;
   return (
     <main className="flex mt-12">
       <div className="container">
@@ -49,7 +67,7 @@ async function Challenges({
           Challenges
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          {data?.map((challenge) => (
+          {d?.map((challenge) => (
             <Link
               key={challenge.id}
               href={`/tracks/${params.track}/challenge/${challenge.slug}`}

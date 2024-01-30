@@ -2,19 +2,23 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Solves } from "@repo/db/types";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@repo/utils";
 import { fromNow } from "@/utils/time";
 import { upperFirst } from "@/utils";
 import { Calendar } from "lucide-react";
 import { ReactNode } from "react";
+import FilterButton from "./_components/filter-buttons";
+import Link from "next/link";
 
 function SolvedPageTabs({
   solves,
   CommentsSection,
+  SolutionsSection,
 }: {
   solves: Pick<Solves, "id" | "type" | "createdAt" | "output">[];
   CommentsSection: ReactNode;
+  SolutionsSection: ReactNode;
 }) {
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -143,7 +147,25 @@ function SolvedPageTabs({
           ))}
         </div>
       </TabsContent>
-      <TabsContent value="solutions">Change your password here.</TabsContent>
+      <TabsContent value="solutions">
+        <div className="flex flex-row items-start justify-start gap-4 p-2 mt-2 px-0">
+          <div className="flex flex-row w-full items-center justify-between border-y-2 py-2 border-zinc-300 dark:border-zinc-700 px-2">
+            <FilterButton searchParamName="sort_solutions" />
+            <Link
+              href={`/tracks/${params.get("track")}/challenge/${params.get(
+                "challenge"
+              )}/solutions/create`}
+              className={buttonVariants({
+                variant: "default",
+                size: "pill",
+              })}
+            >
+              Create Solution
+            </Link>
+          </div>
+        </div>
+        {SolutionsSection}
+      </TabsContent>
       <TabsContent value="comments">
         <div className="flex flex-row items-center justify-start my-1 gap-4 p-2 px-0 border-t-2 border-zinc-300 dark:border-zinc-700">
           {CommentsSection}

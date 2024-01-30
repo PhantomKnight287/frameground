@@ -1,15 +1,14 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@repo/utils";
 
-function EnrollCard({ className }: { className?: string }) {
+function EnrollCard({
+  className,
+  joined,
+}: {
+  className?: string;
+  joined?: boolean;
+}) {
   return (
     <Card className={cn("max-w-[430px] max-h-[280px]", className)}>
       <CardHeader className="space-y-5">
@@ -24,7 +23,9 @@ function EnrollCard({ className }: { className?: string }) {
         </div>
       </CardHeader>
       <CardContent className="grid gap-4 py-4">
-        <Button className="w-full">Enroll</Button>
+        <Button className="w-full" variant={joined ? "destructive" : "default"}>
+          {joined ? "Leave" : "Enroll"}
+        </Button>
         <Button variant="outline" className="w-full">
           View Content
         </Button>

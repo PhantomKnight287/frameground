@@ -15,7 +15,9 @@ function ChallengeCard({
 }: {
   challenge: Challenge & {
     authors: string[];
-    _count: { comments: number; upvotes: number; solves: number };
+    solvesCount: BigInt;
+    upvotesCount: BigInt;
+    commentsCount: BigInt;
     solves?: { id: string }[];
   };
 }) {
@@ -58,15 +60,15 @@ function ChallengeCard({
               </Badge>
               <div className="flex flex-row items-center gap-2">
                 <ThumbsUp size={18} />
-                {challenge._count.upvotes}
+                {challenge.upvotesCount?.toString()}
               </div>
               <div className="flex flex-row items-center gap-2">
                 <MessageCircle size={18} />
-                {challenge._count.comments}
+                {challenge.commentsCount?.toString()}
               </div>
               <div className="flex flex-row items-center gap-2">
                 <User2 size={18} />
-                {challenge._count.solves}
+                {challenge.solvesCount?.toString()}
               </div>
             </div>
             <div className="flex flex-row items-center justify-start text-sm">

@@ -9,21 +9,26 @@ import SolvedPageTabs from "./page.client";
 import { Solves } from "@repo/db/types";
 import JestOutputRenderer from "./_components/output";
 import { cn } from "@repo/utils";
-
 function Resizable({
   solves,
   solveToShow,
+  SolutionsSection,
   CommentsSection,
 }: {
   solves: Pick<Solves, "id" | "type" | "createdAt" | "output">[];
   solveToShow?: Pick<Solves, "id" | "type" | "createdAt" | "output"> | null;
   CommentsSection: ReactNode;
+  SolutionsSection: ReactNode;
 }) {
   return (
     <div className="p-4 h-screen">
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel className="bg-border rounded-md">
-          <SolvedPageTabs solves={solves} CommentsSection={CommentsSection} />
+          <SolvedPageTabs
+            solves={solves}
+            CommentsSection={CommentsSection}
+            SolutionsSection={SolutionsSection}
+          />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel className="bg-border rounded-md pt-1 h-screen overflow-x-scroll">

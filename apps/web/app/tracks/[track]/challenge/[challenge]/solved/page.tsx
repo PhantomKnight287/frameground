@@ -6,6 +6,7 @@ import { Solvetype } from "@repo/db/types";
 import Comments from "./_components/comments";
 import Resizable from "./resizable";
 import { auth } from "@/auth";
+import Solutions from "./_components/solutions";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,7 @@ async function Solved({
     status?: string;
     attempt?: string;
     sort_comments?: string;
+    sort_challenges?: string;
   };
 }) {
   const data = await auth();
@@ -73,6 +75,7 @@ async function Solved({
           },
           userId: data.user.id,
         },
+        include: { challenge: { select: { slug: true } } },
       })
     : await prisma.solves.findFirst({
         where: {
@@ -85,6 +88,8 @@ async function Solved({
           },
           userId: data.user.id,
         },
+        include: { challenge: { select: { slug: true } } },
+
         orderBy: [
           {
             createdAt: "desc",
@@ -102,6 +107,12 @@ async function Solved({
           sortBy={searchParams.sort_comments as "oldest" | "newest"}
           challengeId={solves?.result[0]!.challenge.id}
           trackId={solves?.result[0]!.challenge.trackId!}
+        />
+      }
+      SolutionsSection={
+        <Solutions
+          challenge={solveToShow?.challenge.slug!}
+          sort={searchParams.sort_challenges as "oldest" | "newest"}
         />
       }
     />

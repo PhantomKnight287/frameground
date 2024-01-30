@@ -25,7 +25,7 @@ export default function Home() {
                     difficulty levels, to advance your skills.
                   </p>
                   <div>
-                    <EnrollCard className="mx-auto" />
+                    <EnrollCard className="mx-auto" joined />
                     <div className="absolute w-full -bottom-20">
                       <EnrollCard />
                     </div>
