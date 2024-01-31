@@ -9,7 +9,7 @@ import { Github } from "lucide-react";
 export default function Home() {
   return (
     <>
-      <main className="my-20">
+      <main className="my-0 lg:my-20">
         <Hero />
         <div className="container mt-10 hidden md:block">
           <h1 className="text-3xl font-bold text-center mb-10">Features</h1>

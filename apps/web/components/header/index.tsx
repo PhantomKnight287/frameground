@@ -18,7 +18,7 @@ export default function Header() {
             </div>
           </div>
         </Link>
-        <nav className="ml-6 items-center justify-center flex flex-row">
+        <nav className="ml-6 hidden md:flex items-center justify-center flex-row">
           <Link
             href="/tracks"
             className="font-semibold hover:text-gray-400 transition-all duration-100"

@@ -12,7 +12,10 @@ import { fontSans } from "@/fonts";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: siteConfig.name,
+  title: {
+    template: `%s | ${siteConfig.name}`,
+    default: siteConfig.name.replace(" ", ""),
+  },
   description: siteConfig.description,
 };
 

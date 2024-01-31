@@ -2,8 +2,21 @@ import ChallengeCard from "@/components/challenge-card";
 import Link from "next/link";
 import { prisma } from "@repo/db";
 import { auth } from "@/auth";
+import { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export async function generateMetadata({
+  params,
+}: {
+  params: { track: string };
+}): Promise<Metadata> {
+  const track = await prisma.track.findFirst({
+    where: { slug: params.track },
+  });
+  return {
+    title: `${track?.name} Challenges `,
+    description: `Challenges for ${track?.name} track`,
+  };
+}
 
 async function Challenges({
   params,
@@ -13,34 +26,6 @@ async function Challenges({
   };
 }) {
   const session = await auth();
-  const data = await prisma.challenge.findMany({
-    where: {
-      track: {
-        slug: params.track,
-      },
-    },
-    include: {
-      _count: {
-        select: {
-          comments: true,
-          solves: true,
-          upvotes: true,
-        },
-      },
-      ...(session?.user?.username
-        ? {
-            solves: {
-              select: {
-                id: true,
-              },
-              where: {
-                user: { username: session.user.username },
-              },
-            },
-          }
-        : undefined),
-    },
-  });
   const d = await prisma.$queryRaw<any[]>`
     SELECT
       c.*,
@@ -55,11 +40,18 @@ async function Challenges({
       (
         SELECT COUNT(*) FROM "Upvote" u
         WHERE u."challengeId" = c."id"
-      ) as "upvotesCount"
+      ) as "upvotesCount",
+      (
+        SELECT COUNT(DISTINCT s."userId") FROM "Solves" s
+        WHERE s."challengeId" = c."id" AND s."userId" = ${
+          session?.user?.id || ""
+        } AND s."type"='accepted'
+      ) as "solved"
     FROM "Challenge" c
     JOIN "Track" t ON c."trackId" = t."id"
     WHERE t."slug" = ${params.track};
   `;
+
   return (
     <main className="flex mt-12">
       <div className="container">

@@ -18,13 +18,13 @@ function ChallengeCard({
     solvesCount: BigInt;
     upvotesCount: BigInt;
     commentsCount: BigInt;
-    solves?: { id: string }[];
+    solved?: string;
   };
 }) {
   return (
     <div className="relative">
       <div className="absolute -top-2 -right-1 z-10 bg-background">
-        {challenge.solves?.length ? (
+        {parseInt(challenge.solved || "0") ? (
           <BadgeCheck className="text-green-500" size={25} />
         ) : null}
       </div>
@@ -74,13 +74,13 @@ function ChallengeCard({
             <div className="flex flex-row items-center justify-start text-sm">
               <div className="flex flex-row flex-wrap">
                 {challenge.authors.map((author) => (
-                  <a
-                    href={`/@${author}`}
-                    className="mr-2 flex flex-row items-center"
+                  <Badge
+                    variant={"secondary"}
                     key={author}
+                    className="mr-2 flex flex-row items-center"
                   >
-                    <Badge variant={"secondary"}>{author}</Badge>
-                  </a>
+                    {author}
+                  </Badge>
                 ))}
               </div>
               <div className="flex flex-row items-center text-sm text-muted-foreground">

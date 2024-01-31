@@ -39,6 +39,9 @@ export default function InteractiveHeaderComponents() {
         <DropdownMenuItem>
           <Link href={`/@${data.user.username}`}>Profile</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/settings`}>Settings</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           className="text-red-500 focus:text-white focus:bg-red-500"
           onClick={() => signOut()}

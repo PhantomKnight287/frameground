@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@repo/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function upvoteChallenge(
   challengeId: string,
@@ -35,6 +35,8 @@ export async function upvoteChallenge(
     });
   }
   revalidatePath(`/tracks/${trackSlug}/challenge/${challengeSlug}`);
+  revalidateTag(`challenge-${trackSlug}-${user!.id}`);
+  console.log(`challenge-${trackSlug}-${user!.id}`);
 }
 
 export async function attemptChallenge(challengeId: string, output: string) {
