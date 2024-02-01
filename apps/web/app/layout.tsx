@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 import { cn } from "@/lib/utils";
@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     default: siteConfig.name.replace(" ", ""),
   },
   description: siteConfig.description,
+};
+
+export const viewport: Viewport = {
+  themeColor: { color: "#ffffff" },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

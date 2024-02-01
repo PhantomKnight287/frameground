@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@repo/db";
 import { auth } from "@/auth";
 import { Metadata } from "next";
+import { env } from "@/env.mjs";
 
 export async function generateMetadata({
   params,
@@ -12,9 +13,37 @@ export async function generateMetadata({
   const track = await prisma.track.findFirst({
     where: { slug: params.track },
   });
+  if (!track)
+    return {
+      title: `Challenges`,
+      description: `Challenges for ${params.track}`,
+    };
+  const searchParams = new URLSearchParams();
+  searchParams.set("name", track?.name || "");
+  searchParams.set("imageUrl", track?.logo || "");
+  console.log(searchParams.toString());
   return {
+    metadataBase: new URL(env.HOST),
     title: `${track?.name} Challenges `,
-    description: `Challenges for ${track?.name} track`,
+    description: `Challenges for ${track?.name}`,
+    openGraph: {
+      type: "website",
+      title: `${track?.name} Challenges`,
+      description: `Challenges for ${track?.name}`,
+      url: `${env.HOST}/tracks/${params.track}`,
+      images: [
+        {
+          url: `${env.HOST}/api/og/track?${searchParams.toString()}`,
+          width: 1200,
+          height: 600,
+          alt: "Tracks",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      creator: "@gurpalsingh287",
+    },
   };
 }
 

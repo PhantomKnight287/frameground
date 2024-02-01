@@ -27,6 +27,7 @@
     "@repo/terminal": "workspace:^",
     "@repo/utils": "workspace:^",
     "@t3-oss/env-nextjs": "^0.7.1",
+    "@vercel/og": "^0.6.2",
     "@xterm/addon-ligatures": "0.8.0-beta.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
