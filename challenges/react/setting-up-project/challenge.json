@@ -2,7 +2,7 @@
   "$schema": "../../schema.json",
   "author": ["phantomknight287"],
   "description": "Setting up a new React Project",
-  "difficulty": "easy",
+  "difficulty": "beginner",
   "id": "setting-up-project",
   "label": "New React App",
   "playground_needed": true,

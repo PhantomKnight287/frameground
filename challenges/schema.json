@@ -52,6 +52,11 @@
       "items": {
         "type": "string"
       }
+    },
+    "test_runner": {
+      "description": "The test runner to use for this challenge",
+      "type": "string",
+      "enum": ["jest", "vitest"]
     }
   },
   "required": [

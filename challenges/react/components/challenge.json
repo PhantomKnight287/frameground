@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schema.json",
+  "id": "components",
+  "label": "Components",
+  "description": "Components in React are modular, reusable building blocks for constructing user interfaces.",
+  "author": ["phantomknight287"],
+  "difficulty": "beginner",
+  "playground_needed": true,
+  "prerequisites": [],
+  "setup_commands": ["pnpm i", "clear"],
+  "track_slug": "react",
+  "test_runner": "vitest",
+  "created_at": "2024-02-01T16:40:46.932Z"
+}

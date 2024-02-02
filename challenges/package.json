@@ -11,9 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "@repo/config": "workspace:^",
+    "@testing-library/react": "^14.2.0",
     "@webcontainer/api": "^1.1.8",
     "jest": "^29.7.0",
     "typescript": "^5",
+    "vitest": "^1.2.2",
     "xterm": "^5.3.0"
   },
   "devDependencies": {
