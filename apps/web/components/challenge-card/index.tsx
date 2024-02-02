@@ -83,11 +83,11 @@ function ChallengeCard({
                   </Badge>
                 ))}
               </div>
-              <div className="flex flex-row items-center text-sm text-muted-foreground">
+              <div className="flex flex-row items-center text-sm text-muted-foreground line-clamp-1">
                 {dayjs(challenge.createdAt).fromNow()}
               </div>
             </div>
-            <p className="line-clamp-3 text-sm text-muted-foreground">
+            <p className="line-clamp-1 text-sm text-muted-foreground">
               {challenge.description}
             </p>
           </CardContent>

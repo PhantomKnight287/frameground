@@ -34,6 +34,10 @@ const nextConfig = {
         source: "/github-avatar/:username",
         destination: "https://github.com/:username.png",
       },
+      {
+        source: "/imgur/:path*",
+        destination: "https://i.imgur.com/:path*",
+      },
     ];
   },
 };

@@ -2,7 +2,9 @@ import { auth } from "@/auth";
 import { Markdown } from "@/components/markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { env } from "@/env.mjs";
 import { fromNow } from "@/utils/time";
+import { siteMetadataConfig } from "@repo/config";
 import { prisma } from "@repo/db";
 import { Difficulty } from "@repo/db/types";
 import { AudioWaveform, BadgeCheck, CheckCheck } from "lucide-react";
@@ -29,10 +31,33 @@ export async function generateMetadata({
     },
   });
 
-  if (!user) return {};
+  if (!user)
+    return {
+      title: `${username} profile`,
+      description: `View profile of ${username} on FrameGround`,
+    };
+  const searchParams = new URLSearchParams();
+  searchParams.set("name", user.name!);
+  searchParams.set("username", user.username!);
   return {
-    title: `${user.username}'s profile | FrameGround`,
+    metadataBase: new URL(env.HOST),
+    title: `${user.username}'s profile`,
     description: `View profile of ${user.username} on FrameGround`,
+    twitter: siteMetadataConfig.twitter,
+    openGraph: {
+      type: "website",
+      title: `${user.username}'s profile`,
+      description: `View profile of ${user.username} on FrameGround`,
+      url: `${env.HOST}/@${user.username}`,
+      images: [
+        {
+          url: `${env.HOST}/api/og/user?${searchParams.toString()}`,
+          width: 1200,
+          height: 600,
+          alt: `${user.username}'s profile`,
+        },
+      ],
+    },
   };
 }
 
@@ -65,20 +90,6 @@ async function ProfilePage({ params }: { params: { username: string } }) {
       userId: user.id,
     },
   });
-  // const d = Object.keys(Difficulty).map(
-  //   (d) => `COUNT(*) FILTER (WHERE "difficulty"='${d}') as "${d}Count"`
-  // );
-  // const solveQuery = Object.keys(Difficulty).map(
-    
-  // )
-  // const solutions = await prisma.$queryRawUnsafe(`
-  // SELECT
-  //   "difficulty",
-  //   ${d.join(",")}
-  // FROM "Challenge"
-  // GROUP BY "difficulty";
-  // `);
-  // console.log(solutions);
 
   return (
     <div className="container">

@@ -6,6 +6,12 @@ import BioEditor from "./page.client";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { prisma } from "@repo/db";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Settings",
+  description: "Settings",
+};
 
 async function Settings() {
   const session = await auth();
@@ -25,7 +31,7 @@ async function Settings() {
           </Avatar>
           <div className="flex flex-col items-center gap-2 md:w-full md:items-start">
             <div className="flex gap-0 flex-col">
-              <div className="text-[2rem] font-bold [&amp;>small]:text-[0.7em] [&amp;>small]:dark:text-slate-400 [&amp;>small]:text-slate-600 font-default h-fit">
+              <div className="text-[2rem] font-bold font-default h-fit">
                 {user?.name}
               </div>
               <span className="text-lg text-muted-foreground">

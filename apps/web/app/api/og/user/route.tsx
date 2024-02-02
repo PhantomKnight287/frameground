@@ -1,9 +1,22 @@
 import { ImageResponse } from "@vercel/og";
 import { Grid } from "@/components/og/grid";
+import { z } from "zod";
+import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
-export async function GET(req: Request) {
+const schema = z.object({
+  username: z.string(),
+  name: z.string(),
+});
+
+export async function GET(req: NextRequest) {
+  const parseResult = schema.safeParse({
+    username: req.nextUrl.searchParams.get("username"),
+    name: req.nextUrl.searchParams.get("name"),
+  });
+  if (parseResult.success === false)
+    return new Response("Invalid params", { status: 400 });
   const headers = new Headers();
   headers.set("Cache-Control", "public, max-age=86400");
   return new ImageResponse(
@@ -13,14 +26,14 @@ export async function GET(req: Request) {
         <div tw="flex flex text-center h-full w-full gap-4 justify-center">
           <div tw="flex flex-col items-center justify-center">
             <img
-              src={"https://github.com/phantomknight287.png"}
+              src={`https://github.com/${parseResult.data.username}.png`}
               tw="object-cover h-68 w-68 rounded-full"
               height={24}
               width={24}
             />
 
             <div tw="flex flex-col ml-10">
-              <h1 tw="text-5xl font-bold">PhantomKnight287</h1>
+              <h1 tw="text-5xl font-bold">{parseResult.data.name}</h1>
             </div>
           </div>
         </div>

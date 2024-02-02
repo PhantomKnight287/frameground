@@ -4,6 +4,7 @@ import { prisma } from "@repo/db";
 import { auth } from "@/auth";
 import { Metadata } from "next";
 import { env } from "@/env.mjs";
+import { siteMetadataConfig } from "@repo/config";
 
 export async function generateMetadata({
   params,
@@ -21,7 +22,6 @@ export async function generateMetadata({
   const searchParams = new URLSearchParams();
   searchParams.set("name", track?.name || "");
   searchParams.set("imageUrl", track?.logo || "");
-  console.log(searchParams.toString());
   return {
     metadataBase: new URL(env.HOST),
     title: `${track?.name} Challenges `,
@@ -40,10 +40,7 @@ export async function generateMetadata({
         },
       ],
     },
-    twitter: {
-      card: "summary_large_image",
-      creator: "@gurpalsingh287",
-    },
+    twitter: siteMetadataConfig.twitter,
   };
 }
 
@@ -78,7 +75,8 @@ async function Challenges({
       ) as "solved"
     FROM "Challenge" c
     JOIN "Track" t ON c."trackId" = t."id"
-    WHERE t."slug" = ${params.track};
+    WHERE t."slug" = ${params.track}
+    ORDER BY "createdAt" ASC;
   `;
 
   return (

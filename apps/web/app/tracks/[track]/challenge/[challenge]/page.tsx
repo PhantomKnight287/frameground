@@ -11,6 +11,7 @@ import { Metadata } from "next";
 import Comments from "./solved/_components/comments";
 import Solutions from "./solved/_components/solutions";
 import { auth } from "@/auth";
+import { siteMetadataConfig } from "@repo/config";
 
 export async function generateMetadata({
   params,
@@ -35,6 +36,7 @@ export async function generateMetadata({
   return {
     title: `${challenge?.label} | ${challenge?.track!.name}`,
     description: challenge?.description,
+    twitter: siteMetadataConfig.twitter,
   };
 }
 
@@ -99,13 +101,16 @@ async function Challenge({
       content: ``,
       type: "file",
     },
-    {
+    ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
+  ];
+  if (challenge.jestConfig) {
+    // add at index 1
+    files.splice(1, 0, {
       name: "jest.config.json",
       content: JSON.stringify(challenge.jestConfig, null, 2),
       type: "file",
-    },
-    ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
-  ];
+    });
+  }
   const fileSystem: FileSystemTree = {};
 
   function parseDirectory(

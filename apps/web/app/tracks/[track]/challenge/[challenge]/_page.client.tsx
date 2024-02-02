@@ -17,6 +17,7 @@ import {
   Fragment,
   ReactNode,
   useEffect,
+  useMemo,
   useRef,
   useState,
   useTransition,
@@ -77,13 +78,25 @@ export default function Editor({
   const { replace } = useRouter();
   const { activeFile, setActiveFile } = useEditorFileState();
 
-  const [Terminal, terminalRef] = useTerminal({
-    options: {
+  const terminalOptions = useMemo(() => {
+    const baseConfig = {
       cursorBlink: false,
       convertEol: true,
       disableStdin: false,
-      ...(challenge.terminalConfig as any),
-    },
+    };
+    if (
+      Object.keys((challenge?.terminalConfig as unknown as Object) || {}).length
+    ) {
+      return {
+        ...baseConfig,
+        ...(challenge.terminalConfig as any),
+      };
+    }
+    return baseConfig;
+  }, []);
+
+  const [Terminal, terminalRef] = useTerminal({
+    options: terminalOptions,
     addons: [fitAddon],
   });
   const [iframeUrl, setIFrameUrl] = useState("/loading.html");
@@ -115,11 +128,15 @@ export default function Editor({
     if (fileSystem)
       _container.mount({
         ...fileSystem,
-        "index.spec.ts": { file: { contents: challenge.tests } },
+        "index.spec.tsx": { file: { contents: challenge.tests } },
         "run-tests.js": {
           file: {
             contents: `import { execSync } from "child_process";
-const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
+const command = ${
+              challenge.testRunner === "jest"
+                ? '"pnpm jest --no-colors --bail 2> jestOutput.txt"'
+                : '"pnpm vitest run --bail 1 --no-color > jestOutput.txt 2> jestOutput.txt"'
+            } ;
 (async () => {
   try {
     execSync(command, { stdio: "pipe", encoding: "utf-8" });
@@ -189,7 +206,6 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
       run();
     return () => {
       containerRef?.current?.teardown();
-      terminalRef?.dispose();
     };
   }, [terminalRef, challenge.playgroundNeeded, session?.data?.user?.id]);
 
@@ -380,13 +396,12 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
                             );
 
                             const code = await process?.exit;
-                            if (code === 0) setTestsPassed(true);
-                            else setTestsPassed(false);
                             const jestLog =
                               await containerRef.current?.fs?.readFile(
                                 "jestOutput.txt",
                                 "utf-8"
                               );
+                            console.log(jestLog);
                             setJestOutput(jestLog || "");
                             if (code !== 0) {
                               await attemptChallenge(
@@ -394,12 +409,14 @@ const command = "pnpm jest --no-colors --bail 2> jestOutput.txt";
                                 jestLog || ""
                               );
                             }
-                            await containerRef.current?.fs.rm("jestOutput.txt");
+                            // await containerRef.current?.fs.rm("jestOutput.txt");
+                            if (code === 0) setTestsPassed(true);
+                            else setTestsPassed(false);
                           }}
                           disabled={
                             !challenge.playgroundNeeded ||
-                            !session?.data?.user?.id ||
-                            testsPassed
+                            !session?.data?.user?.id
+                            //  || testsPassed
                           }
                         >
                           {testsPassed

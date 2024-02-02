@@ -58,7 +58,7 @@ function ChallengeDescription({
         <Badge>{upperFirst(challenge.difficulty)}</Badge>
         <UpVote challenge={challenge} params={params} />
       </div>
-      <Markdown>{challenge?.info}</Markdown>
+      <Markdown className="pb-5">{challenge?.info}</Markdown>
     </div>
   );
 }
