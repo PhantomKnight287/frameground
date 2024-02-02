@@ -110,6 +110,9 @@ model Challenge {
   commands       String[]
   solves         Solves[]
 
+  /// the test runner
+  testRunner TestRunner @default(jest)
+
   track     Track?     @relation(fields: [trackId], references: [id])
   trackId   String?
   authors   String[]
@@ -240,4 +243,9 @@ enum ReportStatus {
   pending
   accepted
   rejected
+}
+
+enum TestRunner {
+  jest
+  vitest
 }
