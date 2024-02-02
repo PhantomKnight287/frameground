@@ -88,4 +88,4 @@ Most developers prefer to use functional components over class components after 
 
 ## Challenge
 
-There are 2 files in the `src` folder, `functional-component.jsx` and `class-component.jsx`. Both files returns `null` for now, your task is to replace the `null` with a JSX element that renders `Hello world from functional component` for `functional-component.jsx` and `Hello world from class component` for `class-component.jsx`.
+There are 2 files in the `src` folder, `functional-component.jsx` and `class-component.jsx`. Both files returns empty `h1` for now, your task is to add content in `h1` that renders `Hello world from functional component` for `functional-component.jsx` and `Hello world from class component` for `class-component.jsx`.
