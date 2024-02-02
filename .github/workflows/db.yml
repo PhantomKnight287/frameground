@@ -26,11 +26,7 @@ jobs:
         run: pnpm install
       - name: Run Migrations
         run: |
-          cd packages/db \
-          npx prisma migrate dev
+          cd packages/db && npx prisma migrate dev
       - name: Update Challenges
         run: |
-          cd packages/db \
-          npx tsc && node dist/scripts/index.js
-
-
+          cd packages/db && npx tsc && node dist/scripts/index.js
