@@ -29,4 +29,4 @@ jobs:
           cd packages/db && npx prisma migrate dev
       - name: Update Challenges
         run: |
-          cd packages/db && npx tsc && node dist/scripts/index.js
+          cd packages/db && pnpm build && node dist/scripts/index.js
