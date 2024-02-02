@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "fs";
-import { prisma } from "..";
+import { prisma } from "../src";
 import { type FileSystemTree } from "@webcontainer/api";
 type ChallengeFilesStructure = FileSystemTree;
 import { transpileModule } from "typescript";
