@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 use std::env;
 use std::fs;
 use std::path::Path;
-use std::process::exit;
 
 #[allow(non_camel_case_types)]
 #[derive(clap::ValueEnum, Clone, Default, Debug, Serialize)]
@@ -14,9 +13,10 @@ enum Status {
 }
 
 #[allow(non_camel_case_types)]
-#[derive(clap::ValueEnum, Clone, Debug, Serialize, PartialEq)]
+#[derive(clap::ValueEnum, Clone, Debug, Serialize,Default, PartialEq)]
 enum TestRunners {
     jest,
+    #[default]
     vitest,
 }
 
@@ -195,14 +195,14 @@ fn main() {
 
             let mut result = read_folder(folder_path);
             let path_to_store_files = Path::new("challenges").join(slug).join(name);
-            if (!path_to_store_files.is_dir()) {
+            if !path_to_store_files.is_dir() {
                 fs::create_dir_all(&path_to_store_files)
                     .expect("Failed to create challenge folder");
             }
-            if (test_runner == TestRunners::jest) {
+            if test_runner == TestRunners::jest {
                 // find jest.config.ts or jest.config.js file in "result" and copy it to the challenge folder
-                let mut jest_config_file = result.iter().find(|item| match item {
-                    Item::File { name, content } => {
+                let jest_config_file = result.iter().find(|item| match item {
+                    Item::File { name, content: _ } => {
                         name == "jest.config.ts" || name == "jest.config.js"
                     }
                     _ => false,
@@ -220,7 +220,7 @@ fn main() {
                         _ => {}
                     }
                     result.retain(|item| match item {
-                        Item::File { name, content } => {
+                        Item::File { name, content: _ } => {
                             name != "jest.config.ts" && name != "jest.config.js"
                         }
                         _ => true,
@@ -235,8 +235,8 @@ fn main() {
                     .expect("Failed to create jest.config file");
                 }
             }
-            let mut index_spec_files = result.iter().find(|item| match item {
-                Item::File { name, content } => {
+            let index_spec_files = result.iter().find(|item| match item {
+                Item::File { name, content: _ } => {
                     name.ends_with("index.spec.ts")
                         || name.ends_with("index.spec.js")
                         || name.ends_with("index.spec.jsx")
@@ -244,7 +244,7 @@ fn main() {
                 }
                 _ => false,
             });
-            if (index_spec_files.is_some()) {
+            if index_spec_files.is_some() {
                 let index_spec_files = index_spec_files.unwrap();
                 match index_spec_files {
                     Item::File { name, content } => {
@@ -256,7 +256,7 @@ fn main() {
                     _ => {}
                 }
                 result.retain(|item| match item {
-                    Item::File { name, content } => {
+                    Item::File { name, content: _ } => {
                         !name.ends_with("index.spec.ts")
                             && !name.ends_with("index.spec.js")
                             && !name.ends_with("index.spec.jsx")
@@ -266,7 +266,7 @@ fn main() {
                 });
             } else {
                 let mut index_spec_files_path = path_to_store_files.clone();
-                index_spec_files_path.push("index.spec.ts");
+                index_spec_files_path.push("index.spec.tsx");
                 fs::write(&index_spec_files_path, "").expect("Failed to create index.spec file");
             }
 
