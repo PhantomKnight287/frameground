@@ -267,7 +267,7 @@ fn main() {
             } else {
                 let mut index_spec_files_path = path_to_store_files.clone();
                 index_spec_files_path.push("index.spec.ts");
-                fs::write(&index_spec_files_path, "import {describe, it} from \"@jest/globals\";\ndescribe(\"\",()=>{\n    it(\"\",()=>{\n\n    })\n})").expect("Failed to create index.spec file");
+                fs::write(&index_spec_files_path, "").expect("Failed to create index.spec file");
             }
 
             fs::write(&path_to_store_files.join("index.md"), "## Challenge")
