@@ -11,6 +11,7 @@ import {
 import { upperFirst } from "@/utils";
 import { fromNow } from "@/utils/time";
 import { Challenge, Upvote, User } from "@repo/db/types";
+import { cn } from "@repo/utils";
 import React from "react";
 
 function ChallengeDescription({
@@ -58,7 +59,35 @@ function ChallengeDescription({
         <Badge>{upperFirst(challenge.difficulty)}</Badge>
         <UpVote challenge={challenge} params={params} />
       </div>
-      <Markdown className="pb-5">{challenge?.info}</Markdown>
+      <Markdown
+        className={cn({
+          "pb-5": !challenge.prerequisites.length,
+        })}
+      >
+        {challenge?.info}
+      </Markdown>
+      <div
+        className={cn({
+          hidden: !challenge.prerequisites.length,
+          "pt-5 pb-10": challenge.prerequisites.length > 0,
+        })}
+      >
+        <h2 className="text-xl font-bold">Prerequisites</h2>
+        <ul className="list-disc list-inside">
+          {challenge.prerequisites.map((prerequisite) => (
+            <li key={prerequisite}>
+              <a
+                href={`/tracks/${params.track}/challenge/${
+                  prerequisite.split("/")[1]
+                }`}
+                className="text-blue-500 hover:underline"
+              >
+                {upperFirst(prerequisite.split("/")[1].replace(/-/g, " "))}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

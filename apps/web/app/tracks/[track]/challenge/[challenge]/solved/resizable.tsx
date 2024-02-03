@@ -23,7 +23,7 @@ function Resizable({
   return (
     <div className="p-4 h-screen">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel className="bg-border rounded-md">
+        <ResizablePanel className="bg-border rounded-md overflow-y-scroll">
           <SolvedPageTabs
             solves={solves}
             CommentsSection={CommentsSection}
@@ -31,7 +31,7 @@ function Resizable({
           />
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel className="bg-border rounded-md pt-1 h-screen overflow-x-scroll">
+        <ResizablePanel className="bg-border rounded-md pt-1 overflow-y-scroll">
           <h1
             className={cn(
               "text-2xl font-semibold p-2 py-1 border-b-2 px-3 border-zinc-300 dark:border-zinc-700 line-clamp-1",
