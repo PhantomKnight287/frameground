@@ -5,11 +5,108 @@ description: How to create Challenges for FrameGround
 
 Thank you for your interest in creating a Challenge for FrameGround! We are excited to see what you come up with. This guide will walk you through the process of creating a Challenge.
 
-## Creating a folder
+## Using CLI
+
+### Creating a new project
+
+Create a new project of any framework anywhere in your file system. For example, a vite project
+
+```bash
+pnpm create vite@latest project -- --template react
+```
+
+### Creating Tests and Initial Files
+
+Now creating a `index.spec.ts`/`index.spec.tsx`/`index.spec.js`/`index.spec.jsx` file in root of the project. This file will contain the tests for the challenge.
+
+```ts title="project/index.spec.ts"
+describe("It Should Work", () => {
+  it("should be true", () => {
+    expect(1).toBe(1);
+  });
+});
+```
+
+    <Callout
+      title="Note"
+      type="info"
+    >
+    Cli will only parse first test file in the project so make sure to add all tests in only 1 file.
+    </Callout>
+
+
+### Using Cli to parse the project
+
+Now, you can use the cli in `parser` folder to generate the json file.
+
+```bash 
+cargo run generate --test-runner vitest --folder ../project --name test-challenge --slug react
+```
+
+<TypeTable
+  type={{
+    "test-runner": {
+      description: "The test runner to use for the challenge. It can be jest or vitest.",
+      type: "string",
+      typeDescription: "jest, vitest",
+    },
+    folder: {
+      description: "The path to the project folder.",
+      type: "string",
+    },
+    name: {
+      description: "The slug of the challenge.",
+      type: "string",
+    },
+    slug: {
+      description: "The slug of the track that this challenge belongs to.",
+      type: "string",
+    },
+  }}
+/>
+
+
+Running the above command will create a `challenges/react/test-challenge` folder in `parser` folder. You can copy the `test-challenge` or `react/test-challenge`(if track doesn't exist) folder to `challenges` folder.
+
+
+<Callout
+  title="Note"
+  type="info"
+>
+  If you are creating a challenge using `jest`, you are adviced to create `jest.config.ts/jest.config.js` file in root of the challenge. Cli will parse the jest config file and use it for the challenge, if it doesn't exist, it will create an empty jest config file.
+</Callout>
+
+### Marking Files as Editable
+
+The last step is to mark files as editable. By default, all files are not editable. If you want to make some files editable, you can use `editable` field in file. Below is an example of `index.ts` file.
+
+```ts title="challenges/react/test-challenge/index.ts"
+import { FrameGroundChallengeExport } from "../../src";
+
+export default {
+  files: [
+    {
+      type: "file",
+      name: "vite.config.js",
+      editable: true,
+      content:
+        "import { defineConfig } from 'vite'\nimport react from '@vitejs/plugin-react'\n\n// https://vitejs.dev/config/\nexport default defineConfig({\n  plugins: [react()],\n})\n",
+    },
+  ],
+} satisfies FrameGroundChallengeExport;
+```
+
+
+
+
+
+## Manually
+
+### Creating a folder
 
 Challenges are placed inside `challenges` folder in root of the project. Inside `challenges` folder, there are folders for each track and each track has folders for each challenge. For example, if you are creating a challenge for `react` track, you will place it inside `challenges/react` folder. If you are creating a challenge named `use-user-hook`, you will place it inside `challenges/react/use-user-hook` folder. This steps ensures that slug of challenges are unique because they are based on their path.
 
-## Creating Challenge Config
+### Creating Challenge Config
 
 This is basic configuration of the challenge like its name, description, author, etc. It will be a json file called `challenge.json`. There is a `schema.json` file in root of the `challenges` for autocomplete of the fields. Below is an example of `challenge.json` file.
 
@@ -29,7 +126,7 @@ This is basic configuration of the challenge like its name, description, author,
 }
 ```
 
-### Fields
+#### Fields
 
 <TypeTable
   type={{
@@ -88,11 +185,11 @@ This is basic configuration of the challenge like its name, description, author,
   }}
 />
 
-## Creating Challenge Description
+### Creating Challenge Description
 
 This is the description of the challenge. It is a markdown file called `index.md`.
 
-## Creating Terminal Config
+### Creating Terminal Config
 
 If in some challenges you want to override default terminal config like turn off input, you can create a `terminal.ts` file.
 
@@ -101,7 +198,7 @@ import type { ITerminalOptions } from "xterm";
 export default { disableStdin: true } satisfies ITerminalOptions;
 ```
 
-## Create Playground Files
+### Create Playground Files
 
 You can create files for the playground in `index.ts` file. Below is an example of `index.ts` file. You can use json files in `challenges` folder to copy default files of frameworks like vite, nextjs etc. There is no extend option as of now. You will have to copy the contents of the json file and paste it in `index.ts` file.
 
@@ -125,7 +222,7 @@ export default {
 } satisfies FrameGroundChallengeExport;
 ```
 
-### Default Files
+#### Default Files
 
 Incase you want to extend default template of frameworks like vite, nextjs etc you can use files in `challenges` folder, they're called `<framework>.json` eg: `vite.json`.
 
@@ -139,7 +236,7 @@ here `../nextjs` is the path to the template folder. Just make sure there are no
 
 The above code will emit a `files.json` in `parser` folder which you can copy to `challenges` folder and rename it to `<framework>.json` eg: `vite.json`.
 
-## Creating Tests
+### Creating Tests
 
 Now, the final part is creating tests for the challenge. Tests are written in `index.spec.ts` file. Below is an example of `index.spec.ts` file. These tests will be run in root of the playground so authors are adviced to make sure imports are correct.
 
@@ -151,7 +248,7 @@ describe("It Should Work", () => {
 });
 ```
 
-## Creating Jest Config
+### Creating Jest Config
 
 You must create a `jest.config.ts` file in root of the challenge. Below is an example of `jest.config.js` file.
 
@@ -163,7 +260,7 @@ export default {
 } satisfies Config;
 ```
 
-## Creating Editable Files
+### Creating Editable Files
 
 All files by default will not be editable as it can cause weird behaviours if users edit it. But if you want to make some files editable, you can use `editable` field in file. Below is an example of `index.ts` file.
 
