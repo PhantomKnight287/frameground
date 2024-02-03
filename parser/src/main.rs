@@ -14,7 +14,7 @@ enum Status {
 }
 
 #[allow(non_camel_case_types)]
-#[derive(clap::ValueEnum, Clone, Debug, Serialize,PartialEq)]
+#[derive(clap::ValueEnum, Clone, Debug, Serialize, PartialEq)]
 enum TestRunners {
     jest,
     vitest,
@@ -196,7 +196,8 @@ fn main() {
             let mut result = read_folder(folder_path);
             let path_to_store_files = Path::new("challenges").join(slug).join(name);
             if (!path_to_store_files.is_dir()) {
-                fs::create_dir_all(&path_to_store_files).expect("Failed to create challenge folder");
+                fs::create_dir_all(&path_to_store_files)
+                    .expect("Failed to create challenge folder");
             }
             if (test_runner == TestRunners::jest) {
                 // find jest.config.ts or jest.config.js file in "result" and copy it to the challenge folder
@@ -289,7 +290,6 @@ fn main() {
                 ),
             )
             .expect("Failed to create index.ts file");
-            
         }
     }
 }
