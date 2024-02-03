@@ -5,6 +5,10 @@ const URLS = [
     label: "Tracks",
     href: "tracks",
   },
+  {
+    label: "Reports",
+    href: "reports",
+  },
 ];
 
 function DashboardLayout({ children }: { children: ReactNode }) {

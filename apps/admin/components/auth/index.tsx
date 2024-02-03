@@ -1,7 +1,7 @@
 "use client";
 import { assertAdmin } from "@/utils/auth";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 function VerifyUser() {

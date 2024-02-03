@@ -9,6 +9,7 @@ import { siteConfig } from "@repo/config";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import VerifyUser from "@/components/auth";
+import { Toaster } from "sonner";
 
 export const fontSans = FontSans({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster />
           <NextAuthProvider>
             <VerifyUser />
             <Header />

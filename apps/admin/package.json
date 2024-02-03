@@ -18,8 +18,10 @@
     "@repo/auth": "workspace:^",
     "@repo/config": "workspace:^",
     "@repo/db": "workspace:^",
+    "@repo/utils": "workspace:^",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "dayjs": "^1.11.10",
     "lucide-react": "^0.303.0",
     "next": "14.0.4",
     "next-auth": "5.0.0-beta.4",
@@ -27,6 +29,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
+    "sonner": "^1.3.1",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"

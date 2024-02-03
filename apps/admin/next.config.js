@@ -7,6 +7,14 @@ const nextConfig = {
     }
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: "/github-avatar/:username",
+        destination: "https://github.com/:username.png",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

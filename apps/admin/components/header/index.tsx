@@ -18,6 +18,14 @@ function Header() {
             </div>
           </div>
         </Link>
+        <nav className="ml-6 hidden md:flex items-center justify-center flex-row">
+          <Link
+            href="/dashboard"
+            className="font-semibold hover:text-gray-400 transition-all duration-100"
+          >
+            Dashboard
+          </Link>
+        </nav>
         <div className="flex flex-row ml-auto">
           <InteractiveHeaderComponents />
         </div>
