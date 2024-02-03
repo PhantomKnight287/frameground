@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::env;
 use std::fs;
 use std::path::Path;
+use std::process::exit;
 
 #[allow(non_camel_case_types)]
 #[derive(clap::ValueEnum, Clone, Default, Debug, Serialize)]
@@ -10,6 +11,13 @@ enum Status {
     active,
     #[default]
     coming_soon,
+}
+
+#[allow(non_camel_case_types)]
+#[derive(clap::ValueEnum, Clone, Debug, Serialize,PartialEq)]
+enum TestRunners {
+    jest,
+    vitest,
 }
 
 #[derive(Parser, Debug)]
@@ -21,26 +29,47 @@ enum Status {
 enum Command {
     #[command(name = "create-track", about = "Create a track for FrameGround")]
     CreateTrack {
+        /// The name of the track
         #[arg(required = true, short = 'n', long = "name")]
         name: String,
-
+        /// The description of the track
         #[arg(required = true, short = 'd', long = "description")]
         description: String,
-
+        /// The slug of the track
         #[arg(required = true, short = 's', long = "slug")]
         slug: String,
-
+        /// The logo of the track
         #[arg(required = true, short = 'l', long = "logo")]
         logo: String,
-
+        /// The status of the track
         #[arg(required = true, short = 't', long = "status")]
         status: Status,
     },
 
     #[command(name = "parse", about = "Parse folder into json files")]
     Parse {
+        /// The folder to parse
         #[arg(required = true, short = 'f', long = "folder")]
         folder: String,
+    },
+
+    #[command(name = "generate", about = "Generate files for a new challenge")]
+    Generate {
+        /// The test runner, jest or vitest
+        #[arg(required = true, short = 't', long = "test-runner")]
+        test_runner: TestRunners,
+
+        /// The folder to parse
+        #[arg(required = true, short = 'f', long = "folder")]
+        folder: String,
+
+        /// The challenge name
+        #[arg(required = true, short = 'n', long = "name")]
+        name: String,
+
+        /// The track slug
+        #[arg(required = true, short = 's', long = "slug")]
+        slug: String,
     },
 }
 
@@ -111,7 +140,7 @@ fn main() {
             // create track folder
             let mut track_path = challenges_path.clone();
             track_path.push(slug.clone());
-            fs::create_dir(&track_path).expect("Failed to create track folder");
+            fs::create_dir_all(&track_path).expect("Failed to create track folder");
             // create track.json
             let mut track_json_path = track_path.clone();
             track_json_path.push("track.json");
@@ -146,6 +175,121 @@ fn main() {
             // Serialize and write to files.json without the root key
             let json_result = serde_json::to_string_pretty(&result).unwrap();
             fs::write("files.json", json_result).expect("Failed to write to files.json");
+        }
+        Command::Generate {
+            test_runner,
+            folder,
+            name,
+            slug,
+        } => {
+            println!(
+                "Generating files for a new challenge with test runner: {:?}",
+                test_runner
+            );
+            let folder_path = Path::new(folder.as_str());
+
+            if !folder_path.is_dir() {
+                eprintln!("Error: {} is not a directory.", folder_path.display());
+                std::process::exit(1);
+            }
+
+            let mut result = read_folder(folder_path);
+            let path_to_store_files = Path::new("challenges").join(slug).join(name);
+            if (!path_to_store_files.is_dir()) {
+                fs::create_dir_all(&path_to_store_files).expect("Failed to create challenge folder");
+            }
+            if (test_runner == TestRunners::jest) {
+                // find jest.config.ts or jest.config.js file in "result" and copy it to the challenge folder
+                let mut jest_config_file = result.iter().find(|item| match item {
+                    Item::File { name, content } => {
+                        name == "jest.config.ts" || name == "jest.config.js"
+                    }
+                    _ => false,
+                });
+
+                if jest_config_file.is_some() {
+                    let jest_config_file = jest_config_file.unwrap();
+                    match jest_config_file {
+                        Item::File { name, content } => {
+                            let mut jest_config_file_path = path_to_store_files.clone();
+                            jest_config_file_path.push(name);
+                            fs::write(&jest_config_file_path, content)
+                                .expect("Failed to create jest.config file");
+                        }
+                        _ => {}
+                    }
+                    result.retain(|item| match item {
+                        Item::File { name, content } => {
+                            name != "jest.config.ts" && name != "jest.config.js"
+                        }
+                        _ => true,
+                    });
+                } else {
+                    let mut jest_config_file_path = path_to_store_files.clone();
+                    jest_config_file_path.push("jest.config.ts");
+                    fs::write(
+                        &jest_config_file_path,
+                        "import {Config} from \"jest\"\nexport default {} satisfies Config",
+                    )
+                    .expect("Failed to create jest.config file");
+                }
+            }
+            let mut index_spec_files = result.iter().find(|item| match item {
+                Item::File { name, content } => {
+                    name.ends_with("index.spec.ts")
+                        || name.ends_with("index.spec.js")
+                        || name.ends_with("index.spec.jsx")
+                        || name.ends_with("index.spec.tsx")
+                }
+                _ => false,
+            });
+            if (index_spec_files.is_some()) {
+                let index_spec_files = index_spec_files.unwrap();
+                match index_spec_files {
+                    Item::File { name, content } => {
+                        let mut index_spec_files_path = path_to_store_files.clone();
+                        index_spec_files_path.push(name);
+                        fs::write(&index_spec_files_path, content)
+                            .expect("Failed to create index.spec file");
+                    }
+                    _ => {}
+                }
+                result.retain(|item| match item {
+                    Item::File { name, content } => {
+                        !name.ends_with("index.spec.ts")
+                            && !name.ends_with("index.spec.js")
+                            && !name.ends_with("index.spec.jsx")
+                            && !name.ends_with("index.spec.tsx")
+                    }
+                    _ => true,
+                });
+            } else {
+                let mut index_spec_files_path = path_to_store_files.clone();
+                index_spec_files_path.push("index.spec.ts");
+                fs::write(&index_spec_files_path, "import {describe, it} from \"@jest/globals\";\ndescribe(\"\",()=>{\n    it(\"\",()=>{\n\n    })\n})").expect("Failed to create index.spec file");
+            }
+
+            fs::write(&path_to_store_files.join("index.md"), "## Challenge")
+                .expect("Failed to create index.md file");
+            fs::write(&path_to_store_files.join("terminal.ts"), "import type { ITerminalOptions } from \"xterm\";\nexport default {} satisfies ITerminalOptions").expect("Failed to create terminal.ts file");
+            fs::write(
+                &path_to_store_files.join("challenge.json"),
+                r#"{
+"$schema": "../../schema.json"
+            }"#,
+            )
+            .expect("Failed to create challenge.json file");
+            fs::write(
+                &path_to_store_files.join("index.ts"),
+                format!(
+                    "import {{ FrameGroundChallengeExport }} from \"../../src\";\n\nexport default {{
+                files:{}
+            }} satisfies FrameGroundChallengeExport",
+                    serde_json::to_string_pretty(&result).unwrap()
+                ),
+            )
+            .expect("Failed to create index.ts file");
+            
         }
     }
 }
