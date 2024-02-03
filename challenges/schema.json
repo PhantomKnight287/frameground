@@ -41,11 +41,6 @@
       "description": "Whether a playground is needed for this challenge",
       "type": "boolean"
     },
-    "created_at": {
-      "description": "The date this challenge was created",
-      "type": "string",
-      "format": "date-time"
-    },
     "setup_commands": {
       "description": "Add commands like 'npm install' here that should be run when container is created",
       "type": "array",
@@ -68,7 +63,6 @@
     "author",
     "track_slug",
     "playground_needed",
-    "created_at",
     "setup_commands"
   ]
 }

@@ -68,6 +68,22 @@ The above lines are the `render` method, it returns a JSX element which will be 
 
 The above line is the end of the class declaration, it closes the class body.
 
+## Rendering Components
+
+To render a component, we import it and then use it as a JSX element. Below is an example of how to render the `Name` component.
+
+```jsx
+import Name from './Name';
+
+function App() {
+  return (
+    <div>
+      <Name />
+    </div>
+  );
+}
+```
+
 ## Output
 
 ![Imgur](/imgur/gFf23ud.png)

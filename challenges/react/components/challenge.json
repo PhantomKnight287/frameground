@@ -9,6 +9,5 @@
   "prerequisites": [],
   "setup_commands": ["pnpm i", "clear"],
   "track_slug": "react",
-  "test_runner": "vitest",
-  "created_at": "2024-02-01T16:40:46.932Z"
+  "test_runner": "vitest"
 }
