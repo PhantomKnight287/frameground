@@ -4,7 +4,7 @@ import { type FileSystemTree } from "@webcontainer/api";
 type ChallengeFilesStructure = FileSystemTree;
 import { transpileModule } from "typescript";
 import { Difficulty, TestRunner } from "@prisma/client";
-
+import * as pc from "picocolors";
 export interface FrameGroundChallengeExport {
   files: ChallengeFilesStructure;
 }
@@ -151,7 +151,7 @@ export async function saveChallengesToDb() {
           (challengeExists.updatedAt || challengeExists.createdAt).getTime();
 
       if (needsUpdate && challengeExists) {
-        console.log(`Updating ${challenge}`);
+        console.log(pc.yellow(`Updating ${challenge}`));
         const _challenge = await prisma.challenge.update({
           where: {
             id: challengeExists.id,
@@ -177,7 +177,7 @@ export async function saveChallengesToDb() {
           },
         });
       } else if (!challengeExists) {
-        console.log(`Creating ${challenge}`);
+        console.log(pc.green(`Creating ${challenge}`));
         const _challenge = await prisma.challenge.create({
           data: {
             description: challengeData.description,
@@ -200,7 +200,7 @@ export async function saveChallengesToDb() {
           },
         });
       } else {
-        console.log(`Skipping ${challenge}`);
+        console.log(pc.gray(`Skipping ${challenge}`));
       }
     }
   }
@@ -230,13 +230,13 @@ export async function saveTracksToDb() {
     });
     delete trackConfig["$schema"];
     if (trackExists) {
-      console.log(`Updating ${track}`);
+      console.log(pc.yellow(`Updating ${track}`));
       await prisma.track.update({
         where: { id: trackExists.id },
         data: { ...trackConfig },
       });
     } else {
-      console.log(`Creating ${track}`);
+      console.log(pc.green(`Creating ${track}`));
       await prisma.track.create({ data: { slug: track, ...trackConfig } });
     }
   }

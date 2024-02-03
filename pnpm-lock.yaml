@@ -411,6 +411,9 @@ importers:
       dotenv-cli:
         specifier: ^7.3.0
         version: 7.3.0
+      picocolors:
+        specifier: ^1.0.0
+        version: 1.0.0
       prisma-paginate:
         specifier: ^5.2.1
         version: 5.2.1(@prisma/client@5.7.1)(prisma@5.7.1)
