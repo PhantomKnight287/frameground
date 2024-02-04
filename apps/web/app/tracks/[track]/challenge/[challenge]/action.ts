@@ -92,6 +92,10 @@ export async function solveChallenge(
     }
     return solved;
   });
+  revalidateTag(`user::challenges::${user?.username}`);
+  revalidateTag(`profile::${user?.username}`);
+  revalidateTag(`user::solves::${user?.id}`);
+
   return {
     url: `/tracks/${_tx.track?.slug}/challenge/${_tx.slug}/solved`,
   };

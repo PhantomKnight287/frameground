@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { prisma } from "@repo/db";
 import { auth } from "@/auth";
+import { revalidateTag } from "next/cache";
 
 const updateBioSchema = z.object({
   bio: z.string().nullable(),
@@ -29,6 +30,7 @@ export async function UpdateBio(prev: any, current: FormData) {
       bio: parsed.data.bio,
     },
   });
+  revalidateTag(`profile::${user!.username}`);
   return {
     message: "Profile Updated",
   };
