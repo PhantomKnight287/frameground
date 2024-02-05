@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <TooltipProvider>
               <Header />
               {children}
+              <Analytics />
               <Toaster />
             </TooltipProvider>
           </NextAuthProvider>
