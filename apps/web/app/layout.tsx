@@ -35,9 +35,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
           disableTransitionOnChange
+          forcedTheme="dark"
         >
           <NextAuthProvider>
             <TooltipProvider>
