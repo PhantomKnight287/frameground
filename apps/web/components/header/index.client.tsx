@@ -20,7 +20,11 @@ export default function InteractiveHeaderComponents() {
   if (!data || !data?.user)
     return (
       <>
-        <Button onClick={() => signIn("github")} variant={"ghost"}>
+        <Button
+          title="Sign In"
+          onClick={() => signIn("github")}
+          variant={"ghost"}
+        >
           <User />
         </Button>
       </>
