@@ -1,0 +1,13 @@
+{
+  "$schema": "../../schema.json",
+  "id": "class-components",
+  "author": ["phantomknight287"],
+  "description": "Class components in React encapsulate the structure, behavior, and rendering logic of UI elements within JavaScript classes.",
+  "difficulty": "beginner",
+  "label": "Class Components",
+  "playground_needed": true,
+  "prerequisites": ["react/components"],
+  "setup_commands": ["pnpm i", "clear"],
+  "test_runner": "vitest",
+  "track_slug": "react"
+}
