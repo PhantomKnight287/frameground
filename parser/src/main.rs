@@ -1,5 +1,6 @@
 use clap::Parser;
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 use std::env;
 use std::fs;
 use std::path::Path;
@@ -13,7 +14,7 @@ enum Status {
 }
 
 #[allow(non_camel_case_types)]
-#[derive(clap::ValueEnum, Clone, Debug, Serialize,Default, PartialEq)]
+#[derive(clap::ValueEnum, Clone, Debug, Serialize, Default, PartialEq)]
 enum TestRunners {
     jest,
     #[default]
@@ -194,7 +195,7 @@ fn main() {
             }
 
             let mut result = read_folder(folder_path);
-            let path_to_store_files = Path::new("challenges").join(slug).join(name);
+            let path_to_store_files = Path::new("challenges").join(slug.clone()).join(name.clone());
             if !path_to_store_files.is_dir() {
                 fs::create_dir_all(&path_to_store_files)
                     .expect("Failed to create challenge folder");
@@ -247,9 +248,9 @@ fn main() {
             if index_spec_files.is_some() {
                 let index_spec_files = index_spec_files.unwrap();
                 match index_spec_files {
-                    Item::File { name, content } => {
+                    Item::File { name: _, content } => {
                         let mut index_spec_files_path = path_to_store_files.clone();
-                        index_spec_files_path.push(name);
+                        index_spec_files_path.push("index.spec.tsx");
                         fs::write(&index_spec_files_path, content)
                             .expect("Failed to create index.spec file");
                     }
@@ -275,9 +276,12 @@ fn main() {
             fs::write(&path_to_store_files.join("terminal.ts"), "import type { ITerminalOptions } from \"xterm\";\nexport default {} satisfies ITerminalOptions").expect("Failed to create terminal.ts file");
             fs::write(
                 &path_to_store_files.join("challenge.json"),
-                r#"{
-"$schema": "../../schema.json"
-            }"#,
+                json!({
+                    "$schema": "../../schema.json",
+                "id":name,
+                "track_slug":slug,
+                "test_runner":test_runner
+                }).to_string(),
             )
             .expect("Failed to create challenge.json file");
             fs::write(
