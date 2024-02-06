@@ -1,7 +1,7 @@
 export function Grid() {
   return (
     <svg
-      // @ts-ignore
+      // @ts-expect-error
       tw="absolute h-[150%] w-[150%]"
       viewBox="0 0 3272 1764"
       fill="none"
