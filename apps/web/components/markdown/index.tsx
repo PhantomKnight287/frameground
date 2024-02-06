@@ -13,6 +13,7 @@ import { vscDarkPlus } from "./themes/vs-dark-plus";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { Check, Copy } from "lucide-react";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const HTML_COMMENT_REGEX = new RegExp("<!--([\\s\\S]*?)-->", "g");
 
@@ -109,16 +110,13 @@ export function Markdown({
                 PreTag="section" // parent tag
                 className={clsx(className, "rounded-xl dark:rounded-md")}
                 language={match[1]}
-                style={syntaxHighlighterTheme} // theme
+                style={oneDark} 
                 customStyle={{ fontSize: "inherit", padding: "30px" }}
                 codeTagProps={{
                   style: {
-                    // overrides
                     fontSize: "inherit",
                     lineHeight: "inherit",
                   },
-                  // This is required make it WCAG 2 compliant for scrolling through keyboard if the code overflows and have a scrollbar
-                  // https://dequeuniversity.com/rules/axe/4.8/scrollable-region-focusable
                   tabIndex: 0,
                 }}
                 {...props}
