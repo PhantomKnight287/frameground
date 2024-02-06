@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Editor, EditorProps } from "@monaco-editor/react";
 
@@ -10,3 +10,5 @@ export default function MonacoEditor({
 } & EditorProps) {
   return <Editor key={activeFile} {...props} />;
 }
+
+export { useMonaco } from "@monaco-editor/react";
