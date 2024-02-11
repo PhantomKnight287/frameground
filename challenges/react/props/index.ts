@@ -86,13 +86,13 @@ export default {
             {
               type: "file",
               name: "age.jsx",
-              content: "",
+              content: "\r\n\r\n\r\n",
               editable: true,
             },
             {
               type: "file",
               name: "greet.jsx",
-              content: "",
+              content: "\r\n\r\n\r\n",
               editable: true,
             },
           ],
