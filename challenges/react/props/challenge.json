@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schema.json",
+  "id": "props",
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": ["phantomknight287"],
+  "description": "Data passed from parent to child components in React",
+  "difficulty": "beginner",
+  "label": "Props",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/components",
+    "react/class-components",
+    "react/functional-components"
+  ],
+  "setup_commands": ["pnpm i", "clear"]
+}
