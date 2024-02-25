@@ -280,7 +280,8 @@ fn main() {
                     "$schema": "../../schema.json",
                 "id":name,
                 "track_slug":slug,
-                "test_runner":test_runner
+                "test_runner":test_runner,
+                "setup_commands":"[\"pnpm i\",\"clear\"]"
                 }).to_string(),
             )
             .expect("Failed to create challenge.json file");
