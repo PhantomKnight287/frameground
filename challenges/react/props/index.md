@@ -27,6 +27,8 @@ In the above example, the `name` and `age` props are passed to the `ChildCompone
 
 In the child component, props can be accessed using the `props` object. Here's how you can access props in a functional component:
 
+### In Functional components
+
 ```jsx
 // ChildComponent.jsx
 
@@ -43,6 +45,30 @@ function ChildComponent(props) {
 
 export default ChildComponent;
 ```
+
+### In Class Components
+
+```jsx
+// ChildComponent.jsx
+
+
+import React, { Component } from 'react';
+
+class ChildComponent extends Component {
+  render() {
+    return (
+      <div>
+        <p>Name: {this.props.name}</p>
+        <p>Age: {this.props.age}</p>
+      </div>
+    );
+  }
+}
+
+export default ChildComponent;
+
+```
+
 
 In this example, `props.name` and `props.age` are accessed within the `ChildComponent`.
 
@@ -76,6 +102,6 @@ Props are a powerful feature in React that enable components to be dynamic and r
 
 ## Challenge
 
-There are two files in `src/components` folder, `greet.jsx` and `age.jsx`. You task is to create a component in each file. The component in `greet.jsx` must take a `name` as a prop and return "Hello name" inside a div and component in `age.jsx` must take `age` as a prop and return "My age is age" inside a div.
+There are two files in `src/components` folder, `greet.jsx` and `age.jsx`. You task is to create a component in each file. The component in `greet.jsx` must take a `name` as a prop and return "Hello name" inside a div and component in `age.jsx` must take `age` as a prop and return "My age is age" inside a div and import and mount these components in `src/App.jsx`.
 
-Your job is to also import and mount these components in `src/App.jsx`.
+You are free to use either Class or Functional Components but we encourage you to use both of them
