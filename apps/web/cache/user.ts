@@ -82,3 +82,27 @@ export const getCachedSolvedChallenges = memoize(
     logid: "getCachedSolvedChallenges",
   }
 );
+
+export const getCachedEnrolledTracks = memoize(
+  async (username: string) =>
+    await prisma.track.findMany({
+      where: {
+        users: {
+          some: {
+            username,
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        slug: true,
+      },
+    }),
+  {
+    revalidateTags: (username) => [`user::tracks::${username}`],
+    log: ["verbose", "datacache", "dedupe",],
+    logid: "getCachedEnrolledTracks",
+  }
+);
