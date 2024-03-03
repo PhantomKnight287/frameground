@@ -57,14 +57,18 @@ export function ProfileButtons({
         {solves?.[0]?.solves_count || 0}{" "}
         {solves?.[0]?.solves_count <= 1 ? "Challenge" : "Challenges"} Conquered
       </Link>
-      <Button
-        variant={"outline"}
-        className="rounded-xl text-left flex flex-row items-center justify-start gap-2"
+      <Link
+        href={`/@${username}/tracks`}
+        className={buttonVariants({
+          variant: pathname === "tracks" ? "secondary" : "outline",
+          className:
+            "rounded-xl text-left flex flex-row items-center !justify-start gap-2",
+        })}
       >
         <AudioWaveform className="text-blue-500" />
         Enrolled in {user._count.tracks}{" "}
         {user._count.tracks <= 1 ? "Track" : "Tracks"}
-      </Button>
+      </Link>
       <Button
         variant={"outline"}
         className="rounded-xl text-left flex flex-row items-center justify-start gap-2"
