@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schema.json",
+  "id": "event-handling",
+  "setup_commands": ["pnpm i", "clear"],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": ["phantomknight287"],
+  "description": "How to handle different events in React",
+  "difficulty": "easy",
+  "label": "Event Handling",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/components",
+    "react/functional-components",
+    "react/state"
+  ]
+}
