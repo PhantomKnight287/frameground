@@ -2,7 +2,6 @@ import { getCachedSolvedChallenges } from "@/cache/user";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -30,16 +29,18 @@ async function Challenges({ params }: { params: { username: string } }) {
       <div className="p-6">
         {challenges.length > 0 ? (
           <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Latest Submission</TableHead>
+            <TableHeader className="not-in-markdown">
+              <TableRow className="not-in-markdown">
+                <TableHead className="not-in-markdown">Name</TableHead>
+                <TableHead className="not-in-markdown">
+                  Latest Submission
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {challenges.map((challenge) => (
-                <TableRow key={challenge.id}>
-                  <TableCell className="font-medium">
+                <TableRow key={challenge.id} className="not-in-markdown">
+                  <TableCell className="font-medium not-in-markdown">
                     <Link
                       href={`/track/${challenge.track!.slug}/challenge/${
                         challenge.slug
@@ -49,7 +50,7 @@ async function Challenges({ params }: { params: { username: string } }) {
                       {challenge.label}
                     </Link>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="not-in-markdown">
                     {fromNow(challenge.solves[0].createdAt)}
                   </TableCell>
                 </TableRow>
