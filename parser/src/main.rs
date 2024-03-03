@@ -281,7 +281,7 @@ fn main() {
                 "id":name,
                 "track_slug":slug,
                 "test_runner":test_runner,
-                "setup_commands":"[\"pnpm i\",\"clear\"]"
+                "setup_commands":vec!["pnpm i".to_string(),"clear".to_string()]
                 }).to_string(),
             )
             .expect("Failed to create challenge.json file");
