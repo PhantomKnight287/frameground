@@ -98,7 +98,6 @@
   scrollbar-width: none;
 }
 
-
 tr {
   border-top: 1px solid #c6cbd1;
 }
@@ -107,4 +106,13 @@ th,
 td {
   padding: 6px 13px;
   border: 1px solid #dfe2e5;
+}
+
+tr.not-in-markdown {
+  border-top: unset;
+}
+
+th.not-in-markdown,
+td.not-in-markdown {
+  border: unset;
 }
