@@ -21,6 +21,6 @@ Please read the [setting up the project locally](https://docs.frameground.tech/d
 ## Special Thanks
 
 - [@typehero](https://github.com/typehero) for the inspiration and color schemes
-- [@fuma-nama](https://github.com/fuma-nama) for animation on landing page
+- [@fuma-nama](https://github.com/fuma-nama) for animation on landing page and some UI components
 - [@siduck](https://github.com/siduck) for motivation
 - [@shivam1317](https://github.com/shivam1317) for the name `FrameGround`(previously `WebHero`)
