@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@repo/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function EnrollOrLeave(track: string, enrolled?: boolean) {
   const session = await auth();
@@ -19,6 +19,8 @@ export async function EnrollOrLeave(track: string, enrolled?: boolean) {
         },
       },
     });
+    revalidateTag(`profile::${user?.username}`);
+    revalidateTag(`user::tracks::${user?.username}`);
     revalidatePath(`/tracks`);
     return;
   }
@@ -32,5 +34,8 @@ export async function EnrollOrLeave(track: string, enrolled?: boolean) {
       },
     },
   });
+  revalidateTag(`profile::${user?.username}`);
+  revalidateTag(`user::tracks::${user?.username}`);
+
   revalidatePath(`/tracks`);
 }
