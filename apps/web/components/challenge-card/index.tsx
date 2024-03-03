@@ -4,7 +4,7 @@ import { Badge } from "../ui/badge";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { cn } from "@/lib/utils";
-import { Challenge, User } from "@repo/db/types";
+import { Challenge } from "@repo/db/types";
 import { upperFirst } from "@/utils";
 import { BadgeCheck, MessageCircle, ThumbsUp, User2 } from "lucide-react";
 
