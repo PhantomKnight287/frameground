@@ -1,13 +1,35 @@
 import Link from "next/link";
 import { CreateAppAnimation } from "./index.client";
+import { Badge } from "../ui/badge";
+import { Github } from "lucide-react";
+import { getGithubStars } from "@/cache/stars";
+import { siteConfig } from "@repo/config";
 
-export function Hero() {
+export async function Hero() {
+  const githubStars = await getGithubStars();
   return (
     <section className="w-full py-12">
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
+              {githubStars != null ? (
+                <Link
+                  href={siteConfig.urls.github}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Badge
+                    aria-hidden="true"
+                    className="rounded-md px-3.5 py-1.5"
+                    variant="secondary"
+                  >
+                    <Github className="mr-2 size-3.5" aria-hidden="true" />
+                    {githubStars} stars on GitHub
+                  </Badge>
+                  <span className="sr-only">GitHub</span>
+                </Link>
+              ) : null}
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-center lg:text-left">
                 Learn JavaScript frameworks with interactive challenges
               </h1>
