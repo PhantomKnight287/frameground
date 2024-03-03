@@ -14,6 +14,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { Check, Copy } from "lucide-react";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import raw from "rehype-raw";
+import { Callout } from "../callout";
+import { CodeBlock, Pre } from "../codeblock";
 
 const HTML_COMMENT_REGEX = new RegExp("<!--([\\s\\S]*?)-->", "g");
 
@@ -110,7 +113,7 @@ export function Markdown({
                 PreTag="section" // parent tag
                 className={clsx(className, "rounded-xl dark:rounded-md")}
                 language={match[1]}
-                style={oneDark} 
+                style={oneDark}
                 customStyle={{ fontSize: "inherit", padding: "30px" }}
                 codeTagProps={{
                   style: {
@@ -130,10 +133,24 @@ export function Markdown({
             </code>
           );
         },
+
         details: ({ ...props }) => <details {...props} />,
         summary: ({ ...props }) => <summary {...props} />,
+        //@ts-expect-error
+        callout: Callout,
+        blockquote: ({ ...props }) => (
+          <blockquote className="p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+            {/**
+             //@ts-expect-error */}
+            <p
+              className="italic font-medium leading-relaxed text-gray-900 dark:text-white"
+              {...props}
+            />
+          </blockquote>
+        ),
       }}
       remarkPlugins={[removeHtmlComments, remarkGfm]}
+      rehypePlugins={[raw]}
     >
       {children}
     </ReactMarkdown>

@@ -1,8 +1,11 @@
 const { fontFamily } = require("tailwindcss/defaultTheme");
+const { createPreset } = require("fumadocs-ui/tailwind-plugin");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
+    "./node_module/fumadocs-ui/dist/**/*.js",
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
@@ -119,4 +122,8 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
+  presets: [
+    createPreset({ keepCodeBlockBackground: true }),
+    require("@tailwindcss/typography"),
+  ],
 };
