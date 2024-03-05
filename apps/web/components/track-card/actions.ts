@@ -21,6 +21,8 @@ export async function EnrollOrLeave(track: string, enrolled?: boolean) {
     });
     revalidateTag(`profile::${user?.username}`);
     revalidateTag(`user::tracks::${user?.username}`);
+    revalidateTag(`user::tracks::list::${user?.id}`);
+
     revalidatePath(`/tracks`);
     return;
   }
@@ -36,6 +38,7 @@ export async function EnrollOrLeave(track: string, enrolled?: boolean) {
   });
   revalidateTag(`profile::${user?.username}`);
   revalidateTag(`user::tracks::${user?.username}`);
+  revalidateTag(`user::tracks::list::${user?.id}`);
 
   revalidatePath(`/tracks`);
 }
