@@ -16,8 +16,15 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Markdown } from "@/components/markdown";
 
+
 let timeout: NodeJS.Timeout;
-function CreateSolutionPage({ files }: { files: ChallengeFilesStructure[] }) {
+function CreateSolutionPage({
+  files,
+  solved,
+}: {
+  files: ChallengeFilesStructure[];
+  solved: boolean;
+}) {
   const [editableFiles, setEditableFiles] = useState(files);
   const [activeFile, setActiveFile] = useState<string>(
     `${editableFiles[0].name}-0`
@@ -86,8 +93,8 @@ function CreateSolutionPage({ files }: { files: ChallengeFilesStructure[] }) {
           <Label htmlFor="title" className="text-lg">
             Title
           </Label>
-          <Button type="submit" disabled={loading}>
-            Create Solution
+          <Button type="submit" disabled={loading || !solved}>
+            {!solved ? "Solve the challenge first" : "Create Solution"}
           </Button>
         </div>
         <TextareaAutosize
@@ -97,6 +104,7 @@ function CreateSolutionPage({ files }: { files: ChallengeFilesStructure[] }) {
           ref={titleRef}
           required
           autoFocus
+          disabled={!solved}
         />
         <Label htmlFor="description" className="text-lg">
           Description
@@ -120,6 +128,7 @@ function CreateSolutionPage({ files }: { files: ChallengeFilesStructure[] }) {
                 placeholder="Write description of your solution here(supports Markdown)"
                 minRows={3}
                 value={description}
+                disabled={!solved}
                 onChange={(e) => setDescription(e.target.value)}
                 required
               />
@@ -167,6 +176,12 @@ function CreateSolutionPage({ files }: { files: ChallengeFilesStructure[] }) {
                   ?.name.split(".")[1] as any
               ]
             }
+            options={{
+              readOnly: !solved,
+              readOnlyMessage: {
+                value: "Please solve the challenge first",
+              },
+            }}
             value={
               (editableFiles.find(
                 (file, index) => `${file.name}-${index}` === activeFile

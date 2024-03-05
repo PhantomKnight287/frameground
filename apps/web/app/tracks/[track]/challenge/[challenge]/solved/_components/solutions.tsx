@@ -45,7 +45,7 @@ async function Solutions({
           <Link
             className="flex flex-col gap-2 p-2 bg-border rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-700"
             key={solution.id}
-            href={`/solution/${solution.id}`}
+            href={`/solutions/${solution.id}`}
           >
             <div className="flex flex-row items-center justify-between">
               <div className="flex flex-row items-center gap-2">

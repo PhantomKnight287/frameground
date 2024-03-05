@@ -3,6 +3,12 @@ import CreateSolutionPage from "./page.client";
 import { prisma } from "@repo/db";
 import { ChallengeFilesStructure } from "@repo/challenges/src";
 import { auth } from "@/auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Create a solution",
+  description: "Create a solution",
+};
 
 async function CreateSolution({
   params,
@@ -19,6 +25,14 @@ async function CreateSolution({
     where: {
       slug: params.challenge,
       track: { slug: params.track },
+    },
+  });
+  const solved = await prisma.solves.findFirst({
+    where: {
+      type: "accepted",
+      challenge: {
+        slug: params.challenge,
+      },
     },
   });
   if (!challenge) notFound();
@@ -47,7 +61,7 @@ async function CreateSolution({
 
   return (
     <div className="container">
-      <CreateSolutionPage files={editableFiles} />
+      <CreateSolutionPage files={editableFiles} solved={!!solved?.id} />
     </div>
   );
 }

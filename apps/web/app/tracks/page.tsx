@@ -3,6 +3,7 @@ import { TrackCard } from "@/components/track-card";
 import { prisma } from "@/lib/db";
 import { Metadata, Viewport } from "next";
 import { env } from "@/env.mjs";
+import { getCachedTracks } from "@/cache/tracks";
 
 export const dynamic = "force-dynamic";
 
@@ -38,24 +39,7 @@ export const viewport: Viewport = {
 
 export default async function Tracks({}: { searchParams: { type?: string } }) {
   const session = await auth();
-  const tracks = await prisma.track.findMany({
-    include: {
-      _count: {
-        select: {
-          users: true,
-        },
-      },
-      ...(session?.user?.id
-        ? {
-            users: {
-              where: {
-                id: session.user.id,
-              },
-            },
-          }
-        : undefined),
-    },
-  });
+  const tracks = await getCachedTracks(session?.user?.id);
 
   return (
     <main className="flex mt-12">

@@ -69,14 +69,18 @@ export function ProfileButtons({
         Enrolled in {user._count.tracks}{" "}
         {user._count.tracks <= 1 ? "Track" : "Tracks"}
       </Link>
-      <Button
-        variant={"outline"}
-        className="rounded-xl text-left flex flex-row items-center justify-start gap-2"
+      <Link
+        href={`/@${username}/solutions`}
+        className={buttonVariants({
+          variant: pathname === "solutions" ? "secondary" : "outline",
+          className:
+            "rounded-xl text-left flex flex-row items-center !justify-start gap-2",
+        })}
       >
         <CheckCheck className="text-purple-500" />
         {user._count.solutions}{" "}
         {user._count.solutions <= 1 ? "Solution" : "Solutions"} Posted
-      </Button>
+      </Link>
       <LayoutClientComponents username={username} />
     </div>
   );
