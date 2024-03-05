@@ -1,36 +1,35 @@
-import { prisma } from "@repo/db";
 import { notFound } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import SolutionFiles from "./page.client";
 import { Markdown } from "@/components/markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Metadata } from "next";
+import { getCachedSolution } from "@/cache/solutions";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const solution = await getCachedSolution(params.id);
+  if (!solution)
+    return {
+      title: "Solution",
+      description: "View solution of challenge",
+    };
+  return {
+    title: solution.title,
+    description: `View solution with title ${solution.title}`,
+    openGraph: {
+      title: solution.title,
+      description: `View solution with title ${solution.title}`,
+    },
+  };
+}
 
 async function Solution({ params }: { params: { id: string } }) {
-  const solution = await prisma.solution.findFirst({
-    where: {
-      id: params.id,
-    },
-    include: {
-      author: {
-        select: {
-          username: true,
-          name: true,
-        },
-      },
-      files: true,
-      challenge: {
-        select: {
-          slug: true,
-          track: {
-            select: {
-              slug: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const solution = await getCachedSolution(params.id);
   if (!solution) notFound();
   return (
     <div className="container mt-10 gap-4">
