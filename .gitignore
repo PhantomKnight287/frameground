@@ -4,5 +4,3 @@ node_modules
 !.env.example
 # this is for testing out the monaco editor
 packages/editor 
-
-.idea
