@@ -18,12 +18,18 @@ export default function Header() {
             </div>
           </div>
         </Link>
-        <nav className="ml-6 hidden md:flex items-center justify-center flex-row">
+        <nav className="ml-6 hidden md:flex items-center justify-center flex-row gap-4">
           <Link
             href="/tracks"
             className="font-semibold hover:text-gray-400 transition-all duration-100"
           >
             Explore
+          </Link>
+          <Link
+              href="/pricing"
+              className="font-semibold hover:text-gray-400 transition-all duration-100"
+          >
+            Pricing
           </Link>
         </nav>
         <div className="flex flex-row ml-auto">
