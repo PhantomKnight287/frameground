@@ -49,7 +49,7 @@ export function CreateAppAnimation(): JSX.Element {
     lines.push(
       <Fragment key="command_response">
         <span className="font-bold">{"> frameground@1.0.0 test"} </span>
-        <span>{"> jest"}</span>
+        <span>{"> vitest run"}</span>
         <br />
         {tick > timeCommandRun + 1 && (
           <>
