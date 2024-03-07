@@ -8,7 +8,8 @@
     "./sidebar": "./src/sidebar/index.tsx",
     "./file": "./src/side/file.tsx",
     "./folder": "./src/side/folder.tsx",
-    "./utils": "./src/utils/editor.ts"
+    "./utils": "./src/utils/editor.ts",
+    "./exports": "./src/exports.ts"
   },
   "typesVersions": {
     "*": {
@@ -29,11 +30,14 @@
       ],
       "utils": [
         "./src/utils/editor.ts"
+      ],
+      "exports": [
+        "./src/exports.ts"
       ]
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "Gurpal Singh",
@@ -45,12 +49,18 @@
     "@repo/utils": "workspace:^",
     "@typescript/ata": "^0.9.4",
     "clsx": "^2.0.0",
+    "lodash": "^4.17.21",
+    "prettier": "^3.2.5",
     "react": "^18.2.0",
     "tailwind-merge": "^2.2.0",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.47",
+    "lz-string": "^1.5.0",
+    "monaco-editor": "^0.46.0",
+    "next": "14.0.4",
     "typescript": "^5.3.3"
   }
 }

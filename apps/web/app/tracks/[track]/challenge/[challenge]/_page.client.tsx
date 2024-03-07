@@ -5,7 +5,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import MonacoEditor from "@repo/monaco";
 import MonacoSidebar from "@repo/monaco/sidebar";
 import { FrameGroundChallengeExport } from "@repo/challenges/src";
 import { cn } from "@repo/utils";
@@ -43,6 +42,7 @@ import EnrollInTrack from "./_components/enroll";
 import { attemptChallenge, solveChallenge } from "./action";
 import { signIn, useSession } from "next-auth/react";
 import { languages } from "@/constants/languages";
+import SplitEditor, {CodeEditor} from "@repo/monaco/exports"
 
 let timeout: NodeJS.Timeout;
 
@@ -329,7 +329,7 @@ const command = ${
                   <ResizablePanel className="relative" defaultSize={60}>
                     <div className="bg-border px-4 py-2 w-full flex flex-row items-center rounded-t-md">
                       <span className={cn("text-sm text-muted-foreground ")}>
-                        {saved === true ? "Saved Locally" : "Unsaved Changes"}
+                        {saved ? "Saved Locally" : "Unsaved Changes"}
                       </span>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -351,8 +351,10 @@ const command = ${
                         </TooltipContent>
                       </Tooltip>
                     </div>
-                    <MonacoEditor
-                      activeFile={"Challenge.md"}
+
+                    <SplitEditor
+                        height={"100vh"}
+                        activeFile={"Challenge.md"}
                       value={content || ""}
                       onChange={(value) => {
                         debouncedHandleInput(value || "");
@@ -368,6 +370,43 @@ const command = ${
                         wordWrap: "on",
                       }}
                     />
+
+                    {/*<CodeEditor*/}
+                    {/*    path={*/}
+                    {/*        generateFilePath(files, activeFile?.path || "0")*/}
+                    {/*    }*/}
+                    {/*      // activeFile={"Challenge.md"}*/}
+                    {/*      value={content || ""}*/}
+                    {/*      onChange={(value) => {*/}
+                    {/*        debouncedHandleInput(value || "");*/}
+                    {/*      }}*/}
+                    {/*      language={language}*/}
+                    {/*      options={{*/}
+                    {/*        fontSize: 16,*/}
+                    {/*        readOnly:*/}
+                    {/*          activeFile?.editable === undefined*/}
+                    {/*            ? true*/}
+                    {/*            : !activeFile?.editable,*/}
+                    {/*        wordWrap: "on",*/}
+                    {/*      }}*/}
+                    {/*/>*/}
+                    {/*<MonacoEditor*/}
+                    {/*  activeFile={"Challenge.md"}*/}
+                    {/*  value={content || ""}*/}
+                    {/*  onChange={(value) => {*/}
+                    {/*    debouncedHandleInput(value || "");*/}
+                    {/*  }}*/}
+                    {/*  theme={"vs-dark"}*/}
+                    {/*  language={language}*/}
+                    {/*  options={{*/}
+                    {/*    fontSize: 16,*/}
+                    {/*    readOnly:*/}
+                    {/*      activeFile?.editable === undefined*/}
+                    {/*        ? true*/}
+                    {/*        : !activeFile?.editable,*/}
+                    {/*    wordWrap: "on",*/}
+                    {/*  }}*/}
+                    {/*/>*/}
                     <div className="absolute bottom-0 bg-border px-4 py-3 w-full flex flex-row items-center bg-[#1e1e1e] rounded-b-md">
                       <div className="flex-row ml-auto gap-4 items-center flex">
                         <button
