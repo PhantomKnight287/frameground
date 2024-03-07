@@ -38,7 +38,7 @@ async function Tracks({ params }: { params: { username: string } }) {
                 <TableRow key={track.id} className="not-in-markdown">
                   <TableCell className="font-medium not-in-markdown">
                     <Link
-                      href={`/track/${track.slug}`}
+                      href={`/tracks/${track.slug}`}
                       className="hover:underline"
                     >
                       {track.name}
