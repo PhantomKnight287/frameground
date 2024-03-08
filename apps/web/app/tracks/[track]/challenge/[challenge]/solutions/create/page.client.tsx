@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { ChallengeFilesStructure } from "@repo/challenges/src";
 import { useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import {Editor as MonacoEditor} from "@repo/monaco/exports";
+import MonacoEditor from "@repo/monaco";
 import { languages } from "@/constants/languages";
 import { cn } from "@repo/utils";
 import { useParams } from "next/navigation";
@@ -165,7 +165,7 @@ function CreateSolutionPage({
             })}
           </div>
           <MonacoEditor
-            key={activeFile}
+            activeFile={activeFile}
             theme="vs-dark"
             height={"80vh"}
             language={

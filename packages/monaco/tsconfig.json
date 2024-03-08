@@ -5,5 +5,5 @@
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
   },
   "include": ["**/*.ts", "**/*.tsx", "monaco-editor.d.ts", "monaco-vim.d.ts"],
-  "exclude": ["node_modules","tailwind.config.ts"]
+  "exclude": ["node_modules"]
 }

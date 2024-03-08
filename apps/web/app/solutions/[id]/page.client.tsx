@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { languages } from "@/constants/languages";
 import { File } from "@repo/db/types";
-import {Editor as MonacoEditor} from "@repo/monaco/exports";
+import MonacoEditor from "@repo/monaco";
 import { useState } from "react";
 
 function SolutionFiles({ files }: { files: File[] }) {
@@ -22,7 +22,7 @@ function SolutionFiles({ files }: { files: File[] }) {
         ))}
       </div>
       <MonacoEditor
-        key={activeFile}
+        activeFile={activeFile}
         options={{ readOnly: true }}
         value={
           files.find((file, index) => `${file.name}-${index}` === activeFile)
