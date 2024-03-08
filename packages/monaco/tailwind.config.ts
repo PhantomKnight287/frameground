@@ -1,4 +1,3 @@
-
-module.exports = {
+export default {
   content: ["src/**/*.{ts,tsx}"],
 };

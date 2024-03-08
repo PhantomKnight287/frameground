@@ -32,7 +32,6 @@ export function CodeEditor({ onChange, onMount, options, value, ...props }: Code
     }, [options, settings]);
 
     return (
-       //@ts-expect-error
         <Editor
             {...props}
             defaultLanguage="javascript"
@@ -41,7 +40,6 @@ export function CodeEditor({ onChange, onMount, options, value, ...props }: Code
             options={editorOptions}
             theme={editorTheme}
             value={value}
-
         />
     );
 }
