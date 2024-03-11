@@ -34,9 +34,8 @@ const getActualCode = (code: string) =>
 export default function SplitEditor({className, onChange, onMount, onValidate, ...props}: SplitEditorProps) {
     const monaco = useMonaco()
     const wrapper = useRef<HTMLDivElement>(null);
-    const monacoRef = useRef<typeof import('monaco-editor')>();
+    const monacoRef = useRef<any>();
     const inlayHintsProviderDisposableRef = useRef<monacoType.IDisposable>();
-
 
     useEffect(() => {
         monacoRef.current = monaco;
@@ -195,7 +194,7 @@ export default function SplitEditor({className, onChange, onMount, onValidate, .
                                 ]);
                             }
                         }
-                        onMount(_editor, monaco)
+                        onMount?.(_editor, monaco)
                     }}
                     defaultValue={""}
                     onChange={async (value, _changeEvent) => {
@@ -230,7 +229,7 @@ export default function SplitEditor({className, onChange, onMount, onValidate, .
                                 'file:///node_modules/@types/user.d.ts',
                             );
                         }
-                        onChange(value, _changeEvent)
+                        onChange?.(value, _changeEvent)
                     }}
                 />
             </section>
