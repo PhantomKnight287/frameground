@@ -11,8 +11,10 @@ import { siteConfig } from "@repo/config";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { fontSans } from "@/fonts";
 import { Toaster } from "@/components/ui/sonner";
+import { env } from "@/env.mjs";
 
 export const metadata: Metadata = {
+  metadataBase:new URL(env.HOST),
   title: {
     template: `%s | ${siteConfig.name}`,
     default: siteConfig.name.replace(" ", ""),
