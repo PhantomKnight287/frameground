@@ -371,42 +371,6 @@ const command = ${
                       }}
                     />
 
-                    {/*<CodeEditor*/}
-                    {/*    path={*/}
-                    {/*        generateFilePath(files, activeFile?.path || "0")*/}
-                    {/*    }*/}
-                    {/*      // activeFile={"Challenge.md"}*/}
-                    {/*      value={content || ""}*/}
-                    {/*      onChange={(value) => {*/}
-                    {/*        debouncedHandleInput(value || "");*/}
-                    {/*      }}*/}
-                    {/*      language={language}*/}
-                    {/*      options={{*/}
-                    {/*        fontSize: 16,*/}
-                    {/*        readOnly:*/}
-                    {/*          activeFile?.editable === undefined*/}
-                    {/*            ? true*/}
-                    {/*            : !activeFile?.editable,*/}
-                    {/*        wordWrap: "on",*/}
-                    {/*      }}*/}
-                    {/*/>*/}
-                    {/*<MonacoEditor*/}
-                    {/*  activeFile={"Challenge.md"}*/}
-                    {/*  value={content || ""}*/}
-                    {/*  onChange={(value) => {*/}
-                    {/*    debouncedHandleInput(value || "");*/}
-                    {/*  }}*/}
-                    {/*  theme={"vs-dark"}*/}
-                    {/*  language={language}*/}
-                    {/*  options={{*/}
-                    {/*    fontSize: 16,*/}
-                    {/*    readOnly:*/}
-                    {/*      activeFile?.editable === undefined*/}
-                    {/*        ? true*/}
-                    {/*        : !activeFile?.editable,*/}
-                    {/*    wordWrap: "on",*/}
-                    {/*  }}*/}
-                    {/*/>*/}
                     <div className="absolute bottom-0 bg-border px-4 py-3 w-full flex flex-row items-center bg-[#1e1e1e] rounded-b-md">
                       <div className="flex-row ml-auto gap-4 items-center flex">
                         <button
@@ -440,7 +404,6 @@ const command = ${
                                 "jestOutput.txt",
                                 "utf-8"
                               );
-                            console.log(jestLog);
                             setJestOutput(jestLog || "");
                             if (code !== 0) {
                               await attemptChallenge(
