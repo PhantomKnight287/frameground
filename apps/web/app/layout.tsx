@@ -20,6 +20,16 @@ export const metadata: Metadata = {
     default: siteConfig.name.replace(" ", ""),
   },
   description: siteConfig.description,
+  openGraph:{
+    images:[
+      {
+        url:`${env.HOST}/api/og/root`,
+        width: 750,
+        height: 350,
+        alt: "Frameground",
+      }
+    ]
+  }
 };
 
 export const viewport: Viewport = {
