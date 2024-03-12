@@ -1,0 +1,18 @@
+{
+  "$schema": "../../schema.json",
+  "id": "conditional-rendering",
+  "setup_commands": ["pnpm i", "clear"],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "label": "Conditional Rendering",
+  "author": ["phantomknight287"],
+  "description": "Learn how to render JSX conditionally in React",
+  "difficulty": "beginner",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/components",
+    "react/props",
+    "react/functional-components",
+    "react/class-components"
+  ]
+}
