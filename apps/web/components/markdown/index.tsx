@@ -13,10 +13,10 @@ import { vscDarkPlus } from "./themes/vs-dark-plus";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { Check, Copy } from "lucide-react";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { vsDark,vscDarkPlus  as vscDarkPlusPrisma} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import raw from "rehype-raw";
 import { Callout } from "../callout";
-import { CodeBlock, Pre } from "../codeblock";
+
 
 const HTML_COMMENT_REGEX = new RegExp("<!--([\\s\\S]*?)-->", "g");
 
@@ -113,7 +113,7 @@ export function Markdown({
                 PreTag="section" // parent tag
                 className={clsx(className, "rounded-xl dark:rounded-md")}
                 language={match[1]}
-                style={oneDark}
+                style={vscDarkPlusPrisma}
                 customStyle={{ fontSize: "inherit", padding: "30px" }}
                 codeTagProps={{
                   style: {
