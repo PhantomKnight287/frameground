@@ -14,22 +14,22 @@ import { Toaster } from "@/components/ui/sonner";
 import { env } from "@/env.mjs";
 
 export const metadata: Metadata = {
-  metadataBase:new URL(env.HOST),
+  metadataBase: new URL(env.HOST),
   title: {
     template: `%s | ${siteConfig.name}`,
     default: siteConfig.name.replace(" ", ""),
   },
   description: siteConfig.description,
-  openGraph:{
-    images:[
+  openGraph: {
+    images: [
       {
-        url:`${env.HOST}/api/og/root`,
-        width: 750,
-        height: 350,
+        url: `${env.HOST}/og.png`,
+        width: 451,
+        height: 219,
         alt: "Frameground",
-      }
-    ]
-  }
+      },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
