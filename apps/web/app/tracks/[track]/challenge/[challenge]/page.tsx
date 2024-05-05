@@ -157,7 +157,7 @@ async function Challenge({
     }
   });
   return (
-    <div className="px-4 sticky h-screen top-[40px]">
+    <div className="px-4 sticky h-full top-[40px]">
       <div className="flex flex-row h-screen">
         <Editor
           //@ts-expect-error

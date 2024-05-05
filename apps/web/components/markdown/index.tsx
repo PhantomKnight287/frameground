@@ -13,10 +13,12 @@ import { vscDarkPlus } from "./themes/vs-dark-plus";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { Check, Copy } from "lucide-react";
-import { vsDark,vscDarkPlus  as vscDarkPlusPrisma} from "react-syntax-highlighter/dist/cjs/styles/prism";
+import {
+  vsDark,
+  vscDarkPlus as vscDarkPlusPrisma,
+} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import raw from "rehype-raw";
 import { Callout } from "../callout";
-
 
 const HTML_COMMENT_REGEX = new RegExp("<!--([\\s\\S]*?)-->", "g");
 
@@ -52,9 +54,6 @@ export function Markdown({
   children: string;
   className?: string;
 }) {
-  const { theme } = useTheme();
-  const syntaxHighlighterTheme = theme === "light" ? vs : vscDarkPlus;
-
   return (
     <ReactMarkdown
       skipHtml
