@@ -1,0 +1,67 @@
+name: Bug Report
+description: Create a bug report
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening a new issue, please do a search of existing issues.
+
+  - type: textarea
+    attributes:
+      label: To Reproduce
+      description: A step-by-step description of how to reproduce the issue.
+      placeholder: |
+        1. Click X
+        2. Y will happen
+
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Current vs. Expected behavior
+      description: A clear and concise description of what the bug is, and what you expected to happen.
+      placeholder: 'Following the steps from the previous section, I expected A to happen, but I observed B instead'
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Provide environment information
+      description: Please provide the browser version, operating system and if JS is enabled in browser
+      placeholder: |
+        Operating System:
+          Platform: win32
+          Arch: x64
+          Version: Windows 11 Home Single Language
+        Browser:
+          Name: Brave
+          Version: 1.65.126
+          Chromium Version: 124.0.6367.118(Official Build) (64 bit)
+        JS Enabled: Yes
+
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Which area(s) are affected? (Select all that apply)
+      multiple: true
+      options:
+        - 'Not sure'
+        - 'Home Page'
+        - 'Tracks'
+        - 'Parser'
+        - 'Docs'
+        - 'Admin Portal'
+        - 'Editor'
+        - 'WebContainer'
+        - 'Terminal'
+        - 'Result'
+        - 'Testing'
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: |
+        Any extra information that might help us investigate.
+      
