@@ -41,7 +41,6 @@ function ChallengeTabs({
 
   useEffect(() => {
     const value = localStorage.getItem("faq_modal_shown");
-    console.log(value);
     if (!value || value === "false") {
       setIsFAQModalOpened(true);
     }

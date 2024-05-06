@@ -5,6 +5,10 @@ description: How to create Challenges for FrameGround
 
 Thank you for your interest in creating a Challenge for FrameGround! We are excited to see what you come up with. This guide will walk you through the process of creating a Challenge.
 
+<Callout title="Note" type="warn">
+  Please do not add any empty file in challenge. Add atleast 2-3 new lines.
+</Callout>
+
 ## Using CLI
 
 ### Creating a new project
@@ -34,19 +38,19 @@ describe("It Should Work", () => {
     Cli will only parse first test file in the project so make sure to add all tests in only 1 file.
     </Callout>
 
-
 ### Using Cli to parse the project
 
 Now, you can use the cli in `parser` folder to generate the json file.
 
-```bash 
+```bash
 cargo run generate --test-runner vitest --folder ../project --name test-challenge --slug react
 ```
 
 <TypeTable
   type={{
     "test-runner": {
-      description: "The test runner to use for the challenge. It can be jest or vitest.",
+      description:
+        "The test runner to use for the challenge. It can be jest or vitest.",
       type: "string",
       typeDescription: "jest, vitest",
     },
@@ -65,15 +69,13 @@ cargo run generate --test-runner vitest --folder ../project --name test-challeng
   }}
 />
 
-
 Running the above command will create a `challenges/react/test-challenge` folder in `parser` folder. You can copy the `test-challenge` or `react/test-challenge`(if track doesn't exist) folder to `challenges` folder.
 
-
-<Callout
-  title="Note"
-  type="info"
->
-  If you are creating a challenge using `jest`, you are adviced to create `jest.config.ts/jest.config.js` file in root of the challenge. Cli will parse the jest config file and use it for the challenge, if it doesn't exist, it will create an empty jest config file.
+<Callout title="Note" type="info">
+  If you are creating a challenge using `jest`, you are adviced to create
+  `jest.config.ts/jest.config.js` file in root of the challenge. Cli will parse
+  the jest config file and use it for the challenge, if it doesn't exist, it
+  will create an empty jest config file.
 </Callout>
 
 ### Marking Files as Editable
@@ -95,10 +97,6 @@ export default {
   ],
 } satisfies FrameGroundChallengeExport;
 ```
-
-
-
-
 
 ## Manually
 

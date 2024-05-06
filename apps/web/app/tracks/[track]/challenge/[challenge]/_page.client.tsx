@@ -22,7 +22,7 @@ import {
   useTransition,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useTerminal } from "@repo/terminal";
+import { useTerminal, TerminalProps } from "@repo/terminal";
 import {
   createWebContainerInstance,
   FileSystemTree,
@@ -42,7 +42,8 @@ import EnrollInTrack from "./_components/enroll";
 import { attemptChallenge, solveChallenge } from "./action";
 import { signIn, useSession } from "next-auth/react";
 import { languages } from "@/constants/languages";
-import SplitEditor, {CodeEditor} from "@repo/monaco/exports"
+import SplitEditor from "@repo/monaco/exports";
+import { fontMono } from "@/fonts";
 
 let timeout: NodeJS.Timeout;
 
@@ -56,6 +57,7 @@ export default function Editor({
   files,
   CommentsSection,
   SolutionsSection,
+  packages,
 }: {
   challenge: Challenge & {
     authors: User[];
@@ -72,17 +74,19 @@ export default function Editor({
   files: FrameGroundChallengeExport["files"];
   CommentsSection: ReactNode;
   SolutionsSection: ReactNode;
+  packages: string[];
 }) {
   const session = useSession();
   const [_, startTransition] = useTransition();
   const { replace } = useRouter();
   const { activeFile, setActiveFile } = useEditorFileState();
 
-  const terminalOptions = useMemo(() => {
-    const baseConfig = {
+  const terminalOptions = useMemo<TerminalProps["options"]>(() => {
+    const baseConfig: TerminalProps["options"] = {
       cursorBlink: false,
       convertEol: true,
       disableStdin: false,
+      fontFamily: fontMono.style.fontFamily,
     };
     if (
       Object.keys((challenge?.terminalConfig as unknown as Object) || {}).length
@@ -222,8 +226,11 @@ const command = ${
     }
   }, []);
   const [hiddenIframe, setHiddenIframe] = useState(false);
+  const path = useMemo(
+    () => generateFilePath(files, activeFile?.path || "0"),
+    [activeFile?.path, files]
+  );
   function handleInput(value: string) {
-    const path = generateFilePath(files, activeFile?.path || "0");
     if (path) containerRef?.current?.fs?.writeFile(path, value);
   }
   const debouncedHandleInput = (val: string) => {
@@ -256,7 +263,7 @@ const command = ${
           minSize={10}
           defaultSize={10}
           className={cn(
-            "flex flex-col h-full border-r border-l border-background bg-border rounded-md overflow-scroll custom-scrollable-element max-h-screen"
+            "flex flex-col h-full border-r border-l border-background bg-border rounded-md overflow-scroll custom-scrollable-element "
           )}
         >
           <div className="uppercase font-bold flex flex-row items-center justify-between text-sm p-2 border-b-[12px] border-background line-clamp-1">
@@ -353,14 +360,18 @@ const command = ${
                     </div>
 
                     <SplitEditor
-                        height={"100vh"}
-                        activeFile={"Challenge.md"}
+                      height={"100vh"}
+                      initialPackages={packages}
+                      activeFile={"Challenge.md"}
+                      activeFilePath={path}
                       value={content || ""}
                       onChange={(value) => {
                         debouncedHandleInput(value || "");
                       }}
                       theme={"vs-dark"}
-                      language={language}
+                      defaultLanguage={language}
+                      defaultValue={content || ""}
+                      path={`file://${path}`}
                       options={{
                         fontSize: 16,
                         readOnly:
@@ -368,6 +379,7 @@ const command = ${
                             ? true
                             : !activeFile?.editable,
                         wordWrap: "on",
+                        fontFamily: fontMono.style.fontFamily,
                       }}
                     />
 
@@ -424,8 +436,8 @@ const command = ${
                           {testsPassed
                             ? "Tests Passed"
                             : !session?.data?.user?.id
-                            ? "Login to Test"
-                            : "Test"}
+                              ? "Login to Test"
+                              : "Test"}
                         </button>
                         <button
                           className="bg-green-500 hover:bg-green-600 text-white max-h-fit px-4 py-1 rounded-md "

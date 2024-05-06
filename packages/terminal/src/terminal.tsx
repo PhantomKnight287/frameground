@@ -5,6 +5,8 @@ import "xterm/css/xterm.css";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@repo/utils";
 
+export type { ITerminalOptions } from "xterm";
+
 export function useTerminal({
   className,
   addons,
