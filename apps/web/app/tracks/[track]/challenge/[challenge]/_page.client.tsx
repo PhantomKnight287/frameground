@@ -57,6 +57,7 @@ export default function Editor({
   files,
   CommentsSection,
   SolutionsSection,
+  packages,
 }: {
   challenge: Challenge & {
     authors: User[];
@@ -73,6 +74,7 @@ export default function Editor({
   files: FrameGroundChallengeExport["files"];
   CommentsSection: ReactNode;
   SolutionsSection: ReactNode;
+  packages: string[];
 }) {
   const session = useSession();
   const [_, startTransition] = useTransition();
@@ -224,8 +226,11 @@ const command = ${
     }
   }, []);
   const [hiddenIframe, setHiddenIframe] = useState(false);
+  const path = useMemo(
+    () => generateFilePath(files, activeFile?.path || "0"),
+    [activeFile?.path, files]
+  );
   function handleInput(value: string) {
-    const path = generateFilePath(files, activeFile?.path || "0");
     if (path) containerRef?.current?.fs?.writeFile(path, value);
   }
   const debouncedHandleInput = (val: string) => {
@@ -356,14 +361,17 @@ const command = ${
 
                     <SplitEditor
                       height={"100vh"}
+                      initialPackages={packages}
                       activeFile={"Challenge.md"}
+                      activeFilePath={path}
                       value={content || ""}
                       onChange={(value) => {
                         debouncedHandleInput(value || "");
                       }}
                       theme={"vs-dark"}
-                      language={language}
-                      
+                      defaultLanguage={language}
+                      defaultValue={content || ""}
+                      path={`file://${path}`}
                       options={{
                         fontSize: 16,
                         readOnly:
@@ -371,7 +379,7 @@ const command = ${
                             ? true
                             : !activeFile?.editable,
                         wordWrap: "on",
-                        fontFamily:fontMono.style.fontFamily,
+                        fontFamily: fontMono.style.fontFamily,
                       }}
                     />
 

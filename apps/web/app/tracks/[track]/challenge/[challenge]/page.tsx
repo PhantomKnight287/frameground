@@ -103,6 +103,19 @@ async function Challenge({
     },
     ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
   ];
+  const packages = [];
+  const packageJsonContent = JSON.parse(
+    (
+      challenge.initialFiles.filter(
+        (d: any) => d.name === "package.json"
+      )[0]! as unknown as FrameGroundChallengeExport["files"][0]
+    ).content as string
+  );
+
+  packages.push(
+    ...Object.keys(packageJsonContent.dependencies),
+    ...Object.keys(packageJsonContent.devDependencies)
+  );
   if (challenge.jestConfig) {
     // add at index 1
     files.splice(1, 0, {
@@ -166,6 +179,7 @@ async function Challenge({
           fileSystem={fileSystem}
           queryParams={searchParams}
           files={files as any}
+          packages={packages}
           CommentsSection={
             <Comments
               sortBy={searchParams.sort_comments as "oldest" | "newest"}
