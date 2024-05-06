@@ -29,7 +29,7 @@ export default function SplitEditor({
   initialPackages,
   ...props
 }: SplitEditorProps) {
-  const monaco = useMonaco();
+  const monaco = useMonaco() as any;
 
   const monacoRef = useRef<typeof import("monaco-editor")>();
 
