@@ -86,7 +86,7 @@ export default {
             {
               type: "file",
               name: "greet.jsx",
-              content: "",
+              content: "\n\n\n\n\n\n",
               editable: true,
             },
           ],
