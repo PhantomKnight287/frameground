@@ -46,21 +46,21 @@ export default function SplitEditor({
         receivedFile: (code, _path) => {
           if (!monacoRef.current) return;
           const path = `file://${_path}`;
-          const uri = monacoRef.current.Uri.parse(path);
-          const model = monacoRef.current.editor.getModel(uri);
+          const uri = monacoRef.current?.Uri.parse(path);
+          const model = monacoRef.current?.editor.getModel(uri);
           if (!model) {
-            monacoRef.current.languages.typescript.javascriptDefaults.addExtraLib(
+            monacoRef.current?.languages.typescript.javascriptDefaults.addExtraLib(
               code,
               path
             );
-            monacoRef.current.editor.createModel(code, "javascript", uri);
+            monacoRef.current?.editor.createModel(code, "javascript", uri);
             if (!path.includes("@types")) {
               const compilerOptions =
-                monacoRef.current.languages.typescript.javascriptDefaults.getCompilerOptions();
+                monacoRef.current?.languages.typescript.javascriptDefaults.getCompilerOptions();
               const match = _path.match(/\/node_modules\/([^/]+)/);
               if (match) {
                 const result = match[1];
-                monacoRef.current.languages.typescript.javascriptDefaults.setCompilerOptions(
+                monacoRef.current?.languages.typescript.javascriptDefaults.setCompilerOptions(
                   {
                     ...compilerOptions,
                     paths: {
@@ -95,27 +95,27 @@ export default function SplitEditor({
         <CodeEditor
           {...props}
           onMount={async (_editor, monaco) => {
-            monacoRef.current.languages.typescript.javascriptDefaults.setEagerModelSync(
+            monacoRef.current?.languages.typescript.javascriptDefaults.setEagerModelSync(
               true
             );
-            monacoRef.current.languages.typescript.typescriptDefaults.setEagerModelSync(
+            monacoRef.current?.languages.typescript.typescriptDefaults.setEagerModelSync(
               true
             );
 
-            monacoRef.current.languages.typescript.javascriptDefaults.setDiagnosticsOptions(
+            monacoRef.current?.languages.typescript.javascriptDefaults.setDiagnosticsOptions(
               {
                 noSyntaxValidation: true,
               }
             );
-            monacoRef.current.languages.typescript.javascriptDefaults.setCompilerOptions(
+            monacoRef.current?.languages.typescript.javascriptDefaults.setCompilerOptions(
               {
                 allowNonTsExtensions: true,
                 strict: true,
                 target:
-                  monacoRef.current.languages.typescript.ScriptTarget.ESNext,
+                  monacoRef.current?.languages.typescript.ScriptTarget.ESNext,
                 strictNullChecks: true,
                 moduleResolution:
-                  monacoRef.current.languages.typescript.ModuleResolutionKind
+                  monacoRef.current?.languages.typescript.ModuleResolutionKind
                     .NodeJs,
                 allowSyntheticDefaultImports: true,
                 outDir: "lib", // kills the override input file error,
@@ -123,15 +123,15 @@ export default function SplitEditor({
                 baseUrl: ".",
               }
             );
-            monacoRef.current.languages.typescript.typescriptDefaults.setCompilerOptions(
+            monacoRef.current?.languages.typescript.typescriptDefaults.setCompilerOptions(
               {
                 allowNonTsExtensions: true,
                 strict: true,
                 target:
-                  monacoRef.current.languages.typescript.ScriptTarget.ESNext,
+                  monacoRef.current?.languages.typescript.ScriptTarget.ESNext,
                 strictNullChecks: true,
                 moduleResolution:
-                  monacoRef.current.languages.typescript.ModuleResolutionKind
+                  monacoRef.current?.languages.typescript.ModuleResolutionKind
                     .NodeJs,
                 allowSyntheticDefaultImports: true,
                 outDir: "lib", // kills the override input file error,
