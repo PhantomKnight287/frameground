@@ -42,7 +42,7 @@ async function Challenges({ params }: { params: { username: string } }) {
                 <TableRow key={challenge.id} className="not-in-markdown">
                   <TableCell className="font-medium not-in-markdown">
                     <Link
-                      href={`/track/${challenge.track!.slug}/challenge/${
+                      href={`/tracks/${challenge.track!.slug}/challenge/${
                         challenge.slug
                       }`}
                       className="hover:underline"
