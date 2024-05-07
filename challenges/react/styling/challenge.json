@@ -1,0 +1,13 @@
+{
+  "$schema": "../../schema.json",
+  "id": "styling",
+  "setup_commands": ["pnpm i", "clear"],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": ["phantomknight287"],
+  "difficulty": "easy",
+  "label": "Styling",
+  "playground_needed": true,
+  "prerequisites": ["react/functional-components", "react/props"],
+  "description": "Styling your React application is crucial for creating a visually appealing and user-friendly interface."
+}
