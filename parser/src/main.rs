@@ -270,9 +270,36 @@ fn main() {
                 index_spec_files_path.push("index.spec.tsx");
                 fs::write(&index_spec_files_path, "").expect("Failed to create index.spec file");
             }
+            let markdown_file = result.iter().find(|item|match item{
+                Item::File{ name, content:_}=>{
+                    name.ends_with("README.md") || name.ends_with("readme.md") || name.ends_with("challenge.md") || name.ends_with("Challenge.md")
+                },
+                _ => false,
+            });
 
-            fs::write(&path_to_store_files.join("index.md"), "## Challenge")
-                .expect("Failed to create index.md file");
+            if markdown_file.is_some(){
+                let md_file = markdown_file.unwrap();
+                match md_file{
+                    Item::File {name:_, content}=>{
+                        let mut md_file_path = path_to_store_files.clone();
+                        md_file_path.push("index.md");
+                        fs::write(&md_file_path,content).expect("Failed to create index.md file")
+                    }
+                    _=>{}
+                }
+                result.retain(|item| match item {
+                    Item::File { name, content: _ } => {
+                        !name.ends_with("README.md") && !name.ends_with("readme.md") && !name.ends_with("challenge.md") && !name.ends_with("Challenge.md")
+
+                    }
+                    _ => true,
+                });
+            }
+            else{
+                fs::write(&path_to_store_files.join("index.md"), "## Challenge")
+                    .expect("Failed to create index.md file");
+            }
+
             fs::write(&path_to_store_files.join("terminal.ts"), "import type { ITerminalOptions } from \"xterm\";\nexport default {} satisfies ITerminalOptions").expect("Failed to create terminal.ts file");
             fs::write(
                 &path_to_store_files.join("challenge.json"),
