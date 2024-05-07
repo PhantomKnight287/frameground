@@ -2,7 +2,8 @@
 
 import { getCacheSolvesCount, getCacheUser } from "@/cache/user";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { AudioWaveform, BadgeCheck, CheckCheck } from "lucide-react";
+import { cn } from "@repo/utils";
+import { ArrowLeft, AudioWaveform, BadgeCheck, CheckCheck } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -43,6 +44,7 @@ export function ProfileButtons({
   const pathname = usePathname()
     .replaceAll(`/@${username}/`, "")
     .replace("/", "");
+  
   return (
     <div className="md:flex grid grid-cols-1 grid-rows-4 sm:grid-cols-2 sm:grid-rows-2 gap-4 md:w-full md:flex-col">
       <Link
@@ -80,6 +82,21 @@ export function ProfileButtons({
         <CheckCheck className="text-purple-500" />
         {user._count.solutions}{" "}
         {user._count.solutions <= 1 ? "Solution" : "Solutions"} Posted
+      </Link>
+      <Link
+        href={`/@${username}`}
+        className={buttonVariants({
+          variant: "outline",
+          className: cn(
+            "rounded-xl text-left flex flex-row items-center !justify-start gap-2",
+            {
+              hidden: pathname === `@${username}`,
+            }
+          ),
+        })}
+      >
+        <ArrowLeft className="text-yellow-500" />
+        Back to Profile
       </Link>
       <LayoutClientComponents username={username} />
     </div>
