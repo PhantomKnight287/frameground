@@ -1,0 +1,13 @@
+{
+  "$schema": "../../schema.json",
+  "id": "form-handling",
+  "setup_commands": ["pnpm i", "clear"],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": ["phantomknight287"],
+  "description": "Learn how to create forms in react",
+  "difficulty": "beginner",
+  "label": "Form Handling",
+  "playground_needed": true,
+  "prerequisites": ["react/state", "react/props"]
+}
