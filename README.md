@@ -17,6 +17,9 @@ Please read the [setting up the project locally](https://docs.frameground.tech/d
 ![image](https://utfs.io/f/bbfc8452-5ba9-4a88-8808-a75ac2a35aee-r60jor.png)
 ![image](https://github.com/PhantomKnight287/frameground/assets/76196237/61af540a-68e8-4bbc-a20e-202b5cd1668c)
 
+## Server Actions - Component Flow
+
+[![Server Actions - Component Flow](https://nextjs.apidiagram.com/github/PhantomKnight287/frameground/diagram.svg)](https://nextjs.apidiagram.com/github/PhantomKnight287/frameground)
 
 ## Sponsors
 
