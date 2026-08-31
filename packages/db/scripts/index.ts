@@ -27,9 +27,10 @@ export type ChallengeJson = {
  * Challenge configs (`index.ts`, `terminal.ts`, `jest.config.ts`) are TypeScript
  * modules, so they are transpiled and evaluated here.
  *
- * The transpiled output is CommonJS and assigns to `exports`, but this script is
- * bundled as ESM where no such binding exists — hence the local `exports`/`module`
- * objects, which a *direct* eval can see and write to.
+ * The transpiled output is CommonJS and assigns to `exports`. That binding only
+ * exists when this script itself runs as CommonJS, so it brings its own
+ * `exports`/`module` objects — a *direct* eval can see and write to them, and the
+ * config keeps loading even when the script is bundled as ESM.
  */
 function evalTsModule<T>(source: string): T {
   const { outputText } = transpileModule(source, {
