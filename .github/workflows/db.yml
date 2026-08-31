@@ -25,8 +25,12 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
       - name: Run Migrations
+        # `migrate deploy` is the CI/production command: it only applies pending
+        # migrations. `migrate dev` is for local development — it diffs the schema,
+        # writes brand new migrations into the (throwaway) checkout, and offers to
+        # reset the database when it finds drift.
         run: |
-          cd packages/db && npx prisma migrate dev
+          cd packages/db && npx prisma migrate deploy
       - name: Update Challenges
         run: |
           cd packages/db && pnpm build && node dist/scripts/index.js
