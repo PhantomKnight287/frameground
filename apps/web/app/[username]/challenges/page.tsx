@@ -16,8 +16,9 @@ export const metadata: Metadata = {
   title: "Solved Challenges",
 };
 
-async function Challenges({ params }: { params: { username: string } }) {
-  const username = decodeURIComponent(params.username).replace("@", "");
+async function Challenges({ params }: PageProps<"/[username]/challenges">) {
+  const awaited = await params
+  const username = decodeURIComponent(awaited.username).replace("@", "");
   const challenges = await getCachedSolvedChallenges(username);
   return (
     <>

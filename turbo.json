@@ -1,14 +1,26 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "globalEnv": [
+    "NODE_ENV",
+    "DATABASE_URL",
+    "SHADOW_DATABASE_URL",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "NEXTAUTH_SECRET",
+    "NEXTAUTH_URL",
+    "AUTH_SECRET",
+    "OG_HOST",
+    "HOST"
+  ],
+  "tasks": {
     "build": {
-      "outputs": [".next/**", "!.next/cache/**", "dist"],
+      "outputs": [".next/**", "!.next/cache/**", "dist", "*.tsbuildinfo"],
       "dependsOn": ["^build"]
     },
     "lint": {},
     "dev": {
       "cache": false,
-      "outputMode": "full",
+      "persistent": true,
       "dependsOn": ["^build"]
     },
     "start": {

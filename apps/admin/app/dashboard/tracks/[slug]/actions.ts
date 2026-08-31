@@ -5,11 +5,22 @@ import { prisma } from "@repo/db";
 import { TrackStatus } from "@repo/db/types";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+
+// Logos are either a same-origin path served from `public/tracks`
+// (see scripts/add-track-logo.mjs) or an absolute URL.
+const logoSchema = z
+  .string()
+  .min(3)
+  .refine(
+    (value) =>
+      value.startsWith("/") || z.url().safeParse(value).success,
+    { message: "must be an absolute URL or a path like /tracks/react.svg" }
+  );
 const updateTrackSchema = z.object({
   name: z.string().min(3),
   description: z.string().min(3),
   slug: z.string().min(3),
-  logo: z.string().min(3).url(),
+  logo: logoSchema,
   status: z.nativeEnum(TrackStatus),
   id: z.string(),
 });
@@ -45,7 +56,7 @@ const createTrackSchema = z.object({
   name: z.string().min(3),
   description: z.string().min(3),
   slug: z.string().min(3),
-  logo: z.string().min(3).url(),
+  logo: logoSchema,
   status: z.nativeEnum(TrackStatus),
 });
 

@@ -1,6 +1,11 @@
 "use client";
 import { CheckIcon, CopyIcon } from "lucide-react";
-import type { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  JSX,
+  ReactNode,
+} from "react";
 import { forwardRef, useCallback, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCopyButton } from "@/utils/use-copy-button";

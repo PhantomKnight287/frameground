@@ -11,9 +11,9 @@ import { siteMetadataConfig } from "@repo/config";
 export async function generateMetadata({
   params,
 }: {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }): Promise<Metadata> {
-  const username = decodeURIComponent(params.username).replace("@", "");
+  const username = decodeURIComponent((await params).username).replace("@", "");
   const user = await getCacheUser(username);
 
   if (!user)
@@ -53,9 +53,9 @@ async function ProfileLayout({
   params,
   children,
 }: PropsWithChildren<{
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }>) {
-  const username = decodeURIComponent(params.username).replace("@", "");
+  const username = decodeURIComponent((await params).username).replace("@", "");
 
   const user = await getCacheUser(username);
   if (!user) notFound();

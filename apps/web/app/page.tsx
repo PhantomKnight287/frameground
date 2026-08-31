@@ -4,7 +4,7 @@ import UnsolvedChallenge from "@/assets/unsolved-challenge";
 import { Hero } from "@/components/hero";
 import EnrollCard from "./_components/card";
 import ProfileCard from "@/assets/profile";
-import { Github } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 export default function Home() {
   return (
@@ -94,7 +94,7 @@ export default function Home() {
               href="https://github.com/phantomknight287/frameground"
             >
               <span className="sr-only">PhantomKnight287</span>
-              <Github className="h-5 w-5 duration-150 group-hover:scale-110 group-hover:fill-black dark:group-hover:fill-white" />
+              <FaGithub className="h-5 w-5 duration-150 group-hover:scale-110 group-hover:fill-black dark:group-hover:fill-white" />
             </a>
           </div>
         </div>

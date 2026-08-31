@@ -1,0 +1,22 @@
+{
+  "$schema": "../../schema.json",
+  "id": "data-fetching",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Fetch data in an effect and handle the three states every request has: loading, error and success.",
+  "difficulty": "medium",
+  "label": "Data Fetching",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/use-effect",
+    "react/conditional-rendering",
+    "react/rendering-lists"
+  ]
+}

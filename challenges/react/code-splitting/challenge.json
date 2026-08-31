@@ -1,0 +1,22 @@
+{
+  "$schema": "../../schema.json",
+  "id": "code-splitting",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Load part of your UI only when it is needed, with lazy and Suspense.",
+  "difficulty": "hard",
+  "label": "Code Splitting",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/conditional-rendering",
+    "react/use-effect",
+    "react/data-fetching"
+  ]
+}

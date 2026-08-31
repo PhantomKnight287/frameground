@@ -22,7 +22,7 @@ function Resizable({
 }) {
   return (
     <div className="p-4 h-screen">
-      <ResizablePanelGroup direction="horizontal">
+      <ResizablePanelGroup orientation="horizontal">
         <ResizablePanel className="bg-border rounded-md overflow-y-scroll">
           <SolvedPageTabs
             solves={solves}

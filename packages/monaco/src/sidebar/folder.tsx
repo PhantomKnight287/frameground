@@ -1,86 +1,91 @@
-import { Fragment, useState } from "react";
-import {
-  ChallengeFilesStructure,
-  FrameGroundChallengeExport,
-} from "@repo/challenges/src";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import { ChallengeFilesStructure } from "@repo/challenges/src";
 import { cn } from "../utils";
 import File from "./file";
 import { useEditorFileState } from "../state";
+import { Chevron, FolderIcon } from "./icons";
+import { indentStyle, rowClassName, sortEntries } from "./tree";
 
 export default function Folder({
   folder,
   path,
   name,
+  depth = 0,
   className,
   onClickFile,
   onClickFolder,
-  fileClassName,
-  folderCloseIcon,
-  folderOpenIcon,
-  filesContainerClassName,
 }: {
   path: string;
-  folder: FrameGroundChallengeExport["files"][0];
+  folder: ChallengeFilesStructure;
   name: string;
+  depth?: number;
   className?: string;
   onClickFile?: (path: string) => void;
   onClickFolder?: (path: string) => void;
-  fileClassName?: string;
-  folderOpenIcon?: React.ReactNode;
-  folderCloseIcon?: React.ReactNode;
-  filesContainerClassName?: string;
 }) {
-  const [isOpen, setIsOpen] = useState(false);
   const { activeFile } = useEditorFileState();
+  // paths are dot separated indices, so a descendant's path starts with ours
+  const holdsActiveFile = activeFile?.path?.startsWith(`${path}.`) ?? false;
+  const [isOpen, setIsOpen] = useState(holdsActiveFile);
+
+  // the active file can be restored from the url after the tree has mounted
+  useEffect(() => {
+    if (holdsActiveFile) setIsOpen(true);
+  }, [holdsActiveFile]);
+
+  const entries = useMemo(
+    () => sortEntries(folder.content as ChallengeFilesStructure[]),
+    [folder.content]
+  );
+
   const toggleFolder = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((open) => !open);
+    onClickFolder?.(path);
   };
+
   return (
     <div>
       <button
-        className={cn("cursor-pointer", className)}
+        type="button"
+        role="treeitem"
+        aria-expanded={isOpen}
+        aria-level={depth + 1}
+        title={name}
         onClick={toggleFolder}
+        style={indentStyle(depth)}
+        className={cn(rowClassName, className)}
       >
-        {isOpen ? folderOpenIcon : folderCloseIcon}
-        {name}
+        <Chevron open={isOpen} />
+        <FolderIcon open={isOpen} />
+        <span className="truncate">{name}</span>
       </button>
-      {isOpen && (
-        <div>
-          {(folder.content as ChallengeFilesStructure[]).map((item, index) => (
-            <Fragment key={index}>
+      {isOpen ? (
+        <div role="group">
+          {entries.map((item) => (
+            <Fragment key={item.index}>
               {item.type === "file" ? (
-                <div
-                  data-active={activeFile?.path === `${path}.${index}`}
-                  className={filesContainerClassName}
-                >
-                  <File
-                    name={item.name}
-                    path={`${path}.${index}`} // Generate the file's path
-                    onClickFile={onClickFile}
-                    className={fileClassName}
-                    editable={item.editable}
-                  />
-                </div>
+                <File
+                  name={item.name}
+                  path={`${path}.${item.index}`}
+                  depth={depth + 1}
+                  onClickFile={onClickFile}
+                  editable={item.editable}
+                />
               ) : (
-                <div className={filesContainerClassName}>
-                  <Folder
-                    folder={item}
-                    path={`${path}.${index}`} // Generate the folder's path
-                    onClickFile={onClickFile}
-                    name={item.name}
-                    className={className}
-                    onClickFolder={onClickFolder}
-                    fileClassName={fileClassName}
-                    folderOpenIcon={folderOpenIcon}
-                    folderCloseIcon={folderCloseIcon}
-                    filesContainerClassName={filesContainerClassName}
-                  />
-                </div>
+                <Folder
+                  folder={item}
+                  path={`${path}.${item.index}`}
+                  name={item.name}
+                  depth={depth + 1}
+                  onClickFile={onClickFile}
+                  onClickFolder={onClickFolder}
+                  className={className}
+                />
               )}
             </Fragment>
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

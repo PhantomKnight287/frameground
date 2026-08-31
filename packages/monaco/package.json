@@ -43,24 +43,24 @@
   "author": "Gurpal Singh",
   "license": "ISC",
   "dependencies": {
-    "@monaco-editor/react": "^4.6.0",
+    "@monaco-editor/react": "^4.7.0",
     "@repo/challenges": "workspace:^",
     "@repo/config": "workspace:^",
     "@repo/utils": "workspace:^",
-    "@typescript/ata": "^0.9.4",
-    "clsx": "^2.0.0",
-    "lodash": "^4.17.21",
-    "prettier": "^3.2.5",
-    "react": "^18.2.0",
-    "tailwind-merge": "^2.2.0",
-    "zustand": "^4.4.7"
+    "@typescript/ata": "^0.9.8",
+    "clsx": "^2.1.1",
+    "lodash": "^4.18.1",
+    "prettier": "^3.9.6",
+    "react": "^19.2.8",
+    "tailwind-merge": "^3.6.0",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.202",
-    "@types/react": "^18.2.47",
+    "@types/lodash": "^4.17.25",
+    "@types/react": "^19.2.18",
     "lz-string": "^1.5.0",
-    "monaco-editor": "^0.46.0",
-    "next": "14.0.4",
-    "typescript": "^5.3.3"
+    "monaco-editor": "^0.55.1",
+    "next": "16.3.3",
+    "typescript": "^5.9.3"
   }
 }

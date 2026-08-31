@@ -55,3 +55,24 @@ export function isFileEditable(
 
   return isFileEditable;
 }
+
+/**
+ * Resolves an index path (`"9.2"`) back to the entry it points at, so a file
+ * restored from the url can be shown with its real name instead of its path.
+ */
+export function resolveFile(
+  files: FrameGroundChallengeExport["files"],
+  activeFileIndex: string
+) {
+  const splitIndex = activeFileIndex.split(".");
+  let entry: FrameGroundChallengeExport["files"][number] | undefined;
+  let current = files;
+
+  for (const index of splitIndex) {
+    entry = current[Number(index)];
+    if (!entry) return undefined;
+    if (entry.type === "folder") current = entry.content;
+  }
+
+  return entry?.type === "file" ? entry : undefined;
+}

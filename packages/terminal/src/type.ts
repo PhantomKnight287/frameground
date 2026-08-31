@@ -1,4 +1,4 @@
-import { ITerminalAddon, ITerminalOptions } from "xterm";
+import { ITerminalAddon, ITerminalOptions } from "@xterm/xterm";
 
 export interface TerminalProps {
   /**

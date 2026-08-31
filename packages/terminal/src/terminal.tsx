@@ -1,11 +1,11 @@
 "use client";
-import { Terminal as XtermTerminal } from "xterm";
+import { Terminal as XtermTerminal } from "@xterm/xterm";
 import { TerminalProps } from ".";
-import "xterm/css/xterm.css";
+import "@xterm/xterm/css/xterm.css";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@repo/utils";
 
-export type { ITerminalOptions } from "xterm";
+export type { ITerminalOptions } from "@xterm/xterm";
 
 export function useTerminal({
   className,

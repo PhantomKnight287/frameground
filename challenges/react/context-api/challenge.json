@@ -1,0 +1,23 @@
+{
+  "$schema": "../../schema.json",
+  "id": "context-api",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Pass data through the component tree without threading props through every level, using the Context API.",
+  "difficulty": "medium",
+  "label": "Context",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/props",
+    "react/state",
+    "react/lifting-state-up",
+    "react/custom-hooks"
+  ]
+}

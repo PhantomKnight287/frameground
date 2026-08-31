@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "use-effect",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Synchronise your components with the outside world using the useEffect hook, and clean up after yourself.",
+  "difficulty": "easy",
+  "label": "Effects",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/state",
+    "react/event-handling"
+  ]
+}

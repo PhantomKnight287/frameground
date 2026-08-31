@@ -1,6 +1,112 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+/* the editor chrome (file tree, monaco wrappers) lives in a workspace package */
+@source "../../../packages/monaco/src";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-hovered: hsl(var(--card-hovered));
+
+  --color-difficulty-beginner: hsl(var(--difficulty-beginner));
+  --color-difficulty-easy: hsl(var(--difficulty-easy));
+  --color-difficulty-medium: hsl(var(--difficulty-medium));
+  --color-difficulty-hard: hsl(var(--difficulty-hard));
+  --color-difficulty-extreme: hsl(var(--difficulty-extreme));
+  --color-difficulty-beginner-dark: hsl(var(--difficulty-beginner-dark));
+  --color-difficulty-easy-dark: hsl(var(--difficulty-easy-dark));
+  --color-difficulty-medium-dark: hsl(var(--difficulty-medium-dark));
+  --color-difficulty-hard-dark: hsl(var(--difficulty-hard-dark));
+  --color-difficulty-extreme-dark: hsl(var(--difficulty-extreme-dark));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --shadow-beginner: 0 0 1rem -0.15rem hsl(var(--difficulty-beginner));
+  --shadow-easy: 0 0 1rem -0.15rem hsl(var(--difficulty-easy));
+  --shadow-medium: 0 0 1rem -0.15rem hsl(var(--difficulty-medium));
+  --shadow-hard: 0 0 1rem -0.15rem hsl(var(--difficulty-hard));
+  --shadow-extreme: 0 0 1rem -0.15rem hsl(var(--difficulty-extreme));
+  --shadow-beginner-dark: 0 0 1rem -0.15rem
+    hsl(var(--difficulty-beginner-dark));
+  --shadow-easy-dark: 0 0 1rem -0.15rem hsl(var(--difficulty-easy-dark));
+  --shadow-medium-dark: 0 0 1rem -0.15rem hsl(var(--difficulty-medium-dark));
+  --shadow-hard-dark: 0 0 1rem -0.15rem hsl(var(--difficulty-hard-dark));
+  --shadow-extreme-dark: 0 0 1rem -0.15rem hsl(var(--difficulty-extreme-dark));
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes spotlight {
+    0% {
+      opacity: 0;
+      transform: translate(-72%, -62%) scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -40%) scale(1);
+    }
+  }
+}
+
+/* Tailwind v4 drops the `container` theme options, so recreate the v3 config:
+   { center: true, padding: "2rem", screens: { "2xl": "1400px" } }.
+   v4's built-in `container` also caps width at every breakpoint; the v3
+   `screens` option replaced that list with a single 1400px stop, so reset
+   `max-width` and re-add only that one. */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  max-width: none;
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
 
 @layer base {
   :root {

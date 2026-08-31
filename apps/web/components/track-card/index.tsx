@@ -15,6 +15,7 @@ import { Track } from "@repo/db/types";
 import Link from "next/link";
 import { formatNumber } from "@/utils/intl";
 import EnrollOrLeaveButton from "./index.client";
+import TrackLogo from "@/components/track-logo";
 
 export function TrackCard(
   track: Track & { _count: { users: number }; users: { id: string }[] }
@@ -23,7 +24,16 @@ export function TrackCard(
     <Card className="overflow-hidden shadow rounded-lg">
       <div className="p-3">
         <CardHeader>
-          <div className="flex flex-row items-start">
+          <div className="flex flex-row items-center  gap-3">
+            {track.logo ? (
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border bg-background p-1.5">
+                <TrackLogo
+                  logo={track.logo}
+                  name={track.name}
+                  className="h-full w-full"
+                />
+              </div>
+            ) : null}
             <CardTitle className="h-fit">{track.name}</CardTitle>
             <Badge className="ml-auto">
               {formatNumber(track._count.users)} Enrolled

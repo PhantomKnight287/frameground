@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@repo/db";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 
 export async function EnrollOrLeave(track: string, enrolled?: boolean) {
   const session = await auth();
@@ -19,9 +19,9 @@ export async function EnrollOrLeave(track: string, enrolled?: boolean) {
         },
       },
     });
-    revalidateTag(`profile::${user?.username}`);
-    revalidateTag(`user::tracks::${user?.username}`);
-    revalidateTag(`user::tracks::list::${user?.id}`);
+    updateTag(`profile::${user?.username}`);
+    updateTag(`user::tracks::${user?.username}`);
+    updateTag(`user::tracks::list::${user?.id}`);
 
     revalidatePath(`/tracks`);
     return;
@@ -36,9 +36,9 @@ export async function EnrollOrLeave(track: string, enrolled?: boolean) {
       },
     },
   });
-  revalidateTag(`profile::${user?.username}`);
-  revalidateTag(`user::tracks::${user?.username}`);
-  revalidateTag(`user::tracks::list::${user?.id}`);
+  updateTag(`profile::${user?.username}`);
+  updateTag(`user::tracks::${user?.username}`);
+  updateTag(`user::tracks::list::${user?.id}`);
 
   revalidatePath(`/tracks`);
 }

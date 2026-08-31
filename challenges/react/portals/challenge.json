@@ -1,0 +1,22 @@
+{
+  "$schema": "../../schema.json",
+  "id": "portals",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Render a modal outside its parent's DOM node while keeping it inside the React tree, with createPortal.",
+  "difficulty": "medium",
+  "label": "Portals",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/conditional-rendering",
+    "react/event-handling",
+    "react/use-effect"
+  ]
+}

@@ -3,10 +3,11 @@ import { prisma } from "@repo/db";
 export const dynamic = "force-dynamic"; // defaults to auto
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
+  const { slug } = await params;
   const track = await prisma.track.findFirst({
-    where: { slug: params.slug },
+    where: { slug },
   });
 
   if (!track)

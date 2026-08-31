@@ -8,6 +8,7 @@ import {
   ReactElement,
   Fragment,
   HTMLAttributes,
+  type JSX,
 } from "react";
 export function CreateAppAnimation(): JSX.Element {
   const testCommand = "pnpm test";

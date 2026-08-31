@@ -21,6 +21,6 @@
   "author": "Gurpal Singh",
   "license": "ISC",
   "dependencies": {
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   }
 }

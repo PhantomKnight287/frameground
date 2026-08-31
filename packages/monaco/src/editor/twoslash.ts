@@ -5,7 +5,7 @@ export const TWOSLASH_INLAY_HINTS_PROVIDER = 'twoslash inlay hints provider';
 
 export const createTwoslashInlayProvider = (
     m: typeof monaco,
-    worker: monaco.languages.typescript.TypeScriptWorker,
+    worker: monaco.typescript.TypeScriptWorker,
 ) => {
     const provider: monaco.languages.InlayHintsProvider = {
         displayName: TWOSLASH_INLAY_HINTS_PROVIDER,

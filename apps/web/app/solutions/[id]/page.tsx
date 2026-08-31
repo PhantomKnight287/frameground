@@ -9,10 +9,9 @@ import { getCachedSolution } from "@/cache/solutions";
 
 export async function generateMetadata({
   params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const solution = await getCachedSolution(params.id);
+}: PageProps<"/solutions/[id]">): Promise<Metadata> {
+  const awaited = await params
+  const solution = await getCachedSolution(awaited.id);
   if (!solution)
     return {
       title: "Solution",
@@ -28,8 +27,9 @@ export async function generateMetadata({
   };
 }
 
-async function Solution({ params }: { params: { id: string } }) {
-  const solution = await getCachedSolution(params.id);
+async function Solution({ params }: PageProps<"/solutions/[id]">) {
+  const awaited = await params
+  const solution = await getCachedSolution(awaited.id);
   if (!solution) notFound();
   return (
     <div className="container mt-10 gap-4">

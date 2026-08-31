@@ -14,8 +14,9 @@ export const metadata: Metadata = {
   title: "Enrolled Tracks",
 };
 
-async function Tracks({ params }: { params: { username: string } }) {
-  const username = decodeURIComponent(params.username).replace("@", "");
+async function Tracks({ params }: PageProps<"/[username]/tracks"> ) {
+  const awaited = await params
+  const username = decodeURIComponent(awaited.username).replace("@", "");
   const tracks = await getCachedEnrolledTracks(username);
   return (
     <>

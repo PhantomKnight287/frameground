@@ -1,0 +1,23 @@
+{
+  "$schema": "../../schema.json",
+  "id": "lifting-state-up",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Share state between sibling components by moving it up to their closest common parent.",
+  "difficulty": "easy",
+  "label": "Lifting State Up",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/state",
+    "react/props",
+    "react/rendering-lists",
+    "react/event-handling"
+  ]
+}

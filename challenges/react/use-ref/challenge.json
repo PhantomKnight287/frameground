@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "use-ref",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Reach into the DOM and remember values across renders without triggering a re-render, using the useRef hook.",
+  "difficulty": "easy",
+  "label": "Refs",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/state",
+    "react/use-effect"
+  ]
+}

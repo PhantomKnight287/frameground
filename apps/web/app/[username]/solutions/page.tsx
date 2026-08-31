@@ -15,8 +15,9 @@ export const metadata: Metadata = {
   title: "Solutions Posted",
 };
 
-async function SolutionsPosted({ params }: { params: { username: string } }) {
-  const username = decodeURIComponent(params.username).replace("@", "");
+async function SolutionsPosted({ params }: PageProps<"/[username]/solutions">) {
+  const awaited = await params
+  const username = decodeURIComponent(awaited.username).replace("@", "");
 
   const solutions = await getCachedSolutionsPosted(username);
 

@@ -23,7 +23,32 @@ export type ChallengeJson = {
   test_runner: TestRunner;
 };
 
+/**
+ * Challenge configs (`index.ts`, `terminal.ts`, `jest.config.ts`) are TypeScript
+ * modules, so they are transpiled and evaluated here.
+ *
+ * The transpiled output is CommonJS and assigns to `exports`, but this script is
+ * bundled as ESM where no such binding exists — hence the local `exports`/`module`
+ * objects, which a *direct* eval can see and write to.
+ */
+function evalTsModule<T>(source: string): T {
+  const { outputText } = transpileModule(source, {
+    compilerOptions: {
+      module: 1, // CommonJS
+      target: 1, // ES5
+    },
+  });
+
+  const module = { exports: {} as Record<string, any> };
+  const exports = module.exports;
+
+  eval(outputText);
+
+  return (exports.default ?? exports) as T;
+}
+
 export async function saveChallengesToDb() {
+
   const tracks = await prisma.track.findMany({
     where: { status: { not: "coming_soon" } },
   });
@@ -84,29 +109,14 @@ export async function saveChallengesToDb() {
         ? readFileSync(jestConfigPath, "utf-8")
         : undefined;
 
-      const terminalConfigResult = transpileModule(terminalConfig, {
-        compilerOptions: {
-          module: 1,
-          target: 1,
-        },
-      });
-      const result = transpileModule(challengeConfig, {
-        compilerOptions: {
-          module: 1,
-          target: 1,
-        },
-      });
-      const jestResult = jestConfig
-        ? transpileModule(jestConfig, {
-            compilerOptions: {
-              module: 1,
-              target: 1,
-            },
-          })
-        : undefined;
-      const challengeConfigObject: FrameGroundChallengeExport = eval(
-        result.outputText
+      const terminalConfigObject = evalTsModule<Record<string, any>>(
+        terminalConfig
       );
+      const jestConfigObject = jestConfig
+        ? evalTsModule<Record<string, any>>(jestConfig)
+        : undefined;
+      const challengeConfigObject =
+        evalTsModule<FrameGroundChallengeExport>(challengeConfig);
       const challengeJsonStats = statSync(
         `${process.cwd()}/../../challenges/${
           track.slug
@@ -165,9 +175,9 @@ export async function saveChallengesToDb() {
             slug: challenge,
             track: { connect: { slug: track.slug } },
             info: description,
-            terminalConfig: eval(terminalConfigResult.outputText),
+            terminalConfig: terminalConfigObject,
             tests,
-            jestConfig: jestConfig ? eval(jestResult.outputText) : undefined,
+            jestConfig: jestConfigObject,
             commands: challengeData.setup_commands,
             authors: {
               set: challengeData.author,
@@ -189,8 +199,8 @@ export async function saveChallengesToDb() {
             track: { connect: { slug: track.slug } },
             info: description,
             tests,
-            jestConfig: jestConfig ? eval(jestResult.outputText) : undefined,
-            terminalConfig: eval(terminalConfigResult.outputText),
+            jestConfig: jestConfigObject,
+            terminalConfig: terminalConfigObject,
             authors: {
               set: challengeData.author,
             },

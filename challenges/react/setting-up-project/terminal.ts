@@ -1,2 +1,2 @@
-import type { ITerminalOptions } from "xterm";
+import type { ITerminalOptions } from "@xterm/xterm";
 export default { disableStdin: false } satisfies ITerminalOptions;

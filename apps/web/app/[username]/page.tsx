@@ -9,10 +9,9 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
-}: {
-  params: { username: string };
-}): Promise<Metadata> {
-  const username = decodeURIComponent(params.username).replace("@", "");
+}: PageProps<"/[username]">): Promise<Metadata> {
+  const awaited = await params
+  const username = decodeURIComponent(awaited.username).replace("@", "");
   const user = await getCacheUser(username);
 
   if (!user)
@@ -45,8 +44,9 @@ export async function generateMetadata({
   };
 }
 
-async function ProfilePage({ params }: { params: { username: string } }) {
-  const username = decodeURIComponent(params.username).replace("@", "");
+async function ProfilePage({ params }: PageProps<"/[username]">) {
+  const awaited = await params
+  const username = decodeURIComponent(awaited.username).replace("@", "");
   const user = await getCacheUser(username);
   if (!user) notFound();
 

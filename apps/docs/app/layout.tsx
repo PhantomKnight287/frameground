@@ -1,9 +1,7 @@
-import { DocsLayout } from "next-docs-ui/layout";
 import "./global.css";
-import { RootProvider } from "next-docs-ui/provider";
+import { RootProvider } from "fumadocs-ui/provider/next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
-import { pageTree } from "./source";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,19 +9,9 @@ const inter = Inter({
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={inter.className}>
-      <body>
-        <RootProvider>
-          <DocsLayout
-            tree={pageTree}
-            nav={{
-              title: "FrameGround",
-              githubUrl: "https://github.com/phantomknight287/frameground",
-            }}
-          >
-            {children}
-          </DocsLayout>
-        </RootProvider>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col">
+        <RootProvider>{children}</RootProvider>
       </body>
     </html>
   );

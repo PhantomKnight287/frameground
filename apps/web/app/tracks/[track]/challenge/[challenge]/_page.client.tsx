@@ -11,7 +11,7 @@ import { cn } from "@repo/utils";
 import { Challenge, Upvote } from "@repo/db/types";
 import { useEditorFileState } from "@repo/monaco/state";
 import ChallengeTabs from "./page.client";
-import { User } from "next-auth/types";
+import { User } from "next-auth";
 import {
   Fragment,
   ReactNode,
@@ -29,7 +29,7 @@ import {
   WebContainerInstance,
   WebContainerProcess,
 } from "@repo/containers";
-import { FitAddon } from "xterm-addon-fit";
+import { FitAddon } from "@xterm/addon-fit";
 import { ExternalLink, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import {
   Tooltip,
@@ -37,7 +37,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
-import { generateFilePath, isFileEditable } from "./functions";
+import { generateFilePath, resolveFile } from "./functions";
 import EnrollInTrack from "./_components/enroll";
 import { attemptChallenge, solveChallenge } from "./action";
 import { signIn, useSession } from "next-auth/react";
@@ -174,10 +174,9 @@ const command = ${
         "./package.json"
     ).then();
     const shellProcess = await _container.spawn("jsh", {
-      //@ts-expect-error
       terminal: {
-        cols: terminalRef?.cols,
-        rows: terminalRef?.rows,
+        cols: terminalRef?.cols ?? 80,
+        rows: terminalRef?.rows ?? 24,
       },
     });
     shellProcessRef.current = shellProcess;
@@ -214,12 +213,17 @@ const command = ${
   }, [terminalRef, challenge.playgroundNeeded, session?.data?.user?.id]);
 
   useEffect(() => {
-    if (queryParams?.activeFile && queryParams?.activeFile !== "0") {
+    const restored =
+      queryParams?.activeFile && queryParams.activeFile !== "0"
+        ? resolveFile(files, queryParams.activeFile)
+        : undefined;
+
+    if (restored) {
       setActiveFile({
-        path: queryParams?.activeFile,
-        name: queryParams?.activeFile,
+        path: queryParams!.activeFile!,
+        name: restored.name,
         type: "file",
-        editable: isFileEditable(files, queryParams?.activeFile),
+        editable: restored.editable,
       });
     } else {
       setActiveFile({ path: "0", name: "Challenge.md", type: "file" });
@@ -258,48 +262,22 @@ const command = ${
           }
         }}
       />
-      <ResizablePanelGroup direction="horizontal">
+      <ResizablePanelGroup orientation="horizontal">
         <ResizablePanel
-          minSize={10}
-          defaultSize={10}
-          className={cn(
-            "flex flex-col h-full border-r border-l border-background bg-border rounded-md overflow-scroll custom-scrollable-element "
-          )}
+          minSize="10%"
+          defaultSize="14%"
+          className="custom-scrollable-element flex h-full flex-col overflow-y-auto border-r bg-muted/40"
         >
-          <div className="uppercase font-bold flex flex-row items-center justify-between text-sm p-2 border-b-[12px] border-background line-clamp-1">
-            <span className="line-clamp-1 overflow-hidden">
+          <div className="sticky top-0 z-10 flex flex-row items-center justify-between gap-2 border-b bg-muted/40 px-3 py-2.5 backdrop-blur">
+            <span className="truncate text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Files
+            </span>
+            <span className="truncate text-xs text-muted-foreground/70">
               {challenge.label}
             </span>
           </div>
           <MonacoSidebar
             data={files as any}
-            fileClassName="p-2 py-1 text-sm w-full text-left hover:bg-gray-600"
-            folderClassName="p-2 py-1 flex flex-row items-center w-full text-left hover:bg-gray-700"
-            folderOpenIcon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="#2196F3"
-                viewBox="0 0 16 16"
-                width="1em"
-                height="1em"
-                className="flex-shrink-0 h-[18px] w-[18px] mr-2"
-              >
-                <path d="M13.66 12.46H2.34v-7h11.32v7zm.1-8.54H8L6.56 2.48H2.24c-.8 0-1.44.64-1.44 1.44v8.64c0 .8.64 1.44 1.44 1.44h11.52c.8 0 1.44-.64 1.44-1.44v-7.2c0-.8-.65-1.44-1.44-1.44z"></path>
-              </svg>
-            }
-            fileContainerClassName="data-[active=true]:bg-gray-600 hover:bg-gray-700 hover:text-white data-[active=false]:bg-border pl-4"
-            folderCloseIcon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="#2196F3"
-                viewBox="0 0 16 16"
-                width="1em"
-                height="1em"
-                className="flex-shrink-0 h-[18px] w-[18px] mr-2"
-              >
-                <path d="M6.56 2.48H2.24c-.8 0-1.44.64-1.44 1.44v8.64c0 .79.65 1.44 1.44 1.44h11.52c.79 0 1.44-.65 1.44-1.44v-7.2c0-.8-.65-1.44-1.44-1.44H8L6.56 2.48z"></path>
-              </svg>
-            }
             onClickFile={async (file) => {
               const search = new URLSearchParams(window.location.search);
               await readFile(generateFilePath(files, file) || "0");
@@ -319,6 +297,8 @@ const command = ${
         <ResizablePanel>
           {activeFile?.path === "0" ? (
             <ChallengeTabs
+              // `challenge.authors` is a string[] here but ChallengeTabs types it
+              // as the full User[] relation.
               //@ts-expect-error
               challenge={challenge}
               params={params}
@@ -327,13 +307,13 @@ const command = ${
               SolutionsSection={SolutionsSection}
             />
           ) : (
-            <ResizablePanelGroup direction="horizontal">
+            <ResizablePanelGroup orientation="horizontal">
               <ResizablePanel>
                 <ResizablePanelGroup
-                  direction="vertical"
-                  onLayout={() => fitAddon.fit()}
+                  orientation="vertical"
+                  onLayoutChange={() => fitAddon.fit()}
                 >
-                  <ResizablePanel className="relative" defaultSize={60}>
+                  <ResizablePanel className="relative" defaultSize="60%">
                     <div className="bg-border px-4 py-2 w-full flex flex-row items-center rounded-t-md">
                       <span className={cn("text-sm text-muted-foreground ")}>
                         {saved ? "Saved Locally" : "Unsaved Changes"}
@@ -476,7 +456,7 @@ const command = ${
                     </div>
                   </ResizablePanel>
                   <ResizableHandle withHandle />
-                  <ResizablePanel defaultSize={40} minSize={25}>
+                  <ResizablePanel defaultSize="40%" minSize="25%">
                     <Terminal />
                   </ResizablePanel>
                 </ResizablePanelGroup>

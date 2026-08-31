@@ -13,12 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "@repo/config": "workspace:^",
-    "clsx": "^2.0.0",
-    "dayjs": "^1.11.10",
-    "tailwind-merge": "^2.2.0",
-    "typescript": "^5.3.3"
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.23",
+    "tailwind-merge": "^3.6.0",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/node": "^20"
+    "@types/node": "^26.4.0"
   }
 }

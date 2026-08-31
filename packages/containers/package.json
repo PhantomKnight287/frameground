@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@repo/config": "workspace:^",
-    "@webcontainer/api": "^1.1.8",
-    "typescript": "^5"
+    "@webcontainer/api": "^1.6.4",
+    "typescript": "^5.9.3"
   }
 }

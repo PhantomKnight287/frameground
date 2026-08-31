@@ -9,7 +9,7 @@ import Header from "@/components/header";
 import NextAuthProvider from "@/providers/next-auth";
 import { siteConfig } from "@repo/config";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { fontSans } from "@/fonts";
+import { fontMono, fontSans } from "@/fonts";
 import { Toaster } from "@/components/ui/sonner";
 import { env } from "@/env.mjs";
 
@@ -43,7 +43,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
+          fontMono.variable
         )}
       >
         <ThemeProvider

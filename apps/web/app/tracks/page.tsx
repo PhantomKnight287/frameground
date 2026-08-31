@@ -37,7 +37,7 @@ export const viewport: Viewport = {
   themeColor: "#ffffff",
 };
 
-export default async function Tracks({}: { searchParams: { type?: string } }) {
+export default async function Tracks() {
   const session = await auth();
   const tracks = await getCachedTracks(session?.user?.id);
 

@@ -31,11 +31,21 @@ export default function SplitEditor({
 }: SplitEditorProps) {
   const monaco = useMonaco() as any;
 
-  const monacoRef = useRef<typeof import("monaco-editor")>();
+  const monacoRef = useRef<typeof import("monaco-editor") | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     monacoRef.current = monaco;
   }, [monaco]);
+
+  // The TypeScript language service lives at `monaco.languages.typescript` on
+  // the runtime `monaco` object, but monaco-editor only ships its *typings*
+  // under the top-level `typescript` namespace, so bridge the two here.
+  const tsLanguages = () =>
+    monacoRef.current?.languages.typescript as unknown as
+      | typeof import("monaco-editor").typescript
+      | undefined;
 
   const [ata] = useState(() =>
     setupTypeAcquisition({
@@ -49,22 +59,22 @@ export default function SplitEditor({
           const uri = monacoRef.current?.Uri.parse(path);
           const model = monacoRef.current?.editor.getModel(uri);
           if (!model) {
-            monacoRef.current?.languages.typescript.javascriptDefaults.addExtraLib(
+            tsLanguages()?.javascriptDefaults.addExtraLib(
               code,
               path
             );
             monacoRef.current?.editor.createModel(code, "javascript", uri);
             if (!path.includes("@types")) {
               const compilerOptions =
-                monacoRef.current?.languages.typescript.javascriptDefaults.getCompilerOptions();
+                tsLanguages()?.javascriptDefaults.getCompilerOptions();
               const match = _path.match(/\/node_modules\/([^/]+)/);
               if (match) {
                 const result = match[1];
-                monacoRef.current?.languages.typescript.javascriptDefaults.setCompilerOptions(
+                tsLanguages()?.javascriptDefaults.setCompilerOptions(
                   {
                     ...compilerOptions,
                     paths: {
-                      ...compilerOptions.paths,
+                      ...compilerOptions?.paths,
                       [result]: [_path.replace("/", "")],
                     },
                   }
@@ -95,27 +105,27 @@ export default function SplitEditor({
         <CodeEditor
           {...props}
           onMount={async (_editor, monaco) => {
-            monacoRef.current?.languages.typescript.javascriptDefaults.setEagerModelSync(
+            tsLanguages()?.javascriptDefaults.setEagerModelSync(
               true
             );
-            monacoRef.current?.languages.typescript.typescriptDefaults.setEagerModelSync(
+            tsLanguages()?.typescriptDefaults.setEagerModelSync(
               true
             );
 
-            monacoRef.current?.languages.typescript.javascriptDefaults.setDiagnosticsOptions(
+            tsLanguages()?.javascriptDefaults.setDiagnosticsOptions(
               {
                 noSyntaxValidation: true,
               }
             );
-            monacoRef.current?.languages.typescript.javascriptDefaults.setCompilerOptions(
+            tsLanguages()?.javascriptDefaults.setCompilerOptions(
               {
                 allowNonTsExtensions: true,
                 strict: true,
                 target:
-                  monacoRef.current?.languages.typescript.ScriptTarget.ESNext,
+                  tsLanguages()?.ScriptTarget.ESNext,
                 strictNullChecks: true,
                 moduleResolution:
-                  monacoRef.current?.languages.typescript.ModuleResolutionKind
+                  tsLanguages()?.ModuleResolutionKind
                     .NodeJs,
                 allowSyntheticDefaultImports: true,
                 outDir: "lib", // kills the override input file error,
@@ -123,15 +133,15 @@ export default function SplitEditor({
                 baseUrl: ".",
               }
             );
-            monacoRef.current?.languages.typescript.typescriptDefaults.setCompilerOptions(
+            tsLanguages()?.typescriptDefaults.setCompilerOptions(
               {
                 allowNonTsExtensions: true,
                 strict: true,
                 target:
-                  monacoRef.current?.languages.typescript.ScriptTarget.ESNext,
+                  tsLanguages()?.ScriptTarget.ESNext,
                 strictNullChecks: true,
                 moduleResolution:
-                  monacoRef.current?.languages.typescript.ModuleResolutionKind
+                  tsLanguages()?.ModuleResolutionKind
                     .NodeJs,
                 allowSyntheticDefaultImports: true,
                 outDir: "lib", // kills the override input file error,

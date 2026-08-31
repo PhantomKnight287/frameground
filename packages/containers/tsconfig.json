@@ -1,7 +1,14 @@
 {
   "extends": "@repo/config/base.json",
   "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src",
+    // Consumed from source by the Next apps (see `exports` in package.json),
+    // so resolve the way a bundler does. TypeScript 7 removed `node10`, which
+    // is what previously let `@webcontainer/api` (ESM-only `exports`) resolve.
+    "module": "ESNext",
+    "moduleResolution": "bundler"
   }
 }

@@ -15,14 +15,13 @@ import { siteMetadataConfig } from "@repo/config";
 
 export async function generateMetadata({
   params,
-}: {
-  params: { track: string; challenge: string };
-}): Promise<Metadata> {
+}: PageProps<"/tracks/[track]/challenge/[challenge]">): Promise<Metadata> {
+  const awaited = await params
   const challenge = await prisma.challenge.findFirst({
     where: {
-      slug: params.challenge,
+      slug: awaited.challenge,
       track: {
-        slug: params.track,
+        slug: awaited.track,
       },
     },
     include: {
@@ -43,16 +42,15 @@ export async function generateMetadata({
 async function Challenge({
   params,
   searchParams,
-}: {
-  params: { track: string; challenge: string };
-  searchParams: Record<string, string>;
-}) {
+}: PageProps<"/tracks/[track]/challenge/[challenge]">) {
+  const awaited = await params
+  const query = await searchParams
   const data = await auth();
   const challenge = await prisma.challenge.findFirst({
     where: {
-      slug: params.challenge,
+      slug: awaited.challenge,
       track: {
-        slug: params.track,
+        slug: awaited.track,
       },
     },
     include: {
@@ -96,10 +94,13 @@ async function Challenge({
   });
   if (!challenge) redirect(`/404`);
   const files = [
+    // the tree sorts everything else, so the two entries injected here are
+    // pinned to keep them above the challenge's own files
     {
       name: "Challenge.md",
       content: ``,
       type: "file",
+      pinned: true,
     },
     ...(challenge.initialFiles as unknown as FrameGroundChallengeExport["files"]),
   ];
@@ -122,6 +123,7 @@ async function Challenge({
       name: "jest.config.json",
       content: JSON.stringify(challenge.jestConfig, null, 2),
       type: "file",
+      pinned: true,
     });
   }
   const fileSystem: FileSystemTree = {};
@@ -175,14 +177,14 @@ async function Challenge({
         <Editor
           //@ts-expect-error
           challenge={challenge}
-          params={params}
+          params={awaited}
           fileSystem={fileSystem}
-          queryParams={searchParams}
+          queryParams={query as Record<string,string>}
           files={files as any}
           packages={packages}
           CommentsSection={
             <Comments
-              sortBy={searchParams.sort_comments as "oldest" | "newest"}
+              sortBy={query.sort_comments as "oldest" | "newest"}
               challengeId={challenge.id}
               trackId={challenge.trackId!}
               trackSlug={challenge.track!.slug}
@@ -192,7 +194,7 @@ async function Challenge({
           SolutionsSection={
             <Solutions
               challenge={challenge.slug}
-              sort={searchParams.sort_solutions as "oldest" | "newest"}
+              sort={query.sort_solutions as "oldest" | "newest"}
             />
           }
         />

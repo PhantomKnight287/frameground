@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CreateAppAnimation } from "./index.client";
 import { Badge } from "../ui/badge";
-import { Github } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 import { getGithubStars } from "@/cache/stars";
 import { siteConfig } from "@repo/config";
 
@@ -26,7 +26,7 @@ export async function Hero() {
                       className="rounded-md px-3.5 py-1.5"
                       variant="secondary"
                     >
-                      <Github className="mr-2 size-3.5" aria-hidden="true" />
+                      <FaGithub className="mr-2 size-3.5" aria-hidden="true" />
                       {githubStars} stars on GitHub
                     </Badge>
                     <span className="sr-only">GitHub</span>

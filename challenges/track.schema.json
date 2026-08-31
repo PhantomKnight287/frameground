@@ -12,13 +12,21 @@
     },
     "logo": {
       "type": "string",
-      "description": "URL of the logo of the track"
+      "description": "Logo of the track: a path served from the app's public dir (e.g. /tracks/react.svg, added with scripts/add-track-logo.mjs) or an absolute URL"
     },
     "status": {
       "type": "string",
       "description": "Status of the track",
-      "enum": ["active", "coming_soon"]
+      "enum": [
+        "active",
+        "coming_soon"
+      ]
     }
   },
-  "required": ["name", "description", "logo", "status"]
+  "required": [
+    "name",
+    "description",
+    "logo",
+    "status"
+  ]
 }

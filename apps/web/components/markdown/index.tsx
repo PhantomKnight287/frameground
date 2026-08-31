@@ -1,22 +1,16 @@
 "use client";
 
 import clsx from "clsx";
-import { useTheme } from "next-themes";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import remarkGfm from "remark-gfm";
 import type { Transformer } from "unified";
 import { SKIP, visit, type BuildVisitor } from "unist-util-visit";
-import { vs } from "./themes/vs";
-import { vscDarkPlus } from "./themes/vs-dark-plus";
+import { ayuDark } from "./themes/ayu-dark";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { Check, Copy } from "lucide-react";
-import {
-  vsDark,
-  vscDarkPlus as vscDarkPlusPrisma,
-} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import raw from "rehype-raw";
 import { Callout } from "../callout";
 
@@ -55,104 +49,108 @@ export function Markdown({
   className?: string;
 }) {
   return (
-    <ReactMarkdown
-      skipHtml
-      className={className}
-      components={{
-        a: ({ className, ...props }) => (
-          <a
-            className={clsx(className, "whitespace-nowrap text-blue-500")}
-            target="_blank"
-            rel="noopener noreferrer"
-            {...props}
-          />
-        ),
-        ul: ({ className, ...props }) => (
-          <ul className={clsx(className, "mb-4 list-disc ps-10")} {...props} />
-        ),
-        ol: ({ className, ...props }) => (
-          <ol
-            className={clsx(className, "mb-4 list-decimal ps-10")}
-            {...props}
-          />
-        ),
-        h1: ({ className, ...props }) => (
-          <h1
-            className={clsx(className, "mb-2 pb-2 text-3xl font-bold")}
-            {...props}
-          />
-        ),
-        h2: ({ className, ...props }) => (
-          <h2
-            className={clsx(className, "mb-2 pb-2 text-2xl font-bold")}
-            {...props}
-          />
-        ),
-        h3: ({ className, ...props }) => (
-          <h3
-            className={clsx(className, "mb-2 pb-2 text-xl font-bold")}
-            {...props}
-          />
-        ),
-        p: ({ className, ...props }) => (
-          <p
-            className={clsx(className, "mb-4 overflow-hidden text-ellipsis")}
-            {...props}
-          />
-        ),
-        //@ts-expect-error
-        code({ inline, className, children, style: _, ...props }) {
-          const match = /language-(\w+)/.exec(className || "");
-          return !inline && match ? (
-            <div className="relative">
-              <CopyButton text={String(children).replace(/\n$/, "")} />
-              {/*
-         //@ts-expect-error */}
-              <SyntaxHighlighter
-                PreTag="section" // parent tag
-                className={clsx(className, "rounded-xl dark:rounded-md")}
-                language={match[1]}
-                style={vscDarkPlusPrisma}
-                customStyle={{ fontSize: "inherit", padding: "30px" }}
-                codeTagProps={{
-                  style: {
-                    fontSize: "inherit",
-                    lineHeight: "inherit",
-                  },
-                  tabIndex: 0,
-                }}
-                {...props}
-              >
-                {String(children).replace(/\n$/, "")}
-              </SyntaxHighlighter>
-            </div>
-          ) : (
-            <code className="rounded-md border border-zinc-300 bg-neutral-200 px-1 py-[0.10rem] font-mono text-zinc-600 dark:border-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
-              {children}
-            </code>
-          );
-        },
-
-        details: ({ ...props }) => <details {...props} />,
-        summary: ({ ...props }) => <summary {...props} />,
-        //@ts-expect-error
-        callout: Callout,
-        blockquote: ({ ...props }) => (
-          <blockquote className="p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
-            {/**
-             //@ts-expect-error */}
-            <p
-              className="italic font-medium leading-relaxed text-gray-900 dark:text-white"
+    <div className={className}>
+      <ReactMarkdown
+        skipHtml
+        components={{
+          a: ({ className, ...props }) => (
+            <a
+              className={clsx(className, "whitespace-nowrap text-blue-500")}
+              target="_blank"
+              rel="noopener noreferrer"
               {...props}
             />
-          </blockquote>
-        ),
-      }}
-      remarkPlugins={[removeHtmlComments, remarkGfm]}
-      rehypePlugins={[raw]}
-    >
-      {children}
-    </ReactMarkdown>
+          ),
+          ul: ({ className, ...props }) => (
+            <ul
+              className={clsx(className, "mb-4 list-disc ps-10")}
+              {...props}
+            />
+          ),
+          ol: ({ className, ...props }) => (
+            <ol
+              className={clsx(className, "mb-4 list-decimal ps-10")}
+              {...props}
+            />
+          ),
+          h1: ({ className, ...props }) => (
+            <h1
+              className={clsx(className, "mb-2 pb-2 text-3xl font-bold")}
+              {...props}
+            />
+          ),
+          h2: ({ className, ...props }) => (
+            <h2
+              className={clsx(className, "mb-2 pb-2 text-2xl font-bold")}
+              {...props}
+            />
+          ),
+          h3: ({ className, ...props }) => (
+            <h3
+              className={clsx(className, "mb-2 pb-2 text-xl font-bold")}
+              {...props}
+            />
+          ),
+          p: ({ className, ...props }) => (
+            <p
+              className={clsx(className, "mb-4 overflow-hidden text-ellipsis")}
+              {...props}
+            />
+          ),
+          //@ts-expect-error
+          code({ inline, className, children, style: _, ...props }) {
+            const match = /language-(\w+)/.exec(className || "");
+            return !inline && match ? (
+              <div className="relative">
+                <CopyButton text={String(children).replace(/\n$/, "")} />
+                {/*
+         //@ts-expect-error */}
+                <SyntaxHighlighter
+                  PreTag="section" // parent tag
+                  className={clsx(className, "rounded-xl dark:rounded-md")}
+                  language={match[1]}
+                  style={ayuDark}
+                  customStyle={{ fontSize: "inherit", padding: "30px" }}
+                  codeTagProps={{
+                    style: {
+                      fontSize: "inherit",
+                      lineHeight: "inherit",
+                    },
+                    tabIndex: 0,
+                  }}
+                  {...props}
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              </div>
+            ) : (
+              <code className="rounded-md border border-zinc-300 bg-neutral-200 px-1 py-[0.10rem] font-mono text-zinc-600 dark:border-zinc-600 dark:bg-zinc-700 dark:text-zinc-300">
+                {children}
+              </code>
+            );
+          },
+
+          details: ({ ...props }) => <details {...props} />,
+          summary: ({ ...props }) => <summary {...props} />,
+          //@ts-expect-error
+          callout: Callout,
+          blockquote: ({ ...props }) => (
+            <blockquote className="p-4 my-4 border-s-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+              {/**
+             //@ts-expect-error */}
+              <p
+                className="italic font-medium leading-relaxed text-gray-900 dark:text-white"
+                {...props}
+              />
+            </blockquote>
+          ),
+        }}
+        remarkPlugins={[removeHtmlComments, remarkGfm]}
+        rehypePlugins={[raw]}
+      >
+        {children}
+      </ReactMarkdown>
+    </div>
   );
 }
 

@@ -1,0 +1,22 @@
+{
+  "$schema": "../../schema.json",
+  "id": "error-boundaries",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Catch rendering errors in a part of your UI and show a fallback instead of a blank page.",
+  "difficulty": "hard",
+  "label": "Error Boundaries",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/class-components",
+    "react/conditional-rendering",
+    "react/data-fetching"
+  ]
+}

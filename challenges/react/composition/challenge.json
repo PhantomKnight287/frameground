@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "composition",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Build flexible components with the children prop and JSX passed as props, instead of a pile of boolean options.",
+  "difficulty": "easy",
+  "label": "Composition",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/props",
+    "react/conditional-rendering"
+  ]
+}

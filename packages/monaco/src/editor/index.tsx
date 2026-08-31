@@ -9,7 +9,7 @@ export interface CodePanelProps {
         code: string;
         slug: string;
         tests: string;
-        tsconfig?: monaco.languages.typescript.CompilerOptions;
+        tsconfig?: monaco.typescript.CompilerOptions;
     };
     saveSubmission: (code: string, isSuccessful: boolean) => Promise<void>;
     submissionDisabled: boolean;
@@ -19,9 +19,9 @@ export interface CodePanelProps {
 }
 
 export type TsErrors = [
-    SemanticDiagnostics: monaco.languages.typescript.Diagnostic[],
-    SyntacticDiagnostics: monaco.languages.typescript.Diagnostic[],
-    CompilerOptionsDiagnostics: monaco.languages.typescript.Diagnostic[],
+    SemanticDiagnostics: monaco.typescript.Diagnostic[],
+    SyntacticDiagnostics: monaco.typescript.Diagnostic[],
+    CompilerOptionsDiagnostics: monaco.typescript.Diagnostic[],
 ];
 
 export function CodePanel(_props: CodePanelProps) {

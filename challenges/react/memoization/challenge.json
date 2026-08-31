@@ -1,0 +1,22 @@
+{
+  "$schema": "../../schema.json",
+  "id": "memoization",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Skip expensive work and needless re-renders with memo, useMemo and useCallback.",
+  "difficulty": "hard",
+  "label": "Memoization",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/use-effect",
+    "react/custom-hooks",
+    "react/rendering-lists"
+  ]
+}

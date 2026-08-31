@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@repo/db";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 
 export async function upvoteChallenge(
   challengeId: string,
@@ -35,7 +35,7 @@ export async function upvoteChallenge(
     });
   }
   revalidatePath(`/tracks/${trackSlug}/challenge/${challengeSlug}`);
-  revalidateTag(`challenge-${trackSlug}-${user!.id}`);
+  updateTag(`challenge-${trackSlug}-${user!.id}`);
   console.log(`challenge-${trackSlug}-${user!.id}`);
 }
 
@@ -92,9 +92,9 @@ export async function solveChallenge(
     }
     return solved;
   });
-  revalidateTag(`user::challenges::${user?.username}`);
-  revalidateTag(`profile::${user?.username}`);
-  revalidateTag(`user::solves::${user?.id}`);
+  updateTag(`user::challenges::${user?.username}`);
+  updateTag(`profile::${user?.username}`);
+  updateTag(`user::solves::${user?.id}`);
 
   return {
     url: `/tracks/${_tx.track?.slug}/challenge/${_tx.slug}/solved`,

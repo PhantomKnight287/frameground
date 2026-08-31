@@ -2,8 +2,9 @@
   "extends": "@repo/config/base.json",
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": ".",
     "module": "ESNext",
-    "moduleResolution": "Node"
+    "moduleResolution": "bundler"
   },
-  "exclude": ["node_modules", "dist"],
+  "exclude": ["node_modules", "dist"]
 }

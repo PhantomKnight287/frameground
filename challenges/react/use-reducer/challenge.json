@@ -1,0 +1,22 @@
+{
+  "$schema": "../../schema.json",
+  "id": "use-reducer",
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest",
+  "track_slug": "react",
+  "author": [
+    "phantomknight287"
+  ],
+  "description": "Consolidate complex state updates into a single reducer function with the useReducer hook.",
+  "difficulty": "medium",
+  "label": "Reducers",
+  "playground_needed": true,
+  "prerequisites": [
+    "react/state",
+    "react/form-handling",
+    "react/rendering-lists"
+  ]
+}

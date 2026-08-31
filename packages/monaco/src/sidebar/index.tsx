@@ -1,60 +1,55 @@
 "use client";
-import { Fragment } from "react";
+
+import { useMemo } from "react";
 import File from "./file";
 import Folder from "./folder";
 import { FrameGroundChallengeExport } from "@repo/challenges/src";
+import { cn } from "../utils";
+import { sortEntries } from "./tree";
+
+export { sortEntries, type TreeEntry } from "./tree";
 
 export default function Sidebar({
   data,
   onClickFile,
   onClickFolder,
-  fileClassName,
-  folderClassName,
   className,
-  folderOpenIcon,
-  folderCloseIcon,
-  fileContainerClassName,
 }: {
   data: FrameGroundChallengeExport["files"];
   onClickFile?: (path: string) => void;
   onClickFolder?: (path: string) => void;
-  fileClassName?: string;
-  folderClassName?: string;
   className?: string;
-  folderOpenIcon?: React.ReactNode;
-  folderCloseIcon?: React.ReactNode;
-  fileContainerClassName?: string;
 }) {
+  const entries = useMemo(() => sortEntries(data), [data]);
+
   return (
-    <div className={(className)}>
-      {data.map((item, index) => (
-        <Fragment key={index}>
-          {item.type === "file" ? (
-            <File
-              name={item.name}
-              path={`${index}`} // Generate the file's path
-              onClickFile={onClickFile}
-              className={fileClassName}
-              key={`${index}`}
-              editable={item.editable}
-            />
-          ) : (
-            <Folder
-              folder={item}
-              path={`${index}`}
-              onClickFile={onClickFile}
-              name={item.name}
-              onClickFolder={onClickFolder}
-              className={folderClassName}
-              fileClassName={fileClassName}
-              folderOpenIcon={folderOpenIcon}
-              folderCloseIcon={folderCloseIcon}
-              filesContainerClassName={fileContainerClassName}
-              key={`${index}`}
-            />
-          )}
-        </Fragment>
-      ))}
+    <div
+      role="tree"
+      aria-label="Challenge files"
+      className={cn("flex select-none flex-col py-1 text-[13px]", className)}
+    >
+      {entries.map((entry) =>
+        entry.type === "file" ? (
+          <File
+            key={entry.index}
+            name={entry.name}
+            path={`${entry.index}`}
+            depth={0}
+            editable={entry.editable}
+            onClickFile={onClickFile}
+          />
+        ) : (
+          <Folder
+            key={entry.index}
+            folder={entry}
+            name={entry.name}
+            path={`${entry.index}`}
+            depth={0}
+            onClickFile={onClickFile}
+            onClickFolder={onClickFolder}
+          />
+        )
+      )}
     </div>
   );
 }
