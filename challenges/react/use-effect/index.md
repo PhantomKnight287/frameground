@@ -1,6 +1,6 @@
 Rendering in React must be **pure**: given the same props and state, a component returns the
 same JSX and touches nothing outside of itself. But real apps have to talk to the outside
-world — set the document title, open a socket, start a timer, subscribe to an event.
+world - set the document title, open a socket, start a timer, subscribe to an event.
 
 Those are **side effects**, and they belong in `useEffect`.
 
@@ -27,7 +27,7 @@ The second argument decides how often the effect runs:
 | `[]`            | once, after the first render                      |
 | `[a, b]`        | after the first render, and whenever `a` or `b` changed |
 
-Every reactive value your effect reads — props, state, values derived from them — belongs in
+Every reactive value your effect reads - props, state, values derived from them - belongs in
 the array. Leaving one out gives you an effect that quietly works with stale data.
 
 ## Cleanup
@@ -52,7 +52,7 @@ is easy to spot: you will see it run twice. Correct cleanup makes that harmless.
 ## You might not need an effect
 
 An effect is for synchronising with something *outside* React. If you can compute a value
-during rendering, do that instead — don't mirror props into state inside an effect:
+during rendering, do that instead - don't mirror props into state inside an effect:
 
 ```jsx
 // ❌ extra render, easy to get out of sync
@@ -69,12 +69,12 @@ Read more about `useEffect` [here](https://react.dev/reference/react/useEffect).
 
 You have to create two components:
 
-- `src/components/document-title.jsx` — default export a function component with a `count`
+- `src/components/document-title.jsx` - default export a function component with a `count`
   state that starts at 0. It renders a `span` with id `count` containing `Count: <count>` and
   a `button` with id `increment` that increases the count by one. Using an effect, keep
   `document.title` in sync with the count so that it always reads `Count: <count>`.
 
-- `src/components/timer.jsx` — default export a function component with a `seconds` state that
+- `src/components/timer.jsx` - default export a function component with a `seconds` state that
   starts at 0. Start an interval on mount that increases `seconds` by one every 1000ms, and
   render a `span` with id `seconds` containing `<seconds>s`. The interval must be created
   **once** and must be cleared when the component unmounts.

@@ -27,7 +27,7 @@ export async function generateMetadata({
   const searchParams = new URLSearchParams();
   searchParams.set("name", track?.name || "");
   // The OG image renders on a dark background, and satori can only fetch
-  // absolute URLs — vendored logos are stored as same-origin paths.
+  // absolute URLs - vendored logos are stored as same-origin paths.
   const logo = track.logo ? darkVariant(track.logo) : "";
   searchParams.set(
     "imageUrl",
@@ -99,7 +99,7 @@ async function Challenges({
   `;
 
   // The raw query returns BigInt columns, which cannot cross the server/client
-  // boundary — normalise them before handing the rows to the client component.
+  // boundary - normalise them before handing the rows to the client component.
   const challenges: ListChallenge[] = (d ?? []).map((challenge) => ({
     ...challenge,
     createdAt: challenge.createdAt?.toISOString?.() ?? challenge.createdAt,
@@ -195,7 +195,7 @@ async function Challenges({
           <div className="mt-10 rounded-3xl border border-dashed py-16 text-center">
             <p className="font-medium">No challenges yet</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              This track is still being put together — check back soon.
+              This track is still being put together - check back soon.
             </p>
           </div>
         )}

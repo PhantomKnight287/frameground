@@ -10,7 +10,7 @@ import { BadgeCheck, MessageCircle, ThumbsUp, User2 } from "lucide-react";
 
 dayjs.extend(relativeTime);
 
-const difficultyBadge: Record<string, string> = {
+export const difficultyBadge: Record<string, string> = {
   beginner:
     "border-difficulty-beginner text-difficulty-beginner dark:border-difficulty-beginner-dark dark:text-difficulty-beginner-dark",
   easy: "border-difficulty-easy text-difficulty-easy dark:border-difficulty-easy-dark dark:text-difficulty-easy-dark",

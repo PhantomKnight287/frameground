@@ -23,7 +23,7 @@ function todosReducer(state, action) {
 }
 ```
 
-It is a plain function — no hooks, no React — so it is trivially testable and easy to reason
+It is a plain function - no hooks, no React - so it is trivially testable and easy to reason
 about. It must be pure: no mutation, no fetching, no timers. Return a **new** array or object
 instead of changing the one you were given.
 
@@ -52,7 +52,7 @@ happened, plus any data the reducer needs.
 | there is no interesting logic               | the next state depends on the current one in complex ways  |
 
 <Callout type="info" title="Note">
-`dispatch` is stable — React guarantees it does not change between renders — so it is safe to
+`dispatch` is stable - React guarantees it does not change between renders - so it is safe to
 pass it deep into the tree, or leave it out of effect dependency arrays.
 </Callout>
 
@@ -62,17 +62,17 @@ Read more about `useReducer` [here](https://react.dev/reference/react/useReducer
 
 You have to create a reducer and a component:
 
-- `src/reducers/todos-reducer.js` — export two **named** exports:
-  - `initialState` — an empty array.
-  - `todosReducer(state, action)` — a pure reducer handling three action types:
-    - `added` — appends `{ id: action.id, text: action.text, done: false }`
-    - `toggled` — flips `done` on the todo whose `id` matches `action.id`
-    - `deleted` — removes the todo whose `id` matches `action.id`
+- `src/reducers/todos-reducer.js` - export two **named** exports:
+  - `initialState` - an empty array.
+  - `todosReducer(state, action)` - a pure reducer handling three action types:
+    - `added` - appends `{ id: action.id, text: action.text, done: false }`
+    - `toggled` - flips `done` on the todo whose `id` matches `action.id`
+    - `deleted` - removes the todo whose `id` matches `action.id`
 
     Any other action type must throw an `Error`. The reducer must never mutate the state it
     is given.
 
-- `src/components/todos.jsx` — default export a function component that manages its todos with
+- `src/components/todos.jsx` - default export a function component that manages its todos with
   `useReducer`. It renders:
   - a `form` with id `todo-form` containing an `input` with id `todo-input`. Submitting the
     form adds a todo with the input's text and clears the input. Submitting an empty (or

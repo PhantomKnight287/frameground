@@ -91,7 +91,7 @@ if (existsSync(trackJsonPath)) {
   console.log(`Set logo to "${logo}" in challenges/${slug}/track.json`);
 } else {
   console.log(
-    `No challenges/${slug}/track.json yet — use "logo": "${logo}" when you create it.`
+    `No challenges/${slug}/track.json yet - use "logo": "${logo}" when you create it.`
   );
 }
 

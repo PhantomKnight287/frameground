@@ -1,4 +1,4 @@
-React renders a component's DOM inside its parent's DOM. That is almost always what you want —
+React renders a component's DOM inside its parent's DOM. That is almost always what you want -
 until you build a modal, a tooltip or a dropdown, and a parent's `overflow: hidden`,
 `transform` or `z-index` clips it.
 
@@ -60,7 +60,7 @@ while a click *inside* it does not.
 
 <Callout type="info" title="Note">
 Portals do not trap focus or add ARIA roles for you. For real dialogs, use the native
-`&lt;dialog&gt;` element or a headless library — and remember to restore focus when it closes.
+`&lt;dialog&gt;` element or a headless library - and remember to restore focus when it closes.
 </Callout>
 
 Read more about `createPortal` [here](https://react.dev/reference/react-dom/createPortal).
@@ -69,7 +69,7 @@ Read more about `createPortal` [here](https://react.dev/reference/react-dom/crea
 
 You have to create one component:
 
-- `src/components/modal.jsx` — default export a function component that takes `open`, `onClose`
+- `src/components/modal.jsx` - default export a function component that takes `open`, `onClose`
   and `children` props.
   - When `open` is `false`, it renders nothing at all.
   - When `open` is `true`, it renders into `document.body` with a portal: a `div` with id

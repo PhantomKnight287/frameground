@@ -64,7 +64,7 @@ export default {
             {
               "type": "file",
               "name": "settings.jsx",
-              "content": "// Provided for the challenge — do not edit.\n// `imported` counts how many times this module has been evaluated.\nexport const stats = { imported: 0 };\n\nstats.imported += 1;\n\nfunction Settings() {\n  return <p id=\"settings\">Settings panel</p>;\n}\n\nexport default Settings;\n"
+              "content": "// Provided for the challenge - do not edit.\n// `imported` counts how many times this module has been evaluated.\nexport const stats = { imported: 0 };\n\nstats.imported += 1;\n\nfunction Settings() {\n  return <p id=\"settings\">Settings panel</p>;\n}\n\nexport default Settings;\n"
             },
             {
               "type": "file",

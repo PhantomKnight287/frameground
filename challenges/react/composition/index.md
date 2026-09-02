@@ -20,7 +20,7 @@ function Card({ children }) {
 </Card>;
 ```
 
-`Card` knows nothing about what is inside it — it only provides the box. That is what makes it
+`Card` knows nothing about what is inside it - it only provides the box. That is what makes it
 reusable: any content, no new props.
 
 # JSX as a prop
@@ -40,7 +40,7 @@ function Layout({ sidebar, content }) {
 <Layout sidebar={<Nav />} content={<Article />} />;
 ```
 
-There is nothing special about this — JSX is just a value, so it can be passed like a string or
+There is nothing special about this - JSX is just a value, so it can be passed like a string or
 a number.
 
 # Composition over configuration
@@ -64,7 +64,7 @@ The second version does not need to change when a new use case appears.
 <Callout type="info" title="Note">
 Composition also solves most cases people reach for context for. If a component only needs to
 get a value *through* a middle layer, passing JSX down as `children` avoids the drilling
-entirely — the middle layer never sees the props at all.
+entirely - the middle layer never sees the props at all.
 </Callout>
 
 Read more about passing JSX as children [here](https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children).
@@ -73,7 +73,7 @@ Read more about passing JSX as children [here](https://react.dev/learn/passing-p
 
 You have to create two components:
 
-- `src/components/card.jsx` — default export a function component that renders a `div` with
+- `src/components/card.jsx` - default export a function component that renders a `div` with
   class `card` containing:
   - a `div` with class `card-header` containing the `title` prop, rendered **only** when a
     `title` prop was passed,
@@ -81,7 +81,7 @@ You have to create two components:
   - a `div` with class `card-footer` containing the `footer` prop, rendered **only** when a
     `footer` prop was passed.
 
-- `src/components/split-pane.jsx` — default export a function component that takes `left` and
+- `src/components/split-pane.jsx` - default export a function component that takes `left` and
   `right` props (both JSX) and renders a `div` with id `split` containing a `div` with id
   `left` and a `div` with id `right`, each holding the matching prop.
 

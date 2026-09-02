@@ -59,7 +59,7 @@ export default {
             {
               "type": "file",
               "name": "slow-filter.js",
-              "content": "// Provided for the challenge — do not edit.\n// Pretends to be an expensive calculation and counts how often it runs.\nexport const stats = { calls: 0 };\n\nexport function slowFilter(items, query) {\n  stats.calls += 1;\n\n  return items.filter((item) =>\n    item.name.toLowerCase().includes(query.toLowerCase())\n  );\n}\n"
+              "content": "// Provided for the challenge - do not edit.\n// Pretends to be an expensive calculation and counts how often it runs.\nexport const stats = { calls: 0 };\n\nexport function slowFilter(items, query) {\n  stats.calls += 1;\n\n  return items.filter((item) =>\n    item.name.toLowerCase().includes(query.toLowerCase())\n  );\n}\n"
             }
           ]
         },
@@ -75,7 +75,7 @@ export default {
             {
               "type": "file",
               "name": "item-row.jsx",
-              "content": "// Provided for the challenge — do not edit.\n// A memoised row that counts how many times it has rendered.\nimport { memo } from \"react\";\n\nexport const stats = { renders: 0 };\n\nfunction ItemRow({ item, onSelect }) {\n  stats.renders += 1;\n\n  return (\n    <li>\n      <button className=\"select\" onClick={() => onSelect(item.id)}>\n        {item.name}\n      </button>\n    </li>\n  );\n}\n\nexport default memo(ItemRow);\n"
+              "content": "// Provided for the challenge - do not edit.\n// A memoised row that counts how many times it has rendered.\nimport { memo } from \"react\";\n\nexport const stats = { renders: 0 };\n\nfunction ItemRow({ item, onSelect }) {\n  stats.renders += 1;\n\n  return (\n    <li>\n      <button className=\"select\" onClick={() => onSelect(item.id)}>\n        {item.name}\n      </button>\n    </li>\n  );\n}\n\nexport default memo(ItemRow);\n"
             },
             {
               "type": "file",

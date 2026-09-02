@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  * `<slug>.svg` for light mode and `<slug>-dark.svg` for dark mode. Only the
  * light path is stored on the track, the dark one is derived from it.
  *
- * Anything else stored in `logo` — an absolute URL from an older track — is
+ * Anything else stored in `logo` - an absolute URL from an older track - is
  * rendered as-is, in both themes.
  */
 export const darkVariant = (logo: string) =>

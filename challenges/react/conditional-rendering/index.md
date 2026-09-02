@@ -161,7 +161,7 @@ While this duplication isn’t harmful, it could make your code harder to mainta
 
 ### Conditional (ternary) operator (`? :`) 
 
-JavaScript has a compact syntax for writing a conditional expression — the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator) or “ternary operator”.
+JavaScript has a compact syntax for writing a conditional expression - the [conditional operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator) or “ternary operator”.
 
 Instead of this:
 
@@ -423,4 +423,3 @@ If you're not familiar with JavaScript, this variety of styles might seem overwh
 The content above is taken as is from [React.dev](https://react.dev/learn/conditional-rendering)
 
 </Callout>
-

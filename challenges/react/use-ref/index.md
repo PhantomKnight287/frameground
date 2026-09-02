@@ -1,5 +1,5 @@
 State is for values the UI is rendered from: change it, and React re-renders. But sometimes you
-need to remember something *without* re-rendering — a timeout id, a DOM node, the previous
+need to remember something *without* re-rendering - a timeout id, a DOM node, the previous
 value of a prop. That is what a **ref** is for.
 
 # `useRef`
@@ -42,7 +42,7 @@ This is the escape hatch for the handful of things React has no declarative API 
 scrolling, measuring, and playing media.
 
 <Callout type="warn" title="Pitfall">
-`ref.current` is `null` during the first render — the DOM node does not exist yet. Only read it
+`ref.current` is `null` during the first render - the DOM node does not exist yet. Only read it
 inside event handlers or effects, never while rendering.
 </Callout>
 
@@ -64,7 +64,7 @@ function Previous({ value }) {
 ```
 
 The write happens in an effect, so the render itself stays pure: during a render the ref still
-holds the value from the previous commit — which is exactly what we want to show.
+holds the value from the previous commit - which is exactly what we want to show.
 
 Read more about `useRef` [here](https://react.dev/reference/react/useRef).
 
@@ -72,11 +72,11 @@ Read more about `useRef` [here](https://react.dev/reference/react/useRef).
 
 You have to create two components:
 
-- `src/components/focus-input.jsx` — default export a function component that renders an
+- `src/components/focus-input.jsx` - default export a function component that renders an
   `input` with id `name` and a `button` with id `focus`. Clicking the button must focus the
   input using a ref. Do not use `document.querySelector`.
 
-- `src/components/previous-value.jsx` — default export a function component that takes a
+- `src/components/previous-value.jsx` - default export a function component that takes a
   `value` prop. It renders a `span` with id `current` containing `Current: <value>` and a
   `span` with id `previous` containing `Previous: <previous value>`. Before the value has ever
   changed, the previous value must render as `none`. Remember the previous value in a ref, not

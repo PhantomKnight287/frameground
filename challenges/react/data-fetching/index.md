@@ -1,5 +1,5 @@
 Fetching data is a side effect, so it belongs in `useEffect`. The fetch itself is the easy
-part — what separates a toy from a real component is handling every state a request can be in.
+part - what separates a toy from a real component is handling every state a request can be in.
 
 # The three states
 
@@ -30,7 +30,7 @@ function Users() {
 ```
 
 <Callout type="warn" title="Pitfall">
-`fetch` only rejects on a network failure. A 404 or a 500 resolves normally — you have to check
+`fetch` only rejects on a network failure. A 404 or a 500 resolves normally - you have to check
 `response.ok` yourself, or your error state will never fire.
 </Callout>
 
@@ -68,7 +68,7 @@ useEffect(() => {
 
 <Callout type="info" title="Note">
 In a real app you would reach for a library like TanStack Query or your framework's loader,
-which handle caching, retries and races for you. Writing it by hand once is still worth it —
+which handle caching, retries and races for you. Writing it by hand once is still worth it -
 that is what those libraries are doing under the hood.
 </Callout>
 
@@ -78,7 +78,7 @@ Read more about fetching data in effects [here](https://react.dev/reference/reac
 
 You have to create one component:
 
-- `src/components/user-list.jsx` — default export a function component that takes a `url` prop
+- `src/components/user-list.jsx` - default export a function component that takes a `url` prop
   and fetches it with `fetch` inside an effect when it mounts, and again whenever `url`
   changes. The response is a JSON array of `{ id, name }` objects.
   - While the request is in flight, render a `p` with id `loading` and the text `Loading...`.

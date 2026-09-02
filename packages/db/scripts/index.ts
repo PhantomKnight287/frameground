@@ -29,7 +29,7 @@ export type ChallengeJson = {
  *
  * The transpiled output is CommonJS and assigns to `exports`. That binding only
  * exists when this script itself runs as CommonJS, so it brings its own
- * `exports`/`module` objects — a *direct* eval can see and write to them, and the
+ * `exports`/`module` objects - a *direct* eval can see and write to them, and the
  * config keeps loading even when the script is bundled as ESM.
  */
 function evalTsModule<T>(source: string): T {

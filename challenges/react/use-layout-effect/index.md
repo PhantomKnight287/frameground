@@ -1,4 +1,4 @@
-`useEffect` runs *after* the browser has painted. That is the right default — the user sees
+`useEffect` runs *after* the browser has painted. That is the right default - the user sees
 your UI as soon as possible, and the effect catches up a moment later.
 
 But sometimes a moment later is too late. If an effect measures a node and then moves it, the
@@ -38,18 +38,18 @@ Only the timing differs.
 
 # When you need it
 
-- **Measuring** a node and rendering based on its size — tooltips, popovers, autosizing text.
+- **Measuring** a node and rendering based on its size - tooltips, popovers, autosizing text.
 - **Positioning** something relative to another element.
 - **Scrolling** to a position right after new content is rendered.
 
 <Callout type="warn" title="Pitfall">
-A layout effect blocks the paint, so slow work in one freezes the UI — and setting state in it
+A layout effect blocks the paint, so slow work in one freezes the UI - and setting state in it
 forces an extra render before anything appears on screen. Reach for `useEffect` first, and only
 switch when you can actually see a flicker.
 </Callout>
 
 <Callout type="info" title="Note">
-`useLayoutEffect` cannot run during server side rendering — there is no DOM to measure — and
+`useLayoutEffect` cannot run during server side rendering - there is no DOM to measure - and
 React warns about it. Move the work into `useEffect`, or render the fallback markup on the
 server and measure after hydration.
 </Callout>
@@ -60,19 +60,19 @@ Read more about `useLayoutEffect` [here](https://react.dev/reference/react/useLa
 
 You have to create two components:
 
-- `src/components/measure-box.jsx` — default export a function component that takes `children`
+- `src/components/measure-box.jsx` - default export a function component that takes `children`
   and renders a `div` with id `box` containing them. Using a ref and a layout effect, measure
   the box with `getBoundingClientRect()` and store its width in state. Once measured, render a
-  `span` with id `width` containing `Width: <width>px` — before the first measurement, the
+  `span` with id `width` containing `Width: <width>px` - before the first measurement, the
   `span` must not be rendered at all. Re-measure whenever `children` change.
 
   The measurement has to happen **before the browser paints**, so the user never sees a frame
   without the width in it.
 
-- `src/components/chat-log.jsx` — default export a function component that takes a `messages`
+- `src/components/chat-log.jsx` - default export a function component that takes a `messages`
   array of strings and renders a `div` with id `messages` containing one `p` with class
   `message` per message. Whenever the messages change, scroll the container to the bottom by
-  setting its `scrollTop` to its `scrollHeight` — before the paint, so no one sees the log
+  setting its `scrollTop` to its `scrollHeight` - before the paint, so no one sees the log
   jump.
 
 You can also mount these components in `src/App.jsx` but this step is optional.

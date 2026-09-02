@@ -37,7 +37,7 @@ export function CreateAppAnimation(): JSX.Element {
     <span key="command_type">
       {testCommand.substring(0, tick)}
       {tick < timeCommandEnter && (
-        <div className="inline-block h-3 w-1 animate-pulse bg-white" />
+        <div className="inline-block h-3 w-1 animate-pulse bg-foreground" />
       )}
     </span>
   );
@@ -55,28 +55,28 @@ export function CreateAppAnimation(): JSX.Element {
         {tick > timeCommandRun + 1 && (
           <>
             <div className="flex flex-row">
-              <span className="font-bold bg-green-500 px-2 text-black">
+              <span className="font-bold bg-success px-2 text-success-foreground">
                 PASS
               </span>
               <span className="ml-2">./index.test.js</span>
             </div>
-            <span className="ml-4 font-semibold text-white">Renders Button</span>
+            <span className="ml-4 font-semibold text-foreground">Renders Button</span>
             <div className="flex flex-col w-full">
               <div className="flex flex-row">
-                <span className="text-green-500 ml-6">✓</span>
-                <span className="ml-2 text-gray-400">
+                <span className="text-success ml-6">✓</span>
+                <span className="ml-2 text-muted-foreground">
                   Renders Button(5ms)
                 </span>
               </div>
               <div className="flex flex-row">
-                <span className="text-green-500 ml-6">✓</span>
-                <span className="ml-2 text-gray-400">
+                <span className="text-success ml-6">✓</span>
+                <span className="ml-2 text-muted-foreground">
                   Disabled when no user(5ms)
                 </span>
               </div>
               <div className="flex flex-row">
-                <span className="text-green-500 ml-6">✓</span>
-                <span className="ml-2 text-gray-400">
+                <span className="text-success ml-6">✓</span>
+                <span className="ml-2 text-muted-foreground">
                   Updates counter (5ms)
                 </span>
               </div>
@@ -87,24 +87,24 @@ export function CreateAppAnimation(): JSX.Element {
           <>
             <br />
             <div className="flex flex-row">
-              <span className="text-white font-semibold">Test Suites:</span>
-              <span className="text-green-500 ml-2">1 passed</span>,
+              <span className="text-foreground font-semibold">Test Suites:</span>
+              <span className="text-success ml-2">1 passed</span>,
               <span className="ml-2">1 total</span>
             </div>
             <div className="flex flex-row">
-              <span className="text-white font-semibold">Tests:</span>
-              <span className="text-green-500 ml-12">3 passed</span>,
+              <span className="text-foreground font-semibold">Tests:</span>
+              <span className="text-success ml-12">3 passed</span>,
               <span className="ml-2">3 total</span>
             </div>
             <div className="flex flex-row">
-              <span className="text-white font-semibold">Snapshots:</span>
+              <span className="text-foreground font-semibold">Snapshots:</span>
               <span className="ml-5">0 total</span>
             </div>
             <div className="flex flex-row">
-              <span className="text-white font-semibold">Time:</span>
+              <span className="text-foreground font-semibold">Time:</span>
               <span className="ml-[3.25rem]">1s, estimated 2s</span>
             </div>
-            <span className="text-gray-400">Ran all test suites.</span>
+            <span className="text-muted-foreground">Ran all test suites.</span>
           </>
         )}
       </Fragment>
@@ -127,7 +127,7 @@ export function CreateAppAnimation(): JSX.Element {
           <TerminalIcon className="h-4 w-4" />{" "}
           <span className="font-bold">Terminal</span>
           <div className="grow" />
-          <div className="h-2 w-2 rounded-full bg-green-400" />
+          <div className="h-2 w-2 rounded-full bg-success" />
         </div>
         <div className="min-h-[300px] bg-gradient-to-b from-secondary [mask-image:linear-gradient(to_bottom,white,transparent)]">
           <code className="grid p-4">{lines}</code>

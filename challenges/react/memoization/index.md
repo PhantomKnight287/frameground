@@ -1,8 +1,8 @@
 When a component re-renders, React re-runs its whole function body and re-renders all of its
-children. That is usually fast enough to ignore. When it isn't — an expensive calculation, a
-huge list — React gives you three tools to skip the work.
+children. That is usually fast enough to ignore. When it isn't - an expensive calculation, a
+huge list - React gives you three tools to skip the work.
 
-# `useMemo` — cache a value
+# `useMemo` - cache a value
 
 ```jsx
 const visibleItems = useMemo(
@@ -13,9 +13,9 @@ const visibleItems = useMemo(
 
 `useMemo` runs the function during the first render and caches the result. On later renders it
 returns the cached value unless a dependency changed. Everything else in the component still
-re-runs — only that calculation is skipped.
+re-runs - only that calculation is skipped.
 
-# `memo` — skip a child's re-render
+# `memo` - skip a child's re-render
 
 ```jsx
 import { memo } from "react";
@@ -26,9 +26,9 @@ const ItemRow = memo(function ItemRow({ item, onSelect }) {
 ```
 
 A memoized component re-renders only when its props change. React compares props with
-`Object.is`, one by one — a **shallow** comparison.
+`Object.is`, one by one - a **shallow** comparison.
 
-# `useCallback` — keep a function prop stable
+# `useCallback` - keep a function prop stable
 
 Here is the catch that makes `memo` useless if you miss it. Every render creates brand new
 objects and functions:
@@ -44,7 +44,7 @@ objects and functions:
 const handleSelect = useCallback((id) => setSelected(id), []);
 ```
 
-`useCallback(fn, deps)` is exactly `useMemo(() => fn, deps)` — one caches a function, the other
+`useCallback(fn, deps)` is exactly `useMemo(() => fn, deps)` - one caches a function, the other
 caches the result of calling one.
 
 <Callout type="warn" title="Pitfall">
@@ -54,7 +54,7 @@ Profiler first, then memoize the part that is actually slow.
 </Callout>
 
 <Callout type="info" title="Note">
-State setters returned by `useState` and `dispatch` from `useReducer` are already stable — you
+State setters returned by `useState` and `dispatch` from `useReducer` are already stable - you
 never need to wrap them in `useCallback`.
 </Callout>
 
@@ -73,7 +73,7 @@ Two files are given to you and must not be changed:
 
 You have to create one component:
 
-- `src/components/item-list.jsx` — default export a function component that takes an `items`
+- `src/components/item-list.jsx` - default export a function component that takes an `items`
   prop (an array of `{ id, name }`) and renders:
   - an `input` with id `query` bound to a `query` state that starts empty,
   - a `span` with id `selected` containing `Selected: <id>`, or `Selected: none` before

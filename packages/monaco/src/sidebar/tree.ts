@@ -4,7 +4,7 @@ import { cn } from "../utils";
 /**
  * A tree entry paired with its index in the array it came from. Paths are built
  * out of those indices (`"3.1"` is the second child of the fourth entry), so the
- * index has to survive sorting — it is how every other part of the editor
+ * index has to survive sorting - it is how every other part of the editor
  * identifies a file.
  */
 export type TreeEntry = ChallengeFilesStructure & { index: number };
@@ -28,7 +28,7 @@ export const INDENT = 12;
  * Shared row styling for files and folders.
  *
  * The indent is padding on a full width row rather than a margin, so the active
- * highlight always spans the whole sidebar — however deeply the file is nested.
+ * highlight always spans the whole sidebar - however deeply the file is nested.
  */
 export const rowClassName = cn(
   "group relative flex h-7 w-full items-center gap-1.5 pr-2 text-left",

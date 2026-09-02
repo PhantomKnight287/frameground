@@ -1,4 +1,4 @@
-A JavaScript error thrown while rendering doesn't just break that component — React unmounts the
+A JavaScript error thrown while rendering doesn't just break that component - React unmounts the
 **whole tree** and you are left with a blank page. That is deliberate: React would rather show
 nothing than a corrupted UI.
 
@@ -7,7 +7,7 @@ instead, so one broken widget doesn't take down the entire app.
 
 # Writing one
 
-Error boundaries are the one thing hooks still cannot do — they must be class components,
+Error boundaries are the one thing hooks still cannot do - they must be class components,
 because they rely on two lifecycle methods:
 
 ```jsx
@@ -36,7 +36,7 @@ class ErrorBoundary extends Component {
 }
 ```
 
-- `getDerivedStateFromError` runs during rendering, so it must be **pure** — return state, do
+- `getDerivedStateFromError` runs during rendering, so it must be **pure** - return state, do
   nothing else.
 - `componentDidCatch` runs after React commits the fallback, so it is where logging belongs.
 
@@ -61,7 +61,7 @@ placement decides how much of the UI disappears when something breaks:
 |                                          | Errors during server side rendering                    |
 
 <Callout type="info" title="Note">
-In development you will still see the error in the console and, with a dev overlay, on screen —
+In development you will still see the error in the console and, with a dev overlay, on screen -
 React re-throws it so you can debug. The fallback is what your users get in production.
 </Callout>
 
@@ -71,7 +71,7 @@ Read more about error boundaries [here](https://react.dev/reference/react/Compon
 
 You have to create one component:
 
-- `src/components/error-boundary.jsx` — default export a **class** component that renders its
+- `src/components/error-boundary.jsx` - default export a **class** component that renders its
   `children` while everything is fine. When a descendant throws while rendering, it must
   instead render a `div` with id `error-fallback` containing:
   - a `p` with id `error-message` whose content is the thrown error's `message`, and

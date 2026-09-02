@@ -10,7 +10,7 @@ is **prop drilling**:
 ```
 
 **Context** lets a parent make a value available to the whole subtree below it, and lets any
-component read it directly — no matter how deep it is.
+component read it directly - no matter how deep it is.
 
 # Creating a context
 
@@ -31,7 +31,7 @@ provider above it.
 </ThemeContext.Provider>
 ```
 
-Every component inside — at any depth — can now read `theme`.
+Every component inside - at any depth - can now read `theme`.
 
 # Reading a value
 
@@ -68,8 +68,8 @@ export function useTheme() {
 <Callout type="warn" title="Pitfall">
 Context is not a state manager, and it isn't free: every consumer re-renders whenever the
 provider's value changes. Passing a fresh object literal as `value` on every render makes that
-happen on *every* parent render. Use it for values that rarely change — theme, current user,
-locale — and prefer props for everything else.
+happen on *every* parent render. Use it for values that rarely change - theme, current user,
+locale - and prefer props for everything else.
 </Callout>
 
 Read more about context [here](https://react.dev/learn/passing-data-deeply-with-context).
@@ -78,21 +78,21 @@ Read more about context [here](https://react.dev/learn/passing-data-deeply-with-
 
 You have to create a context and two components:
 
-- `src/context/theme-context.jsx` — create a context whose default value is
+- `src/context/theme-context.jsx` - create a context whose default value is
   `{ theme: "light", toggleTheme: () => {} }` and export three **named** exports:
-  - `ThemeContext` — the context itself.
-  - `ThemeProvider` — a component that takes `children`, owns a `theme` state that starts at
+  - `ThemeContext` - the context itself.
+  - `ThemeProvider` - a component that takes `children`, owns a `theme` state that starts at
     `"light"`, and provides `{ theme, toggleTheme }` where `toggleTheme` flips the theme
     between `"light"` and `"dark"`.
-  - `useTheme` — a hook that returns the current context value.
+  - `useTheme` - a hook that returns the current context value.
 
-- `src/components/theme-toggle.jsx` — default export a function component that reads the
+- `src/components/theme-toggle.jsx` - default export a function component that reads the
   context with `useTheme` and renders a `button` with id `toggle` whose content is
   `Switch to dark` when the theme is light and `Switch to light` when it is dark. Clicking it
   toggles the theme.
 
-- `src/components/toolbar.jsx` — default export a function component that renders a `span`
+- `src/components/toolbar.jsx` - default export a function component that renders a `span`
   with id `theme` containing the current theme, and `ThemeToggle` inside it. It must not take
-  any props — this is the whole point of context.
+  any props - this is the whole point of context.
 
 You can also mount `ThemeProvider` and `Toolbar` in `src/App.jsx` but this step is optional.

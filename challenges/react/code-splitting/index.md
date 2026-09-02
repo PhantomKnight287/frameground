@@ -1,5 +1,5 @@
 Every import in your app ends up in the bundle the browser downloads before it can show
-anything — including the giant chart library used on one settings screen nobody opens on the
+anything - including the giant chart library used on one settings screen nobody opens on the
 first visit.
 
 **Code splitting** breaks the bundle into pieces that load on demand. React has two pieces of
@@ -14,7 +14,7 @@ const HeavyChart = lazy(() => import("./heavy-chart"));
 ```
 
 `lazy` takes a function returning a **dynamic import** and gives you back a component. The
-module isn't fetched when the app starts — it is fetched the first time the component is
+module isn't fetched when the app starts - it is fetched the first time the component is
 actually rendered, and it is cached afterwards.
 
 <Callout type="warn" title="Pitfall">
@@ -23,7 +23,7 @@ Declare lazy components at the **module top level**, never inside another compon
 subtree and throws away its state.
 </Callout>
 
-The lazily loaded module must have a **default export** — that is what `lazy` renders.
+The lazily loaded module must have a **default export** - that is what `lazy` renders.
 
 # `Suspense`
 
@@ -39,13 +39,13 @@ import { Suspense } from "react";
 ```
 
 The fallback appears while anything beneath it is suspended, and is replaced by the real
-content once it resolves. One boundary can wrap several lazy components — they will all be
+content once it resolves. One boundary can wrap several lazy components - they will all be
 covered by the same fallback, so put the boundary where a spinner makes sense in your layout,
 not necessarily around each component.
 
 <Callout type="info" title="Note">
-Pair `Suspense` with an error boundary: if the chunk fails to download — a flaky network, a
-stale build — the lazy component throws, and only an error boundary can catch it.
+Pair `Suspense` with an error boundary: if the chunk fails to download - a flaky network, a
+stale build - the lazy component throws, and only an error boundary can catch it.
 </Callout>
 
 Read more about [`lazy`](https://react.dev/reference/react/lazy) and
@@ -60,7 +60,7 @@ One file is given to you and must not be changed:
 
 You have to create one component:
 
-- `src/components/settings-panel.jsx` — default export a function component that renders a
+- `src/components/settings-panel.jsx` - default export a function component that renders a
   `button` with id `open`. The `Settings` component must be loaded lazily and rendered only
   after that button is clicked, wrapped in a `Suspense` boundary whose fallback is a `p` with
   id `loading` and the text `Loading...`. The module must not be imported until the button is
