@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "dynamic-api-routes",
+  "label": "Dynamic API Routes",
+  "description": "Build a REST resource: read, update and delete a single record from a bracketed API route.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-pages/api-routes",
+    "nextjs-pages/dynamic-routes"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

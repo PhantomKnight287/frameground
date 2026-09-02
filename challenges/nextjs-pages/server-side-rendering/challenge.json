@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "server-side-rendering",
+  "label": "Server Side Rendering",
+  "description": "Render a page on every request with getServerSideProps, using the query string, headers and cookies.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-pages/static-generation"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

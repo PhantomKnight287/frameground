@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "linking-and-navigation",
+  "label": "Linking and Navigation",
+  "description": "Move between pages without a full reload using next/link, and navigate from code with useRouter.",
+  "difficulty": "beginner",
+  "prerequisites": [
+    "nextjs-pages/nested-routes"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

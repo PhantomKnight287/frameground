@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "static-paths",
+  "label": "Static Paths",
+  "description": "Pre-render a dynamic route for every record with getStaticPaths, and decide what happens to the URLs you did not build.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-pages/static-generation",
+    "nextjs-pages/dynamic-routes"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

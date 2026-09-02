@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "fetching-data-on-the-server",
+  "label": "Fetching Data on the Server",
+  "description": "Call a real API from getServerSideProps, trim the payload, and handle the request failing.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-pages/server-side-rendering"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "dynamic-routes",
+  "label": "Dynamic Routes",
+  "description": "Serve a thousand URLs from one file with dynamic and catch-all route segments.",
+  "difficulty": "easy",
+  "prerequisites": [
+    "nextjs-pages/linking-and-navigation"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

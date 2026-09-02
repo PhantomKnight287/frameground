@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "custom-app-and-layouts",
+  "label": "Custom App and Layouts",
+  "description": "Wrap every page with shared chrome using _app.jsx, and let individual pages opt out with per-page layouts.",
+  "difficulty": "easy",
+  "prerequisites": [
+    "nextjs-pages/linking-and-navigation"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

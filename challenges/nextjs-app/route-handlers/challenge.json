@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "route-handlers",
+  "label": "Route Handlers",
+  "description": "Build HTTP endpoints in the App Router with the web Request and Response APIs.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-app/app-router-basics"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

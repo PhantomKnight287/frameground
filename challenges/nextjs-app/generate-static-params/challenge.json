@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "generate-static-params",
+  "label": "Static Params",
+  "description": "Prerender dynamic routes at build time with generateStaticParams, and control what happens to the rest.",
+  "difficulty": "hard",
+  "prerequisites": [
+    "nextjs-app/app-dynamic-routes"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

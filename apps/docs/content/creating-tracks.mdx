@@ -1,0 +1,149 @@
+---
+title: Creating Tracks
+description: How to add a new learning track to FrameGround
+---
+
+A **track** is a collection of challenges around one framework or topic - React, Next.js, and so
+on. Challenges live inside their track's folder, and the folder name is the track's slug.
+
+```txt
+challenges/
+  nextjs-pages/
+    track.json           <- the track itself
+    getting-started/     <- a challenge
+    nested-routes/
+  nextjs-app/
+    track.json
+    app-router-basics/
+  react/
+    track.json
+    ...
+```
+
+## Creating the folder
+
+Create `challenges/<slug>/`. The folder name becomes the slug in URLs, so keep it short and
+lowercase: `nextjs-app`, not `Next.js App Router`.
+
+Prefer several focused tracks over one that covers everything. The two Next.js routers are
+separate tracks rather than two halves of one, because a learner arriving for the App Router
+should not have to walk past fifteen Pages Router challenges first.
+
+<Callout title="Careful" type="warn">
+  Challenge slugs are unique across the **whole database**, not per track. A challenge folder
+  named `setting-up-project` already exists in the `react` track, so a new track needs a
+  different name for its first challenge - `getting-started`, for example.
+</Callout>
+
+## Creating the track config
+
+Every track needs a `track.json`. There is a `track.schema.json` in the root of `challenges` for
+autocomplete.
+
+```json title="challenges/nextjs-app/track.json"
+{
+  "$schema": "../track.schema.json",
+  "name": "Next.js App Router",
+  "description": "Build with the Next.js App Router - Server Components, nested layouts, streaming, caching and Server Actions.",
+  "logo": "/tracks/nextjs.svg",
+  "status": "active"
+}
+```
+
+<TypeTable
+  type={{
+    name: {
+      description: "The display name of the track.",
+      type: "string",
+    },
+    description: {
+      description:
+        "A sentence shown on the track card and at the top of the track page.",
+      type: "string",
+    },
+    logo: {
+      description:
+        "A path served from the app's public directory, or an absolute URL.",
+      type: "string",
+    },
+    status: {
+      description:
+        "Tracks marked coming_soon are listed but their challenges are not seeded.",
+      type: "enum",
+      typeDescription: "active, coming_soon",
+    },
+  }}
+/>
+
+## Adding the logo
+
+Logos are **vendored**, not hot-linked: the web app sends
+`Cross-Origin-Embedder-Policy: require-corp`, which blocks cross-origin images that do not opt in
+with CORP/CORS headers. There is a script that pulls one from [svgl](https://svgl.app) and wires
+it up:
+
+```bash
+node scripts/add-track-logo.mjs nextjs "Next.js"
+```
+
+It writes `<slug>.svg` and `<slug>-dark.svg` into the `public/tracks` directory of **both**
+`apps/web` and `apps/admin` (each Next app serves its own `public/`), then sets `logo` in the
+track's `track.json`.
+
+Only the light path is stored on the track - the dark one is derived by swapping `.svg` for
+`-dark.svg`. Two tracks about the same framework can therefore point `logo` at the same file:
+the Next.js tracks both use `/tracks/nextjs.svg`.
+
+## Adding challenges
+
+Everything else is per challenge - see [Creating Challenges](/docs). Each challenge folder needs
+a `challenge.json` whose `track_slug` matches the folder name of the track:
+
+```json title="challenges/nextjs-pages/getting-started/challenge.json"
+{
+  "$schema": "../../schema.json",
+  "id": "getting-started",
+  "track_slug": "nextjs-pages",
+  "prerequisites": []
+}
+```
+
+`prerequisites` are full paths - `["nextjs-pages/getting-started"]` - so a challenge *can* depend
+on one from another track. Use that sparingly: a track whose first challenge is gated behind a
+different track is a track nobody starts.
+
+### Framework templates
+
+Challenges ship their entire playground file tree inline in `index.ts`, which means a lot of
+identical boilerplate between the challenges of one track. Keep the shared scaffold as a
+`<framework>.json` file in the root of `challenges` and layer the challenge's own files on top of
+it:
+
+- `vite.json` - a Vite + React project
+- `nextjs-pages.json` - a Next.js project set up for the Pages Router
+- `nextjs-app.json` - the same project set up for the App Router
+
+Each is the array that goes into `files`, so a template already includes `package.json`, the
+lockfile and the test runner config. To generate one for a framework that does not have a
+template yet, use the CLI in `parser`:
+
+```bash title="Generate a template"
+cargo run parse -f ../my-framework-project
+```
+
+<Callout title="Note" type="info">
+  Include the lockfile in the template - `node_modules` installs considerably faster with one,
+  and the playground runs the install on every visit.
+</Callout>
+
+## Seeding the database
+
+Tracks and challenges are read from disk and written to the database by the seed script:
+
+```bash
+pnpm --filter @repo/db seed
+```
+
+`saveTracksToDb` walks every folder in `challenges` and upserts its `track.json`.
+`saveChallengesToDb` then walks the challenges of every track that is not `coming_soon`, and only
+touches the ones whose files changed since the last run.

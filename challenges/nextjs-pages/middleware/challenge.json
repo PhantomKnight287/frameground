@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "middleware",
+  "label": "Middleware",
+  "description": "Run code before a request is routed - gate private pages, rewrite URLs and set headers at the edge.",
+  "difficulty": "hard",
+  "prerequisites": [
+    "nextjs-pages/redirects-and-not-found"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

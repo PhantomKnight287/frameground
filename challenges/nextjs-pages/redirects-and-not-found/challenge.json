@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "redirects-and-not-found",
+  "label": "Redirects and Not Found",
+  "description": "Send visitors somewhere else, return a real 404, and design the pages they land on.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-pages/server-side-rendering"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

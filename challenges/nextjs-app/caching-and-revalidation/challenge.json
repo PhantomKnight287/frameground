@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "caching-and-revalidation",
+  "label": "Caching and Revalidation",
+  "description": "Cache fetches on the server, tag them, and blow the right cache entry away when the data changes.",
+  "difficulty": "hard",
+  "prerequisites": [
+    "nextjs-app/server-components",
+    "nextjs-app/route-handlers"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

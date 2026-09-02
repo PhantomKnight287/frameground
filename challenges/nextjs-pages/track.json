@@ -1,0 +1,7 @@
+{
+  "$schema": "../track.schema.json",
+  "description": "Build with the Next.js Pages Router - file-based routing, API routes, middleware, and the three ways to render a page.",
+  "logo": "/tracks/nextjs.svg",
+  "name": "Next.js Pages Router",
+  "status": "active"
+}

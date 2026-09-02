@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "incremental-static-regeneration",
+  "label": "Incremental Static Regeneration",
+  "description": "Keep static pages fresh without rebuilding the site - on a timer, or on demand from an API route.",
+  "difficulty": "hard",
+  "prerequisites": [
+    "nextjs-pages/static-generation",
+    "nextjs-pages/api-routes"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

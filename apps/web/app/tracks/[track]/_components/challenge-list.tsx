@@ -15,6 +15,7 @@ export type ListChallenge = {
   description: string;
   difficulty: string;
   authors: string[];
+  prerequisites: string[];
   createdAt: string;
   solvesCount: number;
   upvotesCount: number;

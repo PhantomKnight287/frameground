@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "app-dynamic-routes",
+  "label": "Dynamic Segments",
+  "description": "Read route params and search params in the App Router - both of which arrive as promises.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-app/app-router-basics"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

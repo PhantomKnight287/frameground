@@ -9,6 +9,7 @@ import { siteMetadataConfig } from "@repo/config";
 import { formatNumber } from "@/utils/intl";
 import ChallengeList, { ListChallenge } from "./_components/challenge-list";
 import TrackLogo, { darkVariant } from "@/components/track-logo";
+import { sortByCurriculum } from "@/utils/challenge-order";
 
 export async function generateMetadata({
   params,
@@ -95,19 +96,24 @@ async function Challenges({
     FROM "Challenge" c
     JOIN "Track" t ON c."trackId" = t."id"
     WHERE t."slug" = ${awaited.track}
-    ORDER BY "createdAt" ASC;
+    ORDER BY c."createdAt" ASC;
   `;
 
   // The raw query returns BigInt columns, which cannot cross the server/client
   // boundary - normalise them before handing the rows to the client component.
-  const challenges: ListChallenge[] = (d ?? []).map((challenge) => ({
-    ...challenge,
-    createdAt: challenge.createdAt?.toISOString?.() ?? challenge.createdAt,
-    commentsCount: Number(challenge.commentsCount),
-    solvesCount: Number(challenge.solvesCount),
-    upvotesCount: Number(challenge.upvotesCount),
-    solved: challenge.solved?.toString() ?? "0",
-  }));
+  // The query orders by age only; the order challenges are meant to be worked
+  // through comes from their prerequisites, which the database cannot express.
+  const challenges: ListChallenge[] = sortByCurriculum(
+    (d ?? []).map((challenge) => ({
+      ...challenge,
+      createdAt: challenge.createdAt?.toISOString?.() ?? challenge.createdAt,
+      prerequisites: challenge.prerequisites ?? [],
+      commentsCount: Number(challenge.commentsCount),
+      solvesCount: Number(challenge.solvesCount),
+      upvotesCount: Number(challenge.upvotesCount),
+      solved: challenge.solved?.toString() ?? "0",
+    }))
+  );
 
   const solvedCount = challenges.filter((challenge) =>
     parseInt(challenge.solved || "0")

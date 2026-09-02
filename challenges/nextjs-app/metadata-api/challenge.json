@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "metadata-api",
+  "label": "Metadata API",
+  "description": "Describe your pages with exported metadata objects instead of head tags, including per-record titles.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-app/app-dynamic-routes"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "static-generation",
+  "label": "Static Generation",
+  "description": "Do the work once at build time with getStaticProps and serve plain HTML to every visitor.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-pages/nested-routes"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

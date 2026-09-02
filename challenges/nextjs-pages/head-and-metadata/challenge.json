@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "head-and-metadata",
+  "label": "Head and Metadata",
+  "description": "Set the title, description and social preview tags of a page with next/head.",
+  "difficulty": "easy",
+  "prerequisites": [
+    "nextjs-pages/custom-app-and-layouts"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

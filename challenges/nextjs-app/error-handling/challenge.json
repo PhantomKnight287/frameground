@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "error-handling",
+  "label": "Error Handling",
+  "description": "Contain a failure to one segment with error.jsx, and return a real 404 with notFound().",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-app/nested-layouts",
+    "nextjs-app/client-components"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

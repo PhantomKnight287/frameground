@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "loading-and-streaming",
+  "label": "Loading and Streaming",
+  "description": "Show something immediately with loading.jsx, then stream slow parts of the page in with Suspense.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-app/server-components"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

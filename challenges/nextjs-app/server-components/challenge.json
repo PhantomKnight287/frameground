@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "server-components",
+  "label": "Server Components",
+  "description": "Fetch data inside the component that renders it, and stop creating request waterfalls.",
+  "difficulty": "medium",
+  "prerequisites": [
+    "nextjs-app/app-dynamic-routes"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

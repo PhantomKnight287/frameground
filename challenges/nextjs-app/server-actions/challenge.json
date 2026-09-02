@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema.json",
+  "id": "server-actions",
+  "label": "Server Actions",
+  "description": "Mutate data straight from a form - no endpoint, no fetch - and show the result with useActionState.",
+  "difficulty": "hard",
+  "prerequisites": [
+    "nextjs-app/client-components",
+    "nextjs-app/caching-and-revalidation"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

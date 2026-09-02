@@ -1,0 +1,18 @@
+{
+  "$schema": "../../schema.json",
+  "id": "getting-started",
+  "label": "Your First Next.js App",
+  "description": "Get to know the anatomy of a Next.js project and put your first pages on the file-system router.",
+  "difficulty": "beginner",
+  "prerequisites": [],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

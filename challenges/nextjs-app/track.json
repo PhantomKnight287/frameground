@@ -1,0 +1,7 @@
+{
+  "$schema": "../track.schema.json",
+  "description": "Build with the Next.js App Router - Server Components, nested layouts, streaming, caching and Server Actions.",
+  "logo": "/tracks/nextjs.svg",
+  "name": "Next.js App Router",
+  "status": "active"
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "../../schema.json",
+  "id": "app-router-basics",
+  "label": "App Router Basics",
+  "description": "Move to the app directory: folders are routes, page.jsx is the UI, and components render on the server by default.",
+  "difficulty": "beginner",
+  "prerequisites": [],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-app",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}

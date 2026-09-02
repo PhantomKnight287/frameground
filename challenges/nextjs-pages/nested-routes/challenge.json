@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema.json",
+  "id": "nested-routes",
+  "label": "Nested Routes",
+  "description": "Map a whole URL hierarchy onto folders, and learn where index files fit in.",
+  "difficulty": "beginner",
+  "prerequisites": [
+    "nextjs-pages/getting-started"
+  ],
+  "author": [
+    "phantomknight287"
+  ],
+  "track_slug": "nextjs-pages",
+  "playground_needed": true,
+  "setup_commands": [
+    "pnpm i",
+    "clear"
+  ],
+  "test_runner": "vitest"
+}
